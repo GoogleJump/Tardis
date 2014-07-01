@@ -1,3 +1,6 @@
+var User       		= require('../app/models/user');
+var School       		= require('../app/models/school');
+
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -11,7 +14,7 @@ module.exports = function(app, passport) {
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
-	app.get('/login', function(req, res) {
+	app.get('/login', isNotLoggedIn, function(req, res) {
 
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') }); 
@@ -24,7 +27,7 @@ module.exports = function(app, passport) {
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
-	app.get('/signup', function(req, res) {
+	app.get('/signup', isNotLoggedIn, function(req, res) {
 
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
@@ -52,11 +55,17 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
+
+
 	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
+		successRedirect : '/select-school', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+
+
+
+
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
@@ -64,6 +73,28 @@ module.exports = function(app, passport) {
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
+
+
+	app.get('/select-school', isLoggedIn, function(req, res) {
+		var schoolMap = {};
+		School.find({}, function (err, schools) {
+         
+         schools.forEach(function(school) {
+              schoolMap[school._id] = school;
+         });
+         
+   		});
+
+		res.render('select_school.ejs',
+		{schools : schoolMap}); // load the index.ejs file
+	});
+
+	app.post('/select-school', function(req, res) {
+		var school = req.body.school;
+		req.user.school = school;
+
+        res.redirect('/profile');
+	});
 
 };
 

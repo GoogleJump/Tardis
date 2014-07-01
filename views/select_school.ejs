@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scheduler - Select school</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:10px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1>Select school</h1>
+	</div>
+
+	<div class="row">
+
+		<!-- LOCAL INFORMATION -->
+		<div class="col-sm-6">
+			<div class="well">
+				<h3>Select your school</h3>
+				<form action="/select-school" method="post">
+					<select name="school">
+
+
+						<option value="0">University of Tulsa</option>
+					  <option value="1">MIT</option>
+					  <option value="2">Stanford</option>
+					  <option value="3">Rice</option>
+					</select>
+					</br>
+					</br>
+					<button type="submit" class="btn btn-warning btn-lg">Next</button>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+</body>
+</html>
+

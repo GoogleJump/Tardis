@@ -19,19 +19,21 @@
 	<div class="row">
 
 		<!-- LOCAL INFORMATION -->
-		<div class="col-sm-6">
+		
 			<div class="well">
 				<h3><span class="fa fa-user"></span> Account details</h3>
 
 					<p>
-						<strong>id</strong>: <%= user._id %><br>
-						<strong>email</strong>: <%= user.local.email %><br>
+						<strong>Id</strong>: <%= user._id %><br>
+						<strong>Email</strong>: <%= user.local.email %><br>
+						<strong>Username</strong>: <%= user.username %><br>
 						<strong>Reputation</strong>: <%= user.reputation %><br>
 						<strong>Created date</strong>: <%= user.createdDate %><br>
+						<strong>Last login date</strong>: <%= user.lastLoginDate %><br>
 					</p>
 
 			</div>
-		</div>
+		
 
 	</div>
 
