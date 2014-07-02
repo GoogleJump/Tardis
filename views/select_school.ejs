@@ -17,24 +17,36 @@
 
 	<div class="row">
 
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+
 		<!-- LOCAL INFORMATION -->
 		<div class="col-sm-6">
 			<div class="well">
 				<h3>Select your school</h3>
 				<form action="/select-school" method="post">
-					<select name="school">
-
-
-						<option value="0">University of Tulsa</option>
-					  <option value="1">MIT</option>
-					  <option value="2">Stanford</option>
-					  <option value="3">Rice</option>
+					<select class="form-control" name="school">
+						<% for(var index in schoolArray) { %>
+							<option value="<%=schoolArray[index]._id %>"><%=schoolArray[index].name %></option>
+						<% } %>
 					</select>
 					</br>
 					</br>
 					<button type="submit" class="btn btn-warning btn-lg">Next</button>
 				</form>
 			</div>
+
+			<div class="well">
+				<h3>Not in the list? Add your school</h3>
+				<form action="/add-school" method="post">
+					<input type = "text" class="form-control" name="schoolName">
+					</br>
+					</br>
+					<button type="submit" class="btn btn-warning btn-lg">Add</button>
+				</form>
+			</div>
+
 		</div>
 
 	</div>

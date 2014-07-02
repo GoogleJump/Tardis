@@ -42,9 +42,13 @@ module.exports = function(app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
+		School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
 		res.render('profile.ejs', {
-			user : req.user // get the user out of session and pass to template
+			user : req.user, // get the user out of session and pass to template
+			school: school
 		});
+		});
+
 	});
 
 	// =====================================
@@ -75,25 +79,64 @@ module.exports = function(app, passport) {
 	}));
 
 
-	app.get('/select-school', isLoggedIn, function(req, res) {
-		var schoolMap = {};
+	app.get('/select-school', function(req, res) {
 		School.find({}, function (err, schools) {
          
-         schools.forEach(function(school) {
-              schoolMap[school._id] = school;
-         });
+		res.render('select_school.ejs',
+			{schoolArray : schools,
+				message: req.flash('message')});
          
    		});
 
-		res.render('select_school.ejs',
-		{schools : schoolMap}); // load the index.ejs file
+
 	});
 
 	app.post('/select-school', function(req, res) {
 		var school = req.body.school;
-		req.user.school = school;
+
+		console.log(school);
+
+		req.user._schoolId = school;
+		req.user.save();
 
         res.redirect('/profile');
+	});
+
+	app.post('/add-school', function(req, res) {
+		var name = req.body.schoolName;
+
+		//regex to match school name case insensitively mit==MIT
+		var regex = new RegExp(["^",name,"$"].join(""),"i");
+
+		School.findOne({'name':regex}, function(err, school) {
+			if(school) {
+				req.flash('message', 'There is already a school with the name '+name);
+				res.redirect('/select-school');
+			} else {
+				var newSchool = new School();
+				newSchool.name = name;
+				newSchool.save();
+
+				req.user._schoolId = newSchool._id;
+				req.user.save();
+				res.redirect('/profile');
+			}
+			
+		});
+
+	});
+
+	app.get('/schools/:schoolId', function(req, res) {
+		var id = req.params.schoolId;
+		School.findOne({'_id':id}, function(err, school) {
+			if(school) {
+				res.render('school.ejs', {school:school});
+			} else {
+				//Error!
+				res.render('error.ejs');
+			}
+			
+		});
 	});
 
 };
