@@ -104,6 +104,8 @@ module.exports = function(app, passport) {
 
 	app.post('/add-school', function(req, res) {
 		var name = req.body.schoolName;
+		var city = req.body.schoolCity;
+		var state = req.body.schoolState;
 
 		//regex to match school name case insensitively mit==MIT
 		var regex = new RegExp(["^",name,"$"].join(""),"i");
@@ -115,6 +117,8 @@ module.exports = function(app, passport) {
 			} else {
 				var newSchool = new School();
 				newSchool.name = name;
+				newSchool.city = city;
+				newSchool.state = state;
 				newSchool.save();
 
 				req.user._schoolId = newSchool._id;
@@ -126,11 +130,29 @@ module.exports = function(app, passport) {
 
 	});
 
-	app.get('/schools/:schoolId', function(req, res) {
+	app.get('/school/:schoolId', function(req, res) {
 		var id = req.params.schoolId;
 		School.findOne({'_id':id}, function(err, school) {
 			if(school) {
 				res.render('school.ejs', {school:school});
+			} else {
+				//Error!
+				res.render('error.ejs');
+			}
+			
+		});
+	});
+
+	app.get('/user/:userId', function(req, res) {
+		var id = req.params.userId;
+		User.findOne({'_id':id}, function(err, user) {
+			if(user) {
+				School.findOne({ '_id' : user._schoolId }, function(err, school) {
+				res.render('user.ejs', {
+					user : user, 
+					school: school
+				});
+			});
 			} else {
 				//Error!
 				res.render('error.ejs');
