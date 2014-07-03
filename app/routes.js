@@ -1,5 +1,6 @@
 var User       		= require('../app/models/user');
 var School       		= require('../app/models/school');
+var Professor       		= require('../app/models/professor');
 
 module.exports = function(app, passport) {
 
@@ -134,7 +135,11 @@ module.exports = function(app, passport) {
 		var id = req.params.schoolId;
 		School.findOne({'_id':id}, function(err, school) {
 			if(school) {
-				res.render('school.ejs', {school:school});
+				Professor.find({'_schoolId':id}, function(err, professors) {
+					res.render('school.ejs', {school:school, professors:professors, message: req.flash('message')});
+				});
+
+				
 			} else {
 				//Error!
 				res.render('error.ejs');
@@ -159,6 +164,50 @@ module.exports = function(app, passport) {
 			}
 			
 		});
+	});
+
+	app.get('/professor/:professorId', function(req, res) {
+		var id = req.params.professorId;
+		Professor.findOne({'_id':id}, function(err, professor) {
+			if(professor) {
+				School.findOne({ '_id' : professor._schoolId }, function(err, school) {
+				res.render('professor.ejs', {
+					professor : professor, 
+					school: school
+				});
+			});
+			} else {
+				//Error!
+				res.render('error.ejs');
+			}
+			
+		});
+	});
+
+	app.post('/add-professor/:schoolId', function(req, res) {
+		var name = req.body.name;
+		var department = req.body.department;
+		var schoolId = req.params.schoolId;
+
+		//regex to match school name case insensitively mit==MIT
+		var regex = new RegExp(["^",name,"$"].join(""),"i");
+
+		Professor.findOne({'_schoolId':schoolId,'name':regex}, function(err, professor) {
+			if(professor) {
+				req.flash('message', 'There is already a professor with the name '+name);
+				res.redirect('/school/'+schoolId);
+			} else {
+				var newProfessor = new Professor();
+				newProfessor.name = name;
+				newProfessor.department = department;
+				newProfessor._schoolId = schoolId;
+				newProfessor.save();
+
+				res.redirect('/professor/'+newProfessor._id);
+			}
+			
+		});
+
 	});
 
 };
