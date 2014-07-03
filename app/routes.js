@@ -1,6 +1,7 @@
 var User       		= require('../app/models/user');
 var School       		= require('../app/models/school');
 var Professor       		= require('../app/models/professor');
+var Comment       		= require('../app/models/comment');
 
 module.exports = function(app, passport) {
 
@@ -171,11 +172,14 @@ module.exports = function(app, passport) {
 		Professor.findOne({'_id':id}, function(err, professor) {
 			if(professor) {
 				School.findOne({ '_id' : professor._schoolId }, function(err, school) {
-				res.render('professor.ejs', {
-					professor : professor, 
-					school: school
+					Comment.find({'type':'professor', '_onId':id}, function(err, comments) {
+						res.render('professor.ejs', {
+							professor : professor, 
+							school: school,
+							comments: comments
+						});
+					});
 				});
-			});
 			} else {
 				//Error!
 				res.render('error.ejs');
@@ -208,6 +212,37 @@ module.exports = function(app, passport) {
 			
 		});
 
+	});
+
+
+	app.post('/add-professor-comment/:professorId', function(req, res) {
+		var comment = req.body.comment;
+		var professorId = req.params.professorId;
+
+		var newComment = new Comment();
+		newComment.comment = comment;
+		newComment.type = 'professor';
+		newComment._onId = professorId;
+		newComment._userId = req.user._id;
+		newComment.save();
+
+		res.redirect('/professor/'+professorId);
+	});
+
+	app.post('/upvote-comment/:commentId', function(req, res) {
+		var commentId = req.params.commentId;
+
+		Comment.findOne({'_id':commentId}, function(err, comment) {
+			comment.helpfulness = comment.helpfulness+1;
+			comment.save();
+
+			User.findOne({'_id':comment._userId}, function(err, user) {
+				user.reputation++;
+				user.save();
+				res.redirect('/professor/'+comment._onId);
+			});
+
+		});
 	});
 
 };
