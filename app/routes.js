@@ -143,7 +143,7 @@ module.exports = function(app, passport) {
 				
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -161,7 +161,7 @@ module.exports = function(app, passport) {
 			});
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -182,7 +182,7 @@ module.exports = function(app, passport) {
 				});
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -243,6 +243,10 @@ module.exports = function(app, passport) {
 			});
 
 		});
+	});
+
+	app.get('/error', function(req, res) {
+		res.render('error.ejs');
 	});
 
 };
