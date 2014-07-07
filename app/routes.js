@@ -239,7 +239,6 @@ module.exports = function(app, passport) {
 			User.findOne({'_id':comment._userId}, function(err, user) {
 				user.reputation++;
 				user.save();
-				res.redirect('/professor/'+comment._onId);
 			});
 
 		});
