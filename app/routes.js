@@ -3,18 +3,13 @@ var School       		= require('../app/models/school');
 var Professor       		= require('../app/models/professor');
 var Comment       		= require('../app/models/comment');
 
-module.exports = function(app, passport) {
+var fs = require('fs'), express = require('express');
 
-	// =====================================
-	// HOME PAGE (with login links) ========
-	// =====================================
+module.exports = function(app, passport) {
 	app.get('/', isNotLoggedIn, function(req, res) {
 		res.render('index.ejs'); // load the index.ejs file
 	});
 
-	// =====================================
-	// LOGIN ===============================
-	// =====================================
 	// show the login form
 	app.get('/login', isNotLoggedIn, function(req, res) {
 
@@ -22,12 +17,6 @@ module.exports = function(app, passport) {
 		res.render('login.ejs', { message: req.flash('loginMessage') }); 
 	});
 
-	// process the login form
-	// app.post('/login', do all our passport stuff here);
-
-	// =====================================
-	// SIGNUP ==============================
-	// =====================================
 	// show the signup form
 	app.get('/signup', isNotLoggedIn, function(req, res) {
 
@@ -35,11 +24,6 @@ module.exports = function(app, passport) {
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	});
 
-	// process the signup form
-	// app.post('/signup', do all our passport stuff here);
-
-	// =====================================
-	// PROFILE SECTION =====================
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
@@ -53,25 +37,16 @@ module.exports = function(app, passport) {
 
 	});
 
-	// =====================================
-	// LOGOUT ==============================
-	// =====================================
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
-
-
 
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/select-school', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
-
-
-
-
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
@@ -245,7 +220,17 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/error', function(req, res) {
-		res.render('error.ejs');
+		res.render('static/500.html');
+	});
+
+	//set the public/ directory as static
+	app.use('/public', express.static('public'));
+	
+
+	//ALL OTHER ROUTES MUST BE ABOVE HERE
+	//Got here and nothing has happened? 404!
+	app.use(function(req, res, next){
+	  res.render('static/404.html');
 	});
 
 };
