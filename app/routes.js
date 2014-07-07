@@ -143,7 +143,7 @@ module.exports = function(app, passport) {
 				
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -161,7 +161,7 @@ module.exports = function(app, passport) {
 			});
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -182,7 +182,7 @@ module.exports = function(app, passport) {
 				});
 			} else {
 				//Error!
-				res.render('error.ejs');
+				res.redirect('/error');
 			}
 			
 		});
@@ -239,10 +239,13 @@ module.exports = function(app, passport) {
 			User.findOne({'_id':comment._userId}, function(err, user) {
 				user.reputation++;
 				user.save();
-				res.redirect('/professor/'+comment._onId);
 			});
 
 		});
+	});
+
+	app.get('/error', function(req, res) {
+		res.render('error.ejs');
 	});
 
 };

@@ -8,7 +8,8 @@ var commentSchema = mongoose.Schema({
     _onId: mongoose.Schema.Types.ObjectId,
     _userId: mongoose.Schema.Types.ObjectId,
     helpfulness: {type: Number, default: 0},
-    date: {type: Date, default: Date.now}
+    date: {type: Date, default: Date.now},
+    replies: [commentSchema]
 });
 
 module.exports = mongoose.model('Comment', commentSchema);
