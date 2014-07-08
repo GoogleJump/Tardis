@@ -8,34 +8,9 @@
 		body 		{ padding-top:10px; word-wrap:break-word; }
 	</style>
 	<script type="text/javascript">
-		function upvote(comment) {
-			console.log('upvote');
-			post('/upvote-comment/'+comment,{id:comment});
-		}
-		
-		function post(path, params, method) {
-		    method = method || "post"; // Set method to post by default if not specified.
 
-		    var form = document.createElement("form");
-		    form.setAttribute("method", method);
-		    form.setAttribute("action", path);
-
-		    for(var key in params) {
-		        if(params.hasOwnProperty(key)) {
-		            var hiddenField = document.createElement("input");
-		            hiddenField.setAttribute("type", "hidden");
-		            hiddenField.setAttribute("name", key);
-		            hiddenField.setAttribute("value", params[key]);
-
-		            form.appendChild(hiddenField);
-		         }
-		    }
-
-		    document.body.appendChild(form);
-		    form.submit();
-		}
 	</script>
-
+	<script src="../public/js/main.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="container">
@@ -64,8 +39,10 @@
 
 					<p>
 						<% for(var index in comments) {%>
-							<%=comments[index].helpfulness%> <%=comments[index].comment%> 
-							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=comments[index]._id%>');" /><br>
+							<span id='reputation-<%=comments[index].comment._id%>'><%=comments[index].comment.helpfulness%></span> <%=comments[index].comment.comment%> 
+							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=comments[index].comment._id%>', false);" />
+							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=comments[index].comment._id%>', true);" /><br>
+							posted by <%=comments[index].poster.username%><br>
 						<%}%>
 					</p>
 

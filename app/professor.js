@@ -1,6 +1,11 @@
 var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
 var Comment = require('../app/models/comment');
+var User = require('../app/models/user');
+
+function getPoster(comment, callback) {
+
+}
 
 exports.view = function(req, res) {
 	var id = req.params.professorId;
@@ -8,10 +13,21 @@ exports.view = function(req, res) {
 		if(professor) {
 			School.findOne({ '_id' : professor._schoolId }, function(err, school) {
 				Comment.find({'type':'professor', '_onId':id}, function(err, comments) {
-					res.render('professor.ejs', {
-						professor : professor, 
-						school: school,
-						comments: comments
+					var commentPacks = [];
+					comments.forEach(function(comment, index) {
+						var pack = [];
+						pack['comment'] = comment;
+						User.findOne({'_id':comment._userId}, function(err, poster) {
+							pack['poster'] = poster;
+							commentPacks.push(pack);
+							if(commentPacks.length==comments.length) {
+								res.render('professor.ejs', {
+									professor : professor, 
+									school: school,
+									comments: commentPacks
+								});
+							}
+						});
 					});
 				});
 			});
