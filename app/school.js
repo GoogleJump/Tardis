@@ -1,5 +1,6 @@
 var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
+var Course = require('../app/models/course');
 
 exports.add = function(req, res) {
 	var name = req.body.schoolName;
@@ -42,4 +43,29 @@ exports.view = function(req, res) {
 		}
 		
 	});
-};
+}
+
+exports.view_courses = function(req, res) {
+	var id = req.params.schoolId;
+
+	School.findOne({'_id':id}, function(err, school) {
+		if(school) {
+			Course.find({'_schoolId':id}, function(err, courses){
+				res.render('courses.ejs', {courses:courses, school:school});
+			});
+		} else {
+			//Error!
+			res.redirect('/error');
+		}
+		
+	});
+}
+
+exports.update_courses = function(req, res) {
+	var id = req.params.schoolId;
+	var file = req.files.courses;
+
+	console.log(file);
+
+	res.redirect('/school/'+id+"/courses");
+}

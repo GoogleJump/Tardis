@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scheduler - <%=school.name%> courses</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:10px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1>Courses</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+		<!-- LOCAL INFORMATION -->
+			<div class="well">
+				<h3>Courses</h3>
+
+					<p>
+						<% for(var index in courses) {%>
+							<a href="course/<%=courses[index]._id%>"><%=courses[index].name%></a><br>
+						<%}%>
+					</p>
+
+			</div>
+
+			<div class="well">
+				<h3>Update courses and sections (json)</h3>
+
+					<form action="/school/<%=school._id%>/courses/update" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label>Choose json file</label>
+							<input type="file" class="form-control" name="courses">
+						</div>
+						<button type="submit" class="btn btn-warning btn-lg">Update</button>
+					</form>
+			</div>
+		
+
+	</div>
+
+</div>
+</body>
+</html>
