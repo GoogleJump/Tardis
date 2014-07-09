@@ -3,16 +3,20 @@ var Professor = require('../app/models/professor');
 var Comment = require('../app/models/comment');
 var User = require('../app/models/user');
 
-function getPoster(comment, callback) {
-
-}
-
 exports.view = function(req, res) {
 	var id = req.params.professorId;
 	Professor.findOne({'_id':id}, function(err, professor) {
 		if(professor) {
 			School.findOne({ '_id' : professor._schoolId }, function(err, school) {
 				Comment.find({'type':'professor', '_onId':id}, function(err, comments) {
+					if(comments.length==0) {
+						res.render('professor.ejs', {
+							professor : professor, 
+							school: school,
+							comments: []
+						});
+					}
+					
 					var commentPacks = [];
 					comments.forEach(function(comment, index) {
 						var pack = [];

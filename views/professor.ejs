@@ -7,9 +7,6 @@
 	<style>
 		body 		{ padding-top:10px; word-wrap:break-word; }
 	</style>
-	<script type="text/javascript">
-
-	</script>
 	<script src="../public/js/main.js" type="text/javascript"></script>
 </head>
 <body>
@@ -39,10 +36,15 @@
 
 					<p>
 						<% for(var index in comments) {%>
-							<span id='reputation-<%=comments[index].comment._id%>'><%=comments[index].comment.helpfulness%></span> <%=comments[index].comment.comment%> 
-							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=comments[index].comment._id%>', false);" />
-							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=comments[index].comment._id%>', true);" /><br>
-							posted by <%=comments[index].poster.username%><br>
+							<%var c = comments[index].comment;%>
+							<%var p = comments[index].poster;%>
+							<span id='reputation-<%=c._id%>'><B><%=c.helpfulness%></B></span> <%=c.comment%> 
+							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=c._id%>', false);" />
+							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=c._id%>', true);" /><br>
+							posted by <a href="/user/<%=p._id%>"><%=p.username%></a> (<%=p.reputation%>)<br><br>
+						<%}%>
+						<% if (comments.length==0) {%>
+							No comments to show
 						<%}%>
 					</p>
 

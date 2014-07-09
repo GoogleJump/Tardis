@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 
 var ObjectId  = mongoose.Schema.Types.ObjectId;
 
-// define the schema for our user model
 var commentSchema = mongoose.Schema({
     comment: String,
     type: String,
