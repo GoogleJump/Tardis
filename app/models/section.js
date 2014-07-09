@@ -7,6 +7,7 @@ var sectionSchema = mongoose.Schema({
     meet_time: String,
     status: String,
     open: Boolean,
+    term: String,
     _courseId: mongoose.Schema.Types.ObjectId,
     _professorId: mongoose.Schema.Types.ObjectId
 });

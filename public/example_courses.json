@@ -14,7 +14,7 @@
 				"meet_time":"MWF 10:00AM-10:50AM",
 				"status":"open",
 				"open":true,
-				"instructor":"Childress J",
+				"professor":"Childress J",
 				"books":
 				[
 					{
@@ -32,7 +32,7 @@
 				"meet_time":"MWF 1:00PM-1:50PM",
 				"status":"open",
 				"open":true,
-				"instructor":"Childress J",
+				"professor":"Childress J",
 				"books":
 				[
 					{

@@ -1,6 +1,8 @@
 var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
+var Section = require('../app/models/section');
+
 var fs = require('fs');
 
 exports.add = function(req, res) {
@@ -88,6 +90,7 @@ function createCourseFromJSON(schoolId, data) {
 	Course.findOne({"_schoolId":schoolId, "number":data.number}, function(err, course){
 		if(course) {
 			console.log("course with number "+data.number+" already exists: "+course._id);
+			createSectionsFromJSON(course, data.sections);
 		} else {
 			var newCourse = new Course();
 			newCourse.name = data.name;
@@ -99,8 +102,49 @@ function createCourseFromJSON(schoolId, data) {
 			newCourse.level = data.level;
 
 			console.log("new course created: "+newCourse._id);
-
 			newCourse.save();
+
+			createSectionsFromJSON(newCourse, data.sections);
 		}
 	});
+}
+
+function createSectionsFromJSON(course, data) {
+	//TODO: problem: this happens in parallel- possible to add professor repeatedly if he teaches multiple sections
+	for(var index in data) {
+		var jsonSection = data[index];
+		Section.findOne({"_courseId":course._id,"term":"Fall 2014","number":jsonSection.number}, function(err, section){
+			if(section) {
+				console.log("section with number "+jsonSection.number+" already exists: "+section._id);
+				//TODO: update datas
+			} else {
+				var newSection = new Section();
+				newSection.number = jsonSection.number;
+				newSection.location = jsonSection.location;
+				newSection.meet_time = jsonSection.meet_time;
+				newSection.status = jsonSection.status;
+				newSection.open = jsonSection.open;
+				newSection.term = "Fall 2014";//TODO
+				newSection._courseId = course._id;
+
+				Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
+					if(professor) {
+						newSection._professorId = professor._id;
+					} else {
+						var newProfessor = new Professor();
+						newProfessor.name = jsonSection.professor;
+						newProfessor._schoolId = course._schoolId;
+						newProfessor.department = course.department;
+						newSection._professorId = newProfessor._id;
+
+						newProfessor.save();
+					}
+					console.log("new section created: "+newSection._id);
+					newSection.save();
+				});
+				//TODO: books
+			}
+		});
+	}
+	
 }
