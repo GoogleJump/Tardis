@@ -1,6 +1,7 @@
 var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
+var fs = require('fs');
 
 exports.add = function(req, res) {
 	var name = req.body.schoolName;
@@ -65,7 +66,41 @@ exports.update_courses = function(req, res) {
 	var id = req.params.schoolId;
 	var file = req.files.courses;
 
-	console.log(file);
+	fs.readFile(file.path, 'utf8', function (err, data) {
+	  if (err) {
+	    console.log('Error: ' + err);
+	    return;
+	  }
+	 
+	  data = JSON.parse(data);
+	 
+	  for(var index in data) {
+	      createCourseFromJSON(id, data[index]);
+	  }
+	});
+
 
 	res.redirect('/school/'+id+"/courses");
+}
+
+function createCourseFromJSON(schoolId, data) {
+	//number is a unique key- see if there is already a course with this number
+	Course.findOne({"_schoolId":schoolId, "number":data.number}, function(err, course){
+		if(course) {
+			console.log("course with number "+data.number+" already exists: "+course._id);
+		} else {
+			var newCourse = new Course();
+			newCourse.name = data.name;
+			newCourse.number = data.number;
+			newCourse._schoolId = schoolId;
+			newCourse.department = data.department;
+			newCourse.description = data.description;
+			newCourse.credits = data.credits;
+			newCourse.level = data.level;
+
+			console.log("new course created: "+newCourse._id);
+
+			newCourse.save();
+		}
+	});
 }
