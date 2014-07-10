@@ -1,4 +1,5 @@
 var School = require('../app/models/school');
+var User = require('../app/models/user');
 
 //view your own user profile
 exports.view_profile = function(req, res) {

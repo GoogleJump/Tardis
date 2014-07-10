@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scheduler - <%=course.number%></title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:10px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1>Scheduler</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+		<!-- LOCAL INFORMATION -->
+		
+			<div class="well">
+				<h3>Course details</h3>
+
+					<p>
+						<strong>Number</strong>:<%=course.number %><br>
+						<strong>Name</strong>: <%= course.name %><br>
+						<strong>Department</strong>:<%=course.department%><br>
+						<strong>Description</strong>: <%= course.description %><br>
+						<strong>Credits</strong>: <%= course.credits %><br>
+						<strong>Level</strong>: <%= course.level %><br>
+					</p>
+
+			</div>
+
+			<div class="well">
+				<h3>Sections</h3>
+					<p>
+						<% for(var index in sections) {%>
+							<a href="/section/<%=sections[index]._id%>"><%=sections[index].number%></a><br>
+						<%}%>
+					</p>
+
+			</div>
+	</div>
+
+</div>
+</body>
+</html>

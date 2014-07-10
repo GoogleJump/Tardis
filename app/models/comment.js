@@ -1,15 +1,18 @@
 // load the things we need
 var mongoose = require('mongoose');
 
-// define the schema for our user model
+var ObjectId  = mongoose.Schema.Types.ObjectId;
+
 var commentSchema = mongoose.Schema({
     comment: String,
     type: String,
-    _onId: mongoose.Schema.Types.ObjectId,
-    _userId: mongoose.Schema.Types.ObjectId,
+    _onId: ObjectId,
+    _userId: ObjectId,
     helpfulness: {type: Number, default: 0},
     date: {type: Date, default: Date.now},
-    replies: [commentSchema]
+    replies: [commentSchema],
+    upvoters: [ObjectId],
+    downvoters: [ObjectId]
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

@@ -5,6 +5,7 @@ var user = require('./user');
 var school = require('./school'); 
 var professor = require('./professor');
 var comment = require('./comment');
+var course = require('./course');
 
 module.exports = function(app, passport) {
 
@@ -43,12 +44,17 @@ module.exports = function(app, passport) {
 
 	app.post('/add-school', school.add);
 	app.get('/school/:schoolId', school.view);
+	app.get('/school/:schoolId/courses', school.view_courses);
+	app.post('/school/:schoolId/courses/update', school.update_courses);
 
 	app.get('/professor/:professorId', professor.view);
 	app.post('/add-professor/:schoolId', professor.add);
 	app.post('/add-professor-comment/:professorId', professor.comment);
 
-	app.post('/upvote-comment/:commentId', comment.upvote);
+	app.post('/comment/:commentId/upvote', comment.upvote);
+	app.post('/comment/:commentId/downvote', comment.downvote);
+
+	app.get('/course/:courseId', course.view);
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
