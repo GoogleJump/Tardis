@@ -53,6 +53,14 @@ exports.view_courses = function(req, res) {
 
 	School.findOne({'_id':id}, function(err, school) {
 		if(school) {
+			Course.aggregate([{$group:{_id:"$department", count:{$sum:1}}}], function(err, result){
+				if(err){
+					console.error(err);
+					return;
+				}
+				console.log(result);
+			});
+
 			Course.find({'_schoolId':id}, function(err, courses){
 				res.render('courses.ejs', {courses:courses, school:school});
 			});
@@ -110,41 +118,55 @@ function createCourseFromJSON(schoolId, data) {
 }
 
 function createSectionsFromJSON(course, data) {
-	//TODO: problem: this happens in parallel- possible to add professor repeatedly if he teaches multiple sections
-	for(var index in data) {
-		var jsonSection = data[index];
-		Section.findOne({"_courseId":course._id,"term":"Fall 2014","number":jsonSection.number}, function(err, section){
-			if(section) {
-				console.log("section with number "+jsonSection.number+" already exists: "+section._id);
-				//TODO: update datas
-			} else {
-				var newSection = new Section();
-				newSection.number = jsonSection.number;
-				newSection.location = jsonSection.location;
-				newSection.meet_time = jsonSection.meet_time;
-				newSection.status = jsonSection.status;
-				newSection.open = jsonSection.open;
-				newSection.term = "Fall 2014";//TODO
-				newSection._courseId = course._id;
-
-				Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
-					if(professor) {
-						newSection._professorId = professor._id;
-					} else {
-						var newProfessor = new Professor();
-						newProfessor.name = jsonSection.professor;
-						newProfessor._schoolId = course._schoolId;
-						newProfessor.department = course.department;
-						newSection._professorId = newProfessor._id;
-
-						newProfessor.save();
-					}
-					console.log("new section created: "+newSection._id);
-					newSection.save();
-				});
-				//TODO: books
-			}
-		});
+	//FIXED: problem: this happens in parallel- possible to add professor repeatedly if he teaches multiple sections
+	function createSectionsSeries(item) {
+		if(item) {
+			console.log("processing item: "+item);
+			createSectionFromJSON(course, item, function(){
+				return createSectionsSeries(data.shift());
+			})
+		} else {
+			console.log("series done");
+		}
 	}
 	
+	createSectionsSeries(data.shift());
+}
+
+function createSectionFromJSON(course, jsonSection, next) {
+	Section.findOne({"_courseId":course._id,"term":"Fall 2014","number":jsonSection.number}, function(err, section){
+		if(section) {
+			console.log("section with number "+jsonSection.number+" already exists: "+section._id);
+			//TODO: update datas
+		} else {
+			var newSection = new Section();
+			newSection.number = jsonSection.number;
+			newSection.location = jsonSection.location;
+			newSection.meet_time = jsonSection.meet_time;
+			newSection.status = jsonSection.status;
+			newSection.open = jsonSection.open;
+			newSection.term = "Fall 2014";//TODO
+			newSection._courseId = course._id;
+
+			Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
+				if(professor) {
+					newSection._professorId = professor._id;
+				} else {
+					var newProfessor = new Professor();
+					newProfessor.name = jsonSection.professor;
+					newProfessor._schoolId = course._schoolId;
+					newProfessor.department = course.department;
+					newSection._professorId = newProfessor._id;
+
+					newProfessor.save();
+				}
+				console.log("new section created: "+newSection._id);
+				newSection.save();
+				return next();
+			});
+			//TODO: books
+		}
+	});		
+	
+
 }
