@@ -21,6 +21,7 @@ build/Release
 
 #uploaded files
 uploads
+public/user_documents
 
 # Dependency directory
 # Deployed apps should consider commenting this line out:
