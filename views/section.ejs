@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scheduler - <%=course.number%>-<%=section.number%></title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:10px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1>Scheduler</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+		<!-- LOCAL INFORMATION -->
+		
+			<div class="well">
+				<h3>Section details</h3>
+
+					<p>
+						<strong>Number</strong>:<%=section.number %><br>
+						<strong>Location</strong>: <%= section.location %><br>
+						<strong>Meet time</strong>:<%=section.meet_time%><br>
+						<strong>Status</strong>: <%= section.status %><br>
+						<strong>Open</strong>: <%= section.open %><br>
+						<strong>Professor</strong>: <a href="/professor/<%=professor._id%>"><%= professor.name %></a><br>
+					</p>
+
+			</div>
+
+			<div class="well">
+				<h3>Documents</h3>
+					<p>
+						<% for(var index in documents) {%>
+							<a href="/public/user_documents/<%=documents[index].file_name%>"><strong><%=documents[index].title%></strong>-<%=documents[index].description%></a><br>
+						<%}%>
+					</p>
+			</div>
+
+			<div class="well">
+				<h3>Add a document</h3>
+
+					<form action="/section/<%=section._id%>/add-document" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label>Title</label>
+							<input type="text" class="form-control" name="title">
+						</div>
+						<div class="form-group">
+							<label>Description</label>
+							<input type="text" class="form-control" name="description">
+						</div>
+						<div class="form-group">
+							<label>Choose your file</label>
+							<input type="file" class="form-control" name="document">
+						</div>
+						<button type="submit" class="btn btn-warning btn-lg">Add</button>
+					</form>
+			</div>
+	</div>
+
+</div>
+</body>
+</html>
