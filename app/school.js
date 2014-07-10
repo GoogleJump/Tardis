@@ -137,7 +137,12 @@ function createSectionFromJSON(course, jsonSection, next) {
 	Section.findOne({"_courseId":course._id,"term":"Fall 2014","number":jsonSection.number}, function(err, section){
 		if(section) {
 			console.log("section with number "+jsonSection.number+" already exists: "+section._id);
-			//TODO: update datas
+			//update section info
+
+			section.location = jsonSection.location;
+			section.meet_time = jsonSection.meet_time;
+			section.status = jsonSection.status;
+			section.open = jsonSection.open;
 		} else {
 			var newSection = new Section();
 			newSection.number = jsonSection.number;
