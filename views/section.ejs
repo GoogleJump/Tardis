@@ -37,7 +37,7 @@
 				<h3>Documents</h3>
 					<p>
 						<% for(var index in documents) {%>
-							<a href="/file/<%=documents[index]._id%>"><%=documents[index].title%></a><br>
+							<a href="/public/user_documents/<%=documents[index].file_name%>"><strong><%=documents[index].title%></strong>-<%=documents[index].description%></a><br>
 						<%}%>
 					</p>
 			</div>
