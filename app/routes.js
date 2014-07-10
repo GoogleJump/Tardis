@@ -59,6 +59,8 @@ module.exports = function(app, passport) {
 
 	app.get('/section/:sectionId', section.view);
 
+	app.post('/section/:sectionId/add-document', section.add_document);
+
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
 

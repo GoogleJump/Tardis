@@ -3,6 +3,10 @@ var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
 var User = require('../app/models/user');
 var Section = require('../app/models/section');
+var Document = require('../app/models/document');
+
+var fs = require('fs');
+var path = require('path');
 
 exports.view = function(req, res) {
 	var id = req.params.sectionId;
@@ -20,3 +24,35 @@ exports.view = function(req, res) {
 		
 	});
 };
+
+exports.add_document = function(req, res) {
+	var id = req.params.sectionId;
+	var file = req.files.document;
+
+	var newDocument = new Document();
+	newDocument.title = req.body.title;
+	newDocument.description = req.body.description;
+	newDocument._userId = req.user._id;
+	newDocument.file_name = newDocument._id + path.extname(file.name);
+	newDocument._sectionId = id;
+
+	newDocument.save();
+
+	console.log(file);
+
+	var tmp_path = file.path;
+    var target_path = 'public/user_documents/' + newDocument.file_name;
+
+    console.log(target_path);
+    // move the file from the temporary location to the intended location
+    fs.rename(tmp_path, target_path, function(err) {
+        if (err) throw err;
+        // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
+        fs.unlink(tmp_path, function() {
+            if (err) throw err;
+            console.log('File uploaded to: ' + target_path + ' - ' + file.size + ' bytes');
+            res.redirect('/section/'+id);
+        });
+    });
+
+}
