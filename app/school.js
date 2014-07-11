@@ -84,21 +84,27 @@ exports.update_courses = function(req, res) {
 	 
 	  data = JSON.parse(data);
 	 
-	  for(var index in data) {
-	      createCourseFromJSON(id, data[index]);
-	  }
-	});
 
+		function createCourseSeries(item) {
+			if(item) {
+				createCourseFromJSON(id, item, function(){
+					return createCourseSeries(data.shift());
+				});
+			}
+		}	
+
+	  createCourseSeries(data.shift());
+	});
 
 	res.redirect('/school/'+id+"/courses");
 }
 
-function createCourseFromJSON(schoolId, data) {
+function createCourseFromJSON(schoolId, data, next) {
 	//number is a unique key- see if there is already a course with this number
 	Course.findOne({"_schoolId":schoolId, "number":data.number}, function(err, course){
 		if(course) {
 			console.log("course with number "+data.number+" already exists: "+course._id);
-			createSectionsFromJSON(course, data.sections);
+			createSectionsFromJSON(course, data.sections, next);
 		} else {
 			var newCourse = new Course();
 			newCourse.name = data.name;
@@ -112,12 +118,12 @@ function createCourseFromJSON(schoolId, data) {
 			console.log("new course created: "+newCourse._id);
 			newCourse.save();
 
-			createSectionsFromJSON(newCourse, data.sections);
+			createSectionsFromJSON(newCourse, data.sections, next);
 		}
 	});
 }
 
-function createSectionsFromJSON(course, data) {
+function createSectionsFromJSON(course, data, next) {
 	//FIXED: problem: this happens in parallel- possible to add professor repeatedly if he teaches multiple sections
 	function createSectionsSeries(item) {
 		if(item) {
@@ -127,6 +133,7 @@ function createSectionsFromJSON(course, data) {
 			})
 		} else {
 			console.log("series done");
+			return next();
 		}
 	}
 	
@@ -143,6 +150,9 @@ function createSectionFromJSON(course, jsonSection, next) {
 			section.meet_time = jsonSection.meet_time;
 			section.status = jsonSection.status;
 			section.open = jsonSection.open;
+			section.save();
+
+			return next();
 		} else {
 			var newSection = new Section();
 			newSection.number = jsonSection.number;
@@ -153,6 +163,12 @@ function createSectionFromJSON(course, jsonSection, next) {
 			newSection.term = "Fall 2014";//TODO
 			newSection._courseId = course._id;
 
+			if(!jsonSection.professor){
+				newSection._professorId = null;
+				console.log("new section created without professor: "+newSection._id);
+				newSection.save();
+				return next();
+			}
 			Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
 				if(professor) {
 					newSection._professorId = professor._id;

@@ -13,11 +13,16 @@ exports.view = function(req, res) {
 	Section.findOne({'_id':id}, function(err, section) {
 		if(section) {
 			Course.findOne({'_id':section._courseId}, function(err, course){
-				Professor.findOne({'_id':section._professorId}, function(err, professor){
-					Document.find({'_sectionId':id},function(err, documents){
-						res.render('section.ejs',{course:course,section:section,professor:professor,documents:documents});
-					});
+				Document.find({'_sectionId':id},function(err, documents){
+					if(section._professorId) {
+						Professor.findOne({'_id':section._professorId}, function(err, professor){
+							res.render('section.ejs',{course:course,section:section,professor:professor,documents:documents});
+						});	
+					} else {
+						res.render('section.ejs',{course:course,section:section,professor:null,documents:documents});
+					}
 				});
+
 			});
 		} else {
 			//Error!
