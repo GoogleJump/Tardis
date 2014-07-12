@@ -7,6 +7,7 @@ var professor = require('./professor');
 var comment = require('./comment');
 var course = require('./course');
 var section = require('./section');
+var schedule = require('./schedule')
 
 module.exports = function(app, passport) {
 
@@ -60,6 +61,9 @@ module.exports = function(app, passport) {
 	app.get('/section/:sectionId', section.view);
 
 	app.post('/section/:sectionId/add-document', section.add_document);
+
+	app.get('/schedule', schedule.view);
+	app.post('/course-autocomplete', course.autocomplete);
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));

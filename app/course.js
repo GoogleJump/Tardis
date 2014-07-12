@@ -18,3 +18,23 @@ exports.view = function(req, res) {
 		
 	});
 };
+
+exports.autocomplete = function(req, res) {
+	console.log(req.body.input);
+
+	var regex = new RegExp(req.body.input, 'i');//case insensitive contains
+	var query = Course.find({$or:[{number:regex},{name:regex}]}).limit(20);
+
+	query.exec(function(err, courses){
+		if(!err) {
+			var results = [];
+			for(var index in courses) {
+				results.push({_id:courses[index]._id,number:courses[index].number, name:courses[index].name});
+			}
+			res.send(results);
+		} else {
+			console.error(err);
+			res.send(500, err);
+		}
+	});
+}
