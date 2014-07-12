@@ -9,9 +9,11 @@
 	</style>
 
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<link href="public/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-  	<script src="public/js/course-autocomplete.js"></script>
+  	<script src="public/assets/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
+  	<script src="public/js/schedule-main.js"></script>
 </head>
 <body>
 <div class="container">
@@ -43,9 +45,16 @@
 				<table id="selected-courses" class="table table-striped">
 					<tr id="title-row"><th>Number</th><th>Name</th><th /></tr>
 				</table>
+				<input type="button" id="create-schedule" class="btn btn-primary" value="Generate schedule"></input>
 			</div>
 		</div>
 
+	</div>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div id="calendar"></div>
+		</div>
 	</div>
 
 </div>

@@ -75,6 +75,7 @@ exports.view_courses = function(req, res) {
 exports.update_courses = function(req, res) {
 	var id = req.params.schoolId;
 	var file = req.files.courses;
+	var term = req.body.term;
 
 	fs.readFile(file.path, 'utf8', function (err, data) {
 	  if (err) {
@@ -83,15 +84,14 @@ exports.update_courses = function(req, res) {
 	  }
 	 
 	  data = JSON.parse(data);
-	 
 
-		function createCourseSeries(item) {
-			if(item) {
-				createCourseFromJSON(id, item, function(){
-					return createCourseSeries(data.shift());
-				});
-			}
-		}	
+	function createCourseSeries(item) {
+		if(item) {
+			createCourseFromJSON(id, term, item, function(){
+				return createCourseSeries(data.shift());
+			});
+		}
+	}	
 
 	  createCourseSeries(data.shift());
 	});
@@ -99,12 +99,12 @@ exports.update_courses = function(req, res) {
 	res.redirect('/school/'+id+"/courses");
 }
 
-function createCourseFromJSON(schoolId, data, next) {
+function createCourseFromJSON(schoolId, term, data, next) {
 	//number is a unique key- see if there is already a course with this number
 	Course.findOne({"_schoolId":schoolId, "number":data.number}, function(err, course){
 		if(course) {
 			console.log("course with number "+data.number+" already exists: "+course._id);
-			createSectionsFromJSON(course, data.sections, next);
+			createSectionsFromJSON(course, term, data.sections, next);
 		} else {
 			var newCourse = new Course();
 			newCourse.name = data.name;
@@ -118,17 +118,17 @@ function createCourseFromJSON(schoolId, data, next) {
 			console.log("new course created: "+newCourse._id);
 			newCourse.save();
 
-			createSectionsFromJSON(newCourse, data.sections, next);
+			createSectionsFromJSON(newCourse, term, data.sections, next);
 		}
 	});
 }
 
-function createSectionsFromJSON(course, data, next) {
+function createSectionsFromJSON(course, term, data, next) {
 	//FIXED: problem: this happens in parallel- possible to add professor repeatedly if he teaches multiple sections
 	function createSectionsSeries(item) {
 		if(item) {
 			console.log("processing item: "+item);
-			createSectionFromJSON(course, item, function(){
+			createSectionFromJSON(course, term, item, function(){
 				return createSectionsSeries(data.shift());
 			})
 		} else {
@@ -140,8 +140,8 @@ function createSectionsFromJSON(course, data, next) {
 	createSectionsSeries(data.shift());
 }
 
-function createSectionFromJSON(course, jsonSection, next) {
-	Section.findOne({"_courseId":course._id,"term":"Fall 2014","number":jsonSection.number}, function(err, section){
+function createSectionFromJSON(course, term, jsonSection, next) {
+	Section.findOne({"_courseId":course._id,"term":term,"number":jsonSection.number}, function(err, section){
 		if(section) {
 			console.log("section with number "+jsonSection.number+" already exists: "+section._id);
 			//update section info
@@ -160,7 +160,7 @@ function createSectionFromJSON(course, jsonSection, next) {
 			newSection.meet_time = jsonSection.meet_time;
 			newSection.status = jsonSection.status;
 			newSection.open = jsonSection.open;
-			newSection.term = "Fall 2014";//TODO
+			newSection.term = term;
 			newSection._courseId = course._id;
 
 			if(!jsonSection.professor){

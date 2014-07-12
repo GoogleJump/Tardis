@@ -5,7 +5,8 @@ var mongoose = require('mongoose');
 var schoolSchema = mongoose.Schema({
     name: String,
     city: String,
-    state: String
+    state: String,
+    terms: [String]
 });
 
 // create the model for users and expose it to our app

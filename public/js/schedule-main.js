@@ -1,7 +1,7 @@
 var selectedCourses = [];
 
 $(function () {
-   $("#selected-courses").hide();
+  $("#selected-courses").hide();
 
   $("#course_input").autocomplete({
       source: function (request, response) {
@@ -33,28 +33,52 @@ $(function () {
          // set an onFocus event to show the result on input field when result is focused
          focus: function (event, ui) { 
             this.value = ui.item.number; 
-            console.log("focused: "+ui.item);
             // Prevent other event from not being execute
             event.preventDefault();
          },
          select: function (event, ui) {
-            // Prevent value from being put in the input:
             this.value = "";
             
             selectedCourses.push(ui.item);
             displaySelectedCourses();
-            console.log("selected: "+ui.item.id);
             // Prevent other event from not being execute            
             event.preventDefault();
-            // optionnal: submit the form after field has been filled up
-            //$('#quicksearch').submit();
          }
   })
-   .autocomplete( "instance" )._renderItem = function( ul, item ) {
-      return $( "<li>" )
-        .append( "<a>" + item.number + "<br>" + item.name + "</a>" )
-        .appendTo( ul );
-    };;
+ .autocomplete( "instance" )._renderItem = function( ul, item ) {
+    return $( "<li>" )
+      .append( "<a>" + item.number + "<br>" + item.name + "</a>" )
+      .appendTo( ul );
+  };
+
+  $("#create-schedule").click(function(){
+    console.log("creating schedule");
+    $("#calendar").empty();
+    $.ajax({
+      url: "/generate-schedule",
+      type: "POST",
+      data: {courses:selectedCourses}, 
+      success: function (data, status) {
+        console.log("response received: "+data.text+" status: "+status);
+        $('#calendar').fullCalendar({
+          defaultView:"agendaWeek",
+          header: {
+            left: '',
+            center: '',
+            right: ''
+          },
+          editable: false,
+          minTime:"06:00:00",
+          allDaySlot:false,
+          columnFormat:'dddd',
+          events:[{title:'CS1001',start:'2014-07-10T09:00:00',end:'2014-07-10T09:50:00',allDay:false,color:"green"}]
+        });
+      },
+      error: function(xhr,status,error){
+         alert(error);
+      }
+    });
+  });
 });
 
 function displaySelectedCourses() {

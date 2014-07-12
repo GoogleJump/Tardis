@@ -6,3 +6,12 @@ var Section = require('../app/models/section');
 exports.view = function(req, res) {
 	res.render('schedule.ejs');
 }
+
+exports.generate = function(req, res) {
+	console.log(req.body.courses);
+	
+
+
+	
+	res.send({text:"Hello"});
+}
