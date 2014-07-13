@@ -1,7 +1,14 @@
 var selectedCourses = [];
 
+var currentScheduleIndex = 0;
+var schedules;
+
 $(function () {
   $("#selected-courses").hide();
+
+  $("#calendar-holder").hide();
+
+  $("#error-alert").hide();
 
   $("#course_input").autocomplete({
       source: function (request, response) {
@@ -20,7 +27,7 @@ $(function () {
                   }));
                },
             error: function(xhr,status,error){
-               alert(error);
+               $("#error-alert").text("There was an error processing your request. Please try again later.").show();
                }
             });
          },
@@ -56,19 +63,41 @@ $(function () {
       type: "POST",
       data: {term:$("#term").val(), courses:selectedCourses}, 
       success: function (data, status) {
-        console.log(data.results[0][5].start);
         if(data.error) {
-          alert(data.error)
+          $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
         } else {
-          setupCalendar(data.results);
+          schedules = data.results;
+          setupCalendar();
         }
         
       },
       error: function(xhr,status,error){
-         alert(error);
+         $("#error-alert").text("There was an error processing your request. Please try again later.").show();
       }
     });
   });
+
+  $("#schedule-prev").click(function(){
+    currentScheduleIndex--;
+    if(currentScheduleIndex==0) {
+      $("#schedule-prev").hide();
+    }
+    $("#schedule-next").show();
+    updateScheduleCountText();
+    updateCalendarEvents();
+  });
+
+  $("#schedule-next").click(function(){
+    currentScheduleIndex++;
+    if(currentScheduleIndex>=(schedules.length-1)) {
+      $("#schedule-next").hide();
+    }
+    $("#schedule-prev").show();
+    updateScheduleCountText();
+    updateCalendarEvents();
+  });
+
+
 });
 
 function displaySelectedCourses() {
@@ -90,8 +119,19 @@ function removeCourse(index) {
    displaySelectedCourses();
 }
 
-function setupCalendar(schedules) {
-  console.log(schedules[0]);
+function setupCalendar() {
+  currentScheduleIndex = 0;
+
+  $("#schedule-prev").hide();
+  if(schedules.length>1) {
+    $("#schedule-next").show();
+  } else {
+    $("#schedule-next").hide();
+  }
+
+  updateScheduleCountText();
+
+  $("#calendar-holder").show();
   $('#calendar').fullCalendar({
     defaultView:"agendaWeek",
     header: {
@@ -105,8 +145,18 @@ function setupCalendar(schedules) {
     editable: false,
     minTime:"06:00:00",
     allDaySlot:false,
-    //columnFormat:'dddd',
+    columnFormat:'dddd',
     events:schedules[0]
   });
   //$('#calendar').fullCalendar('gotoDate', '2014-01-13');
+  
+}
+
+function updateScheduleCountText() {
+  $("#schedule-count").text((currentScheduleIndex+1)+" of "+schedules.length+" possible schedules");
+}
+
+function updateCalendarEvents() {
+  $('#calendar').fullCalendar('removeEvents');
+  $('#calendar').fullCalendar('addEventSource', schedules[currentScheduleIndex]);
 }

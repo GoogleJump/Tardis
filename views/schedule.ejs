@@ -23,7 +23,9 @@
 	</div>
 
 	<div class="row">
-
+		<div class="col-md-12">
+			<p id="error-alert" class="alert alert-danger text-center">There was an error processing your request. Please try again later.</p>
+		</div>
 		<!-- LOCAL INFORMATION -->
 		<div class="col-md-6">
 			<div class="well">
@@ -57,9 +59,18 @@
 
 	</div>
 
-	<div class="row">
-		<div id="calendar-holder" class="col-md-12">
-			<div id="calendar"></div>
+	<div class="row" id="calendar-holder">
+		<div id="calendar-control" class="col-md-12 well">
+			<div class="col-md-1">
+				<input type="button" id="schedule-prev" class="btn btn-primary btn-sm" value="Previous"/>
+			</div>
+			<div class="col-md-10">
+				<h4 id="schedule-count" class="text-center">1 of 1000 possible schedules</h4>
+			</div>
+			<div class="col-md-1">
+				<input type="button" id="schedule-next" class="btn btn-primary btn-sm" value="Next" />
+			</div><br>
+			<div id="calendar" class="col-md-12"></div>
 		</div>
 	</div>
 

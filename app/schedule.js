@@ -17,19 +17,23 @@ exports.generate = function(req, res) {
 	console.log("generating schedules");
 
 	
-	getSections(courses, term, function(s){
+	getSections(courses, term, function(s, titles){
 		var sections = _.sortBy(s,function(cs){return cs.length;}); //sort by number of sections (so we take the most restrictive first)
 		var results = [];
 
 		for(var index in sections) {
 			results = addToResults(sections[index], results);
+			if(results.length==0) {
+				res.send({error:"No schedules found"});
+				return;
+			}
 		}
 		console.log(results);
 		if(results.length==0) {
 			res.send({error:"No schedules found"});
 			return;
 		} else{ 
-			res.send({results:prepareCalendarResults(results)});
+			res.send({results:prepareCalendarResults(results, titles)});
 		}
 
 	});
@@ -39,14 +43,16 @@ exports.generate = function(req, res) {
 
 function getSections(courses, term, next) {
 	var sections = [];
+	var titles = []
 	var count = 0;
 	for(var index in courses) {
 		var currentCourse = courses[index];
+		titles[currentCourse.id] = currentCourse.name;
 		Section.find({_courseId:currentCourse.id, term:term}, function(err, csections){
 			sections.push(csections);//TODO: what if their arn't any sections?
 			count++;
 			if(count==courses.length) {
-				return next(sections);
+				return next(sections, titles);
 			}
 		});
 	}
@@ -78,10 +84,12 @@ function addToResults(sections, results) {
 	return localResults;
 }
 
-var sourceYearMonth = "2014-01-";
-var sourceDay = 12;
+var sourceYearMonth = "2014-01-";//fixed date for rendering in the calendar
+var sourceDay = 12;//the twelveth is a sunday
 
-function prepareCalendarResults(r) {
+var colors = ["#16a085","#27ae60","#2980b9","#8e44ad","#2c3e50","#7f8c8d","#bdc3c7","#c0392b","#d35400"];
+
+function prepareCalendarResults(r, t) {
 	var results = [];
 
 	for(var i in r) {
@@ -92,9 +100,9 @@ function prepareCalendarResults(r) {
 			var moments = section.getMoments();
 			for(var k in moments) {
 				var event = {};
-				event.title = section.number;
+				event.title = t[section._courseId]+"-"+section.number;
 				event.allDay = false;
-				event.color = "green";
+				event.color = colors[j];
 				var startHour = padWith0(moments[k].startTime.hour);
 				var startMin = padWith0(moments[k].startTime.minute);
 				var endHour = padWith0(moments[k].endTime.hour);
