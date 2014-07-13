@@ -28,10 +28,12 @@ exports.upvote = function(req, res) {
 
 		comment.save();
 
-		User.findOne({'_id':comment._userId}, function(err, user) {
-			user.reputation+=delta;
-			user.save();
-		});
+		if(comment._userId) {
+			User.findOne({'_id':comment._userId}, function(err, user) {
+				user.reputation+=delta;
+				user.save();
+			});
+		}
 
 		res.send(comment.helpfulness+'');//send as a string, otherwise it will interpret it as a response code
 	});
@@ -64,10 +66,12 @@ exports.downvote = function(req, res) {
 
 		comment.save();
 
-		User.findOne({'_id':comment._userId}, function(err, user) {
-			user.reputation+=delta;
-			user.save();
-		});
+		if(comment._userId) {
+			User.findOne({'_id':comment._userId}, function(err, user) {
+				user.reputation+=delta;
+				user.save();
+			});
+		}
 
 		res.send(comment.helpfulness+'');//send as a string, otherwise it will interpret it as a response code
 	});

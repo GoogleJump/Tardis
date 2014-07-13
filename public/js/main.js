@@ -21,3 +21,27 @@ function upvote(comment, down) {
 	}
 	xmlhttp.send();
 };
+
+
+  // $("#create-schedule").click(function(){
+  //   $.ajax({
+  //     url: "/generate-schedule",
+  //     type: "POST",
+  //     data: {term:$("#term").val(), courses:selectedCourses}, 
+  //     success: function (data, status) {
+  //       $("#error-alert").hide();
+  //       $("#loading").hide();
+  //       if(data.error) {
+  //         $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+  //       } else {
+  //         schedules = data.results;
+  //         setupCalendar();
+  //       }
+        
+  //     },
+  //     error: function(xhr,status,error){
+  //        $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+  //        $("#loading").hide();
+  //     }
+  //   });
+  // });

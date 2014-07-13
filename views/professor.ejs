@@ -41,7 +41,12 @@
 							<span id='reputation-<%=c._id%>'><B><%=c.helpfulness%></B></span> <%=c.comment%> 
 							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=c._id%>', false);" />
 							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=c._id%>', true);" /><br>
-							posted by <a href="/user/<%=p._id%>"><%=p.username%></a> (<%=p.reputation%>)<br><br>
+							<%if(p) {%>
+								posted by <a href="/user/<%=p._id%>"><%=p.username%></a> (<%=p.reputation%>)
+							<%} else {%>
+								posted anonymously
+							<%}%>
+							<br><br>
 						<%}%>
 						<% if (comments.length==0) {%>
 							No comments to show
@@ -53,12 +58,16 @@
 			<div class="well">
 				<h3>Add a comment</h3>
 
-					<form action="/add-professor-comment/<%=professor._id%>" method="post">
+					<form action="/professor/<%=professor._id%>/comment" method="post">
 						<div class="form-group">
 							<label>Comment:</label>
 							<textarea rows="4" cols="50" class="form-control" name="comment"></textarea>
 						</div>
-
+						<div class="checkbox">
+						  <label>
+						  	<input type="checkbox" name="anon"> Post anonymously
+						   </label>
+						</div>
 						<button type="submit" class="btn btn-warning btn-lg">Add comment</button>
 					</form>
 			</div>

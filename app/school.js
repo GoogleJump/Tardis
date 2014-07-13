@@ -159,6 +159,8 @@ function createSectionFromJSON(course, term, jsonSection, next) {
 			section.meet_time = jsonSection.meet_time;
 			section.status = jsonSection.status;
 			section.open = jsonSection.open;
+			section.moments = section.getMoments();
+			section.markModified('moments');
 			section.save();
 
 			return next();
@@ -170,7 +172,10 @@ function createSectionFromJSON(course, term, jsonSection, next) {
 			newSection.status = jsonSection.status;
 			newSection.open = jsonSection.open;
 			newSection.term = term;
+			newSection.moments = newSection.getMoments();
 			newSection._courseId = course._id;
+
+			newSection.markModified('moments');
 
 			if(!jsonSection.professor){
 				newSection._professorId = null;

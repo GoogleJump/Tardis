@@ -16,19 +16,21 @@ var sectionSchema = mongoose.Schema({
     status: String,
     open: Boolean,
     term: String,
+    moments: [mongoose.Schema.Types.Mixed],
     _courseId: mongoose.Schema.Types.ObjectId,
     _professorId: mongoose.Schema.Types.ObjectId
 });
 
 sectionSchema.methods.conflictsWith = function(otherSection) {
 	//TODO: create moments on addition and store them in the db
-	var thisMoments = this.getMoments();
-	var otherMoments = otherSection.getMoments();
+	var thisMoments = this.getCleanMoments();
+	var otherMoments = otherSection.getCleanMoments();
 
-	//console.log("CONFLICT: "+thisMoments+" "+otherMoments);
+	//console.log("CONFLICT CHECK: "+JSON.stringify(thisMoments)+" "+JSON.stringify(otherMoments));
 
 	for(var index1 in thisMoments) {
 		for(var index2 in otherMoments) {
+			//console.log("comparing "+JSON.stringify(thisMoments[index1])+" AND "+JSON.stringify(otherMoments[index2]));
 			if(thisMoments[index1].day==otherMoments[index2].day) {
 				if(thisMoments[index1].startTime.hour==otherMoments[index2].startTime.hour&&thisMoments[index1].startTime.minute==otherMoments[index2].startTime.minute) {
 					//start at same time: conflict
@@ -62,6 +64,11 @@ sectionSchema.methods.conflictsWith = function(otherSection) {
     return false;
 };
 
+sectionSchema.methods.getCleanMoments = function() {
+	//not sure why this needs to happen... but it does need to happen
+	return JSON.parse(JSON.stringify(this.moments));
+}
+
 sectionSchema.methods.getMoments = function() {
 	var moments = [];
 
@@ -70,7 +77,7 @@ sectionSchema.methods.getMoments = function() {
 	}
 
 	var splitTimes = this.meet_time.trim().split(' ');
-	//console.log("Getting moments: "+splitTimes);
+	console.log("Getting moments: "+splitTimes);
 	for(var i=0;i<splitTimes.length;i+=2) {
 		var days = splitTimes[i]; //in form MTWTHFS
 		var timeRange = splitTimes[i+1];
@@ -109,6 +116,7 @@ sectionSchema.methods.getMoments = function() {
 			}
 			moment.startTime = startTime;
 			moment.endTime = endTime;
+			console.log("new moment: "+moment);
 			moments.push(moment);
 		}
 
