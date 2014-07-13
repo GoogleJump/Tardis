@@ -24,7 +24,7 @@
 
 					<p>
 						<% for(var index in courses) {%>
-							<a href="/course/<%=courses[index]._id%>"><%=courses[index].name%></a><br>
+							<a href="/course/<%=courses[index]._id%>"><%=courses[index].number%>: <%=courses[index].name%></a><br>
 						<%}%>
 					</p>
 
@@ -34,6 +34,10 @@
 				<h3>Update courses and sections (json)</h3>
 
 					<form action="/school/<%=school._id%>/courses/update" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label>Term</label>
+							<input type="text" class="form-control" name="term">
+						</div>						
 						<div class="form-group">
 							<label>Choose json file</label>
 							<input type="file" class="form-control" name="courses">

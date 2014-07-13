@@ -28,7 +28,11 @@
 						<strong>Meet time</strong>:<%=section.meet_time%><br>
 						<strong>Status</strong>: <%= section.status %><br>
 						<strong>Open</strong>: <%= section.open %><br>
+						<%if(professor){%>
 						<strong>Professor</strong>: <a href="/professor/<%=professor._id%>"><%= professor.name %></a><br>
+						<%}else{%>
+						<strong>Professor</strong>: unknown<br>
+						<%}%>
 					</p>
 
 			</div>
