@@ -51,7 +51,7 @@ module.exports = function(app, passport) {
 
 	app.get('/professor/:professorId', professor.view);
 	app.post('/add-professor/:schoolId', professor.add);
-	app.post('/add-professor-comment/:professorId', professor.comment);
+	app.post('/professor/:professorId/comment', professor.comment);
 
 	app.post('/comment/:commentId/upvote', comment.upvote);
 	app.post('/comment/:commentId/downvote', comment.downvote);

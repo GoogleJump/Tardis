@@ -21,8 +21,19 @@ exports.view = function(req, res) {
 					comments.forEach(function(comment, index) {
 						var pack = [];
 						pack['comment'] = comment;
-						User.findOne({'_id':comment._userId}, function(err, poster) {
-							pack['poster'] = poster;
+						if(comment._userId) {
+							User.findOne({'_id':comment._userId}, function(err, poster) {
+								pack['poster'] = poster;
+								commentPacks.push(pack);
+								if(commentPacks.length==comments.length) {
+									res.render('professor.ejs', {
+										professor : professor, 
+										school: school,
+										comments: commentPacks
+									});
+								}
+							});
+						} else {
 							commentPacks.push(pack);
 							if(commentPacks.length==comments.length) {
 								res.render('professor.ejs', {
@@ -31,7 +42,7 @@ exports.view = function(req, res) {
 									comments: commentPacks
 								});
 							}
-						});
+						}
 					});
 				});
 			});
@@ -71,13 +82,17 @@ exports.add = function(req, res) {
 
 exports.comment = function(req, res) {
 	var comment = req.body.comment;
+	var anon = req.body.anon;
 	var professorId = req.params.professorId;
 
 	var newComment = new Comment();
 	newComment.comment = comment;
 	newComment.type = 'professor';
 	newComment._onId = professorId;
-	newComment._userId = req.user._id;
+	if(!anon)
+		newComment._userId = req.user._id;
+	else
+		newComment._userId = null;
 	newComment.save();
 
 	res.redirect('/professor/'+professorId);
