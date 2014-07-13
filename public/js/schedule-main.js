@@ -10,6 +10,10 @@ $(function () {
 
   $("#error-alert").hide();
 
+  $("#loading").hide();
+
+  $("#create-schedule").hide();
+
   $("#course_input").autocomplete({
       source: function (request, response) {
          $.ajax({
@@ -17,6 +21,7 @@ $(function () {
             type: "POST",
             data: {input:request.term},  // request is the value of search input
             success: function (data, status) {
+              $("#error-alert").hide();
               // Map response values to fiedl label and value
                response($.map(data, function (el) {
                   return {
@@ -44,8 +49,7 @@ $(function () {
          select: function (event, ui) {
             this.value = "";
             
-            selectedCourses.push(ui.item);
-            displaySelectedCourses();
+            addSelectedCourse(ui.item);
             // Prevent other event from not being execute            
             event.preventDefault();
          }
@@ -58,11 +62,14 @@ $(function () {
 
   $("#create-schedule").click(function(){
     $("#calendar").empty();
+    $("#loading").show();
     $.ajax({
       url: "/generate-schedule",
       type: "POST",
       data: {term:$("#term").val(), courses:selectedCourses}, 
       success: function (data, status) {
+        $("#error-alert").hide();
+        $("#loading").hide();
         if(data.error) {
           $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
         } else {
@@ -73,6 +80,7 @@ $(function () {
       },
       error: function(xhr,status,error){
          $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+         $("#loading").hide();
       }
     });
   });
@@ -100,12 +108,29 @@ $(function () {
 
 });
 
+function addSelectedCourse(course) {
+  for(var i=0;i<selectedCourses.length;i++) {
+    if(selectedCourses[i].number==course.number) {
+      $("#error-alert").text(course.number+" is already selected").show();
+      return;      
+    }
+  }
+  if(selectedCourses.length>=8) {
+     $("#error-alert").text("There is maximum of 8 courses.").show();
+     return;
+  }
+  selectedCourses.push(course);
+  displaySelectedCourses();
+}
+
 function displaySelectedCourses() {
    if(selectedCourses.length==0) {
       $("#none-selected").show();
       $("#selected-courses").hide();
+      $("#create-schedule").hide();
    } else {
       $("#none-selected").hide();
+      $("#create-schedule").show();
       $("#selected-courses").find("tr:gt(0)").remove(); //remove all existing rows except title
       for(var index in selectedCourses) {
          $("#selected-courses tr:last").after("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><input value=\"Remove\" type=\"button\" class='btn btn-danger' onclick=\"removeCourse("+index+");\"></td></tr>");

@@ -28,7 +28,7 @@ exports.generate = function(req, res) {
 				return;
 			}
 		}
-		console.log(results);
+		console.log("generated "+results.length+" possible schedules");
 		if(results.length==0) {
 			res.send({error:"No schedules found"});
 			return;
@@ -97,7 +97,7 @@ function prepareCalendarResults(r, t) {
 
 		for(var j in r[i]) {
 			var section = r[i][j];
-			var moments = section.getMoments();
+			var moments = section.getCleanMoments();
 			for(var k in moments) {
 				var event = {};
 				event.title = t[section._courseId]+"-"+section.number;
