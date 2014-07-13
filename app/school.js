@@ -77,6 +77,15 @@ exports.update_courses = function(req, res) {
 	var file = req.files.courses;
 	var term = req.body.term;
 
+	School.findOne({_id:id}, function(err, school){
+		if(school) {
+			if(school.terms.indexOf(term)<0) {
+				school.terms.push(term);
+				school.save();
+			}
+		}
+	});
+
 	fs.readFile(file.path, 'utf8', function (err, data) {
 	  if (err) {
 	    console.log('Error: ' + err);
