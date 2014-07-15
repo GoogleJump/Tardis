@@ -8,41 +8,14 @@ exports.view = function(req, res) {
 	Professor.findOne({'_id':id}, function(err, professor) {
 		if(professor) {
 			School.findOne({ '_id' : professor._schoolId }, function(err, school) {
-				Comment.find({'type':'professor', '_onId':id}, function(err, comments) {
-					if(comments.length==0) {
-						res.render('professor.ejs', {
-							professor : professor, 
-							school: school,
-							comments: []
-						});
-					}
-					
-					var commentPacks = [];
-					comments.forEach(function(comment, index) {
-						var pack = [];
-						pack['comment'] = comment;
-						if(comment._userId) {
-							User.findOne({'_id':comment._userId}, function(err, poster) {
-								pack['poster'] = poster;
-								commentPacks.push(pack);
-								if(commentPacks.length==comments.length) {
-									res.render('professor.ejs', {
-										professor : professor, 
-										school: school,
-										comments: commentPacks
-									});
-								}
-							});
-						} else {
-							commentPacks.push(pack);
-							if(commentPacks.length==comments.length) {
-								res.render('professor.ejs', {
-									professor : professor, 
-									school: school,
-									comments: commentPacks
-								});
-							}
-						}
+				Comment.find({'type':'professor', '_onId':id})
+				.populate('_poster')
+				.exec(function(err, comments) {
+					console.log(comments);
+					res.render('professor.ejs', {
+						professor : professor, 
+						school: school,
+						comments: comments
 					});
 				});
 			});
@@ -90,10 +63,10 @@ exports.comment = function(req, res) {
 	newComment.type = 'professor';
 	newComment._onId = professorId;
 	if(!anon)
-		newComment._userId = req.user._id;
+		newComment._poster = req.user._id;
 	else
-		newComment._userId = null;
-	newComment.save();
-
-	res.redirect('/professor/'+professorId);
+		newComment._poster = null;
+	newComment.save(function(err){
+		res.redirect('/professor/'+professorId);
+	});
 };
