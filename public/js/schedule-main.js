@@ -1,5 +1,6 @@
 var selectedCourses = [];
 var suggestedCourses = [];
+var selectedCourseSections = [];
 
 var currentScheduleIndex = 0;
 var schedules;
@@ -124,7 +125,6 @@ function addSelectedCourse(course) {
      return;
   }
   selectedCourses.push(course);
-  displaySelectedCourses();
 
   $.ajax({
     url: "/schedule/add-course",
@@ -138,6 +138,8 @@ function addSelectedCourse(course) {
       } else {
         suggestedCourses = data.suggestedCourses;
         console.log(data.sections);
+        selectedCourseSections.push(jQuery.parseJSON(data.sections));
+        displaySelectedCourses();
         //TODO: display suggested courses
       }
       
@@ -156,13 +158,42 @@ function displaySelectedCourses() {
       $("#row-after-courses").hide();
    } else {
       $("#none-selected").hide();
-      $("#row-after-courses").show();
+      $("#row-after-courses").fadeIn();
       $("#selected-courses").find("tr:gt(0)").remove(); //remove all existing rows except title
+      $("#selected-courses tr:last").after("<tr id=\"last-row-pointer\"/>");
+      $("#last-row-pointer").hide();
       for(var index in selectedCourses) {
-         $("#selected-courses tr:last").after("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><button class='btn btn-sm btn-danger pull-right' onclick=\"removeCourse("+index+");\">Remove</button></td></tr>");
+         $("#last-row-pointer").before("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><button class='btn btn-sm btn-danger pull-right' onclick=\"removeCourse("+index+");\">Remove</button></td></tr>");
+        displaySections(index);
       }
       $("#selected-courses").show();
    }
+}
+
+function displaySections(index) {
+  var content = "<tr><td colspan=\"3\"><table class=\"table table-condensed\">";
+  for(var i=0;i<selectedCourseSections[index].length;i++) {
+    var s = selectedCourseSections[index][i];
+    var openSymbol = 'glyphicon glyphicon-ok-sign';
+    if(!s.open) {
+      openSymbol = 'glyphicon glyphicon-minus-sign'
+    }
+    var professorLabel = 'Unknown';
+    if(s._professor) {
+      professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a>";
+    }
+    var meetTimeLabel = 'Unknown';
+    if(s.meet_time) {
+      meetTimeLabel = s.meet_time;
+    }
+    content+="<tr><td><h4><span class=\""+
+      openSymbol+"\" /></h4></td><td>"+
+      s.number+"</td><td>"+
+      professorLabel+"</td><td>"+
+      meetTimeLabel+"</td></tr>";
+  }
+  content+='</table></td></tr>';
+  $("#last-row-pointer").before(content);
 }
 
 function removeCourse(index) {
@@ -188,6 +219,7 @@ function removeCourse(index) {
   });
 
   selectedCourses.splice(index, 1);
+  selectedCourseSections.splice(index,1);
   displaySelectedCourses();
 }
 
