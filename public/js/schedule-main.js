@@ -14,6 +14,8 @@ $(function () {
 
   $("#create-schedule").hide();
 
+  $("#course_input").focus();
+
   $("#course_input").autocomplete({
       source: function (request, response) {
          $.ajax({
@@ -63,6 +65,7 @@ $(function () {
   $("#create-schedule").click(function(){
     $("#calendar").empty();
     $("#loading").show();
+    $("#calendar-holder").hide();
     $.ajax({
       url: "/generate-schedule",
       type: "POST",

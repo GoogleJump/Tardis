@@ -30,8 +30,8 @@
 				"number":"02",
 				"location":"KEP U8",
 				"meet_time":"MWF 1:00PM-1:50PM",
-				"status":"open",
-				"open":true,
+				"status":"closed",
+				"open":false,
 				"professor":"Childress J",
 				"books":
 				[

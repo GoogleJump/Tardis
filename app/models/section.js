@@ -22,15 +22,11 @@ var sectionSchema = mongoose.Schema({
 });
 
 sectionSchema.methods.conflictsWith = function(otherSection) {
-	//TODO: create moments on addition and store them in the db
-	var thisMoments = this.getCleanMoments();
-	var otherMoments = otherSection.getCleanMoments();
+	var thisMoments = this.moments;
+	var otherMoments = otherSection.moments;
 
-	//console.log("CONFLICT CHECK: "+JSON.stringify(thisMoments)+" "+JSON.stringify(otherMoments));
-
-	for(var index1 in thisMoments) {
-		for(var index2 in otherMoments) {
-			//console.log("comparing "+JSON.stringify(thisMoments[index1])+" AND "+JSON.stringify(otherMoments[index2]));
+	for(var index1=0;index1<thisMoments.length;index1++) {
+		for(var index2=0;index2<otherMoments.length;index2++) {
 			if(thisMoments[index1].day==otherMoments[index2].day) {
 				if(thisMoments[index1].startTime.hour==otherMoments[index2].startTime.hour&&thisMoments[index1].startTime.minute==otherMoments[index2].startTime.minute) {
 					//start at same time: conflict
@@ -63,11 +59,6 @@ sectionSchema.methods.conflictsWith = function(otherSection) {
 	}
     return false;
 };
-
-sectionSchema.methods.getCleanMoments = function() {
-	//not sure why this needs to happen... but it does need to happen
-	return JSON.parse(JSON.stringify(this.moments));
-}
 
 sectionSchema.methods.getMoments = function() {
 	var moments = [];
@@ -124,6 +115,7 @@ sectionSchema.methods.getMoments = function() {
 	return moments;
 }
 
+//time in form HH:MMam
 function getTimeFromString(stringTime) {
 	var time = {};
 	time.hour = parseInt(stringTime.slice(0,2));
