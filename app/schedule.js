@@ -42,7 +42,20 @@ exports.generate = function(req, res) {
 exports.add_course = function(req, res) {
 	var courseId = req.body.courseId;
 	console.log("user "+req.user.username+" added course "+courseId);
-	res.send(200);
+
+	//TODO: term
+	Section.find({_courseId:courseId})
+		.populate('_professor', 'name')
+		.select('number open _professor meet_time')
+		.sort('number')
+		.exec(function(err, sections){
+			if(err) {
+				res.send({error:"Could not find sections"});
+				return;
+			}
+			console.log(sections);
+			res.send({sections:JSON.stringify(sections)});
+		});
 }
 
 exports.remove_course = function(req, res) {

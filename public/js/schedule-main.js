@@ -137,6 +137,7 @@ function addSelectedCourse(course) {
         $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
       } else {
         suggestedCourses = data.suggestedCourses;
+        console.log(data.sections);
         //TODO: display suggested courses
       }
       

@@ -10,13 +10,13 @@ var path = require('path');
 
 exports.view = function(req, res) {
 	var id = req.params.sectionId;
-	Section.findOne({'_id':id}, function(err, section) {
+	Section.findOne({'_id':id})
+	.populate('_professor')
+	.exec(function(err, section) {
 		if(section) {
 			Course.findOne({'_id':section._courseId}, function(err, course){
-				if(section._professorId) {
-					Professor.findOne({'_id':section._professorId}, function(err, professor){
-						res.render('section.ejs',{course:course,section:section,professor:professor});
-					});	
+				if(section._professor) {
+					res.render('section.ejs',{course:course,section:section,professor:section._professor});
 				} else {
 					res.render('section.ejs',{course:course,section:section,professor:null});
 				}
