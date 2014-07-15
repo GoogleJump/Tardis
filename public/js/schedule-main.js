@@ -18,6 +18,10 @@ $(function () {
 
   $("#course_input").focus();
 
+  $('[data-toggle="tooltip"]').tooltip({
+      'placement': 'top'
+  });
+
   $("#course_input").autocomplete({
       source: function (request, response) {
          $.ajax({
@@ -167,6 +171,9 @@ function displaySelectedCourses() {
         displaySections(index);
       }
       $("#selected-courses").show();
+     $('[data-toggle="tooltip"]').tooltip({
+      'placement': 'top'
+      });
    }
 }
 
@@ -178,6 +185,7 @@ function displaySections(index) {
     if(!s.open) {
       openSymbol = 'glyphicon glyphicon-minus-sign'
     }
+    var openLabel = s.status;
     var professorLabel = 'Unknown';
     if(s._professor) {
       professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a>";
@@ -187,7 +195,7 @@ function displaySections(index) {
       meetTimeLabel = s.meet_time;
     }
     content+="<tr><td><h4><span class=\""+
-      openSymbol+"\" /></h4></td><td>"+
+      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></h4></td><td>"+
       s.number+"</td><td>"+
       professorLabel+"</td><td>"+
       meetTimeLabel+"</td></tr>";
