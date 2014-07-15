@@ -69,7 +69,6 @@ module.exports = function(app, passport) {
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
 
-
 	app.get('/error', function(req, res) {
 		res.render('static/500.html');
 	});

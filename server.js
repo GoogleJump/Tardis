@@ -25,6 +25,8 @@ app.configure(function() {
 	app.use(express.cookieParser()); // read cookies (needed for auth)
 	app.use(express.bodyParser({uploadDir:'./uploads'}));// get information from html forms
 
+	app.use(express.favicon(__dirname + '/public/img/favicon.ico')); 
+
 	app.set('view engine', 'ejs'); // set up ejs for templating
 
 	// required for passport
