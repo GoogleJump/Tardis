@@ -3,16 +3,15 @@ var mongoose = require('mongoose');
 
 var ObjectId  = mongoose.Schema.Types.ObjectId;
 
-var documentSchema = mongoose.Schema({
+exports.documentSchema = mongoose.Schema({
     title: String,
     description: String,
-    file_name:String,
-    _sectionId: ObjectId,
-    _userId: ObjectId,
+    file_name: String,
+    _userId: {type:ObjectId, ref:'User'},
     helpfulness: {type: Number, default: 0},
     date: {type: Date, default: Date.now},
-    upvoters: [ObjectId],
-    downvoters: [ObjectId]
+    upvoters: [{type:ObjectId, ref:'User'}],
+    downvoters: [{type:ObjectId, ref:'User'}]
 });
 
-module.exports = mongoose.model('Document', documentSchema);
+module.exports = mongoose.model('Document', exports.documentSchema);

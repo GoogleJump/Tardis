@@ -40,7 +40,8 @@
 			<div class="well">
 				<h3>Documents</h3>
 					<p>
-						<% for(var index in documents) {%>
+						<%var documents = section.documents;%>
+						<% for(var index=0;index<documents.length;index++) {%>
 							<a href="/public/user_documents/<%=documents[index].file_name%>"><strong><%=documents[index].title%></strong>-<%=documents[index].description%></a><br>
 						<%}%>
 					</p>
