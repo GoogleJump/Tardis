@@ -178,20 +178,20 @@ function createSectionFromJSON(course, term, jsonSection, next) {
 			newSection.markModified('moments');
 
 			if(!jsonSection.professor){
-				newSection._professorId = null;
+				newSection._professor = null;
 				console.log("new section created without professor: "+newSection._id);
 				newSection.save();
 				return next();
 			}
 			Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
 				if(professor) {
-					newSection._professorId = professor._id;
+					newSection._professor = professor._id;
 				} else {
 					var newProfessor = new Professor();
 					newProfessor.name = jsonSection.professor;
 					newProfessor._schoolId = course._schoolId;
 					newProfessor.department = course.department;
-					newSection._professorId = newProfessor._id;
+					newSection._professor = newProfessor._id;
 
 					newProfessor.save();
 				}

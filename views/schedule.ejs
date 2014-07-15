@@ -43,29 +43,36 @@
 	</div>
 
 	<div class="row">
-		<!-- LOCAL INFORMATION -->
-
 		<div class="col-xs-12">
-
-				<h3>Your selected courses</h3>
-				<p id="none-selected">No courses selected yet</p>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h2 class="panel-title">Selected courses</h2>
+				</div>
+				<div class="panel-body"  id="none-selected">
+					<p>No courses selected yet</p>
+				</div>
 				<table id="selected-courses" class="table table-striped">
 					<tr id="title-row"><th>Number</th><th>Name</th><th /></tr>
 				</table>
-				
 			</div>
-
+		</div>
 
 	</div>
 
 	<div class="row" id="row-after-courses">
 		<div class="col-sm-5">
-			<div class="well">
-				<h4>Suggested courses</h5>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">Suggested courses</h4>
+				</div>
+				<div class="panel-body">
+					<br><br><br>
+				</div>
 			</div>
+
 		</div>
 		<div class="col-sm-7">
-			<h4>General preferences</h5>
+			<h4>General preferences</h4>
 			<button id="create-schedule" class="btn btn-primary pull-right btn-lg">Generate schedules</button>
 		</div>
 	</div>

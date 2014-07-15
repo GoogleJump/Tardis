@@ -22,7 +22,7 @@ var sectionSchema = mongoose.Schema({
     documents: [Document.documentSchema],
     moments: [mongoose.Schema.Types.Mixed],
     _courseId: ObjectId,
-    _professorId: ObjectId
+    _professor: {type:ObjectId, ref:'Professor'}
 });
 
 sectionSchema.methods.conflictsWith = function(otherSection) {
