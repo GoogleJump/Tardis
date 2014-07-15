@@ -13,16 +13,13 @@ exports.view = function(req, res) {
 	Section.findOne({'_id':id}, function(err, section) {
 		if(section) {
 			Course.findOne({'_id':section._courseId}, function(err, course){
-				Document.find({'_sectionId':id},function(err, documents){
-					if(section._professorId) {
-						Professor.findOne({'_id':section._professorId}, function(err, professor){
-							res.render('section.ejs',{course:course,section:section,professor:professor,documents:documents});
-						});	
-					} else {
-						res.render('section.ejs',{course:course,section:section,professor:null,documents:documents});
-					}
-				});
-
+				if(section._professorId) {
+					Professor.findOne({'_id':section._professorId}, function(err, professor){
+						res.render('section.ejs',{course:course,section:section,professor:professor});
+					});	
+				} else {
+					res.render('section.ejs',{course:course,section:section,professor:null});
+				}
 			});
 		} else {
 			//Error!
@@ -41,11 +38,13 @@ exports.add_document = function(req, res) {
 	newDocument.description = req.body.description;
 	newDocument._userId = req.user._id;
 	newDocument.file_name = newDocument._id + path.extname(file.name);
-	newDocument._sectionId = id;
 
-	newDocument.save();
+	Section.findById(id, function(err,section){
+		section.documents.push(newDocument);
+		section.save();
+	});
 
-	console.log(file);
+	console.log("Uploaded file: "+file.path);
 
 	var tmp_path = file.path;
     var target_path = 'public/user_documents/' + newDocument.file_name;

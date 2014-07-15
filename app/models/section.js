@@ -1,6 +1,8 @@
 // load the things we need
 var mongoose = require('mongoose');
 
+var Document = require('./document');
+
 var SUNDAY = 0;
 var MONDAY = 1;
 var TUESDAY = 2;
@@ -9,6 +11,7 @@ var THURSDAY = 4;
 var FRIDAY = 5;
 var SATURDAY = 6;
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
 var sectionSchema = mongoose.Schema({
     number: String,
     location: String,
@@ -16,9 +19,10 @@ var sectionSchema = mongoose.Schema({
     status: String,
     open: Boolean,
     term: String,
+    documents: [Document.documentSchema],
     moments: [mongoose.Schema.Types.Mixed],
-    _courseId: mongoose.Schema.Types.ObjectId,
-    _professorId: mongoose.Schema.Types.ObjectId
+    _courseId: ObjectId,
+    _professorId: ObjectId
 });
 
 sectionSchema.methods.conflictsWith = function(otherSection) {
