@@ -97,8 +97,8 @@ function prepareCalendarResults(r, t) {
 
 		for(var j in r[i]) {
 			var section = r[i][j];
-			var moments = section.getCleanMoments();
-			for(var k in moments) {
+			var moments = section.moments;
+			for(var k=0;k<moments.length;k++) {
 				var event = {};
 				event.title = t[section._courseId]+"-"+section.number;
 				event.allDay = false;
