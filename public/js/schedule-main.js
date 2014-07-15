@@ -64,7 +64,7 @@ $(function () {
   })
  .autocomplete( "instance" )._renderItem = function( ul, item ) {
     return $( "<li>" )
-      .append( "<a>" + item.number + "<br>" + item.name + "</a>" )
+      .append( "<a class=\"list-group-item\">" + item.number + "<br>" + item.name + "</a>" )
       .appendTo( ul );
   };
 
