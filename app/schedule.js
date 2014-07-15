@@ -46,7 +46,7 @@ exports.add_course = function(req, res) {
 	//TODO: term
 	Section.find({_courseId:courseId})
 		.populate('_professor', 'name')
-		.select('number open _professor meet_time')
+		.select('number open _professor meet_time status')
 		.sort('number')
 		.exec(function(err, sections){
 			if(err) {
