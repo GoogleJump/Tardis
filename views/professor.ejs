@@ -35,9 +35,9 @@
 				<h3>Comments</h3>
 
 					<p>
-						<% for(var index in comments) {%>
-							<%var c = comments[index].comment;%>
-							<%var p = comments[index].poster;%>
+						<% for(var index=0;index<comments.length;index++) {%>
+							<%var c = comments[index];%>
+							<%var p = c._poster;%>
 							<span id='reputation-<%=c._id%>'><B><%=c.helpfulness%></B></span> <%=c.comment%> 
 							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=c._id%>', false);" />
 							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=c._id%>', true);" /><br>

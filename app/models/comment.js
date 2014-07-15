@@ -7,7 +7,7 @@ var commentSchema = mongoose.Schema({
     comment: String,
     type: String,
     _onId: ObjectId,
-    _userId: ObjectId,
+    _poster: {type:ObjectId, ref: 'User'},
     helpfulness: {type: Number, default: 0},
     date: {type: Date, default: Date.now},
     replies: [commentSchema],
