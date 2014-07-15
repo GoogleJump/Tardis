@@ -28,7 +28,7 @@
 		</div>
 	</div>
 
-	<div class="row" style="padding-bottom: 10px;">
+	<div class="row" style="padding-bottom: 20px;">
 		<div class="col-sm-3 col-xs-12">
 			<select class="form-control input-lg" name="term" id="term" >
 				<%var terms = school.terms;%>
@@ -44,12 +44,12 @@
 
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="panel panel-primary">
+			<div class="panel panel-primary table-responsive">
 				<div class="panel-heading">
 					<h2 class="panel-title">Selected courses</h2>
 				</div>
 				<div class="panel-body"  id="none-selected">
-					<p>No courses selected yet</p>
+					<p>Search for a course above to get started</p>
 				</div>
 				<table id="selected-courses" class="table table-striped">
 					<tr id="title-row"><th>Number</th><th>Name</th><th /></tr>
@@ -72,8 +72,17 @@
 
 		</div>
 		<div class="col-sm-7">
-			<h4>General preferences</h4>
-			<button id="create-schedule" class="btn btn-primary pull-right btn-lg">Generate schedules</button>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">Schedule preferences</h4>
+				</div>
+				<div class="panel-body">
+					<br><br><br>
+				</div>
+				<div class="panel-footer">
+					<button id="create-schedule" class="btn btn-primary pull-right btn-lg">Generate schedules</button><div class="clearfix" />
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -85,7 +94,7 @@
 
 
 	<div class="row" id="calendar-holder">
-		<div class="col-xs-12" style="padding-bottom: 10px;">
+		<div class="col-xs-12" style="padding-bottom: 20px;">
 		<div id="calendar-control" class="well">
 			<div class="col-md-1">
 				<input type="button" id="schedule-prev" class="btn btn-primary btn-sm" value="Previous"/>
