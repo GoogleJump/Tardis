@@ -37,8 +37,18 @@ exports.generate = function(req, res) {
 		}
 
 	});
+}
 
-	
+exports.add_course = function(req, res) {
+	var courseId = req.body.courseId;
+	console.log("user "+req.user.username+" added course "+courseId);
+	res.send(200);
+}
+
+exports.remove_course = function(req, res) {
+	var courseId = req.body.courseId;
+	console.log("user "+req.user.username+" removed course "+courseId);
+	res.send(200);
 }
 
 function getSections(courses, term, next) {

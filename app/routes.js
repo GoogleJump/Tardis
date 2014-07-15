@@ -64,7 +64,10 @@ module.exports = function(app, passport) {
 
 	app.get('/schedule', schedule.view);
 	app.post('/course-autocomplete', course.autocomplete);
-	app.post('/generate-schedule', schedule.generate);
+	app.post('/schedule/generate', schedule.generate);
+	app.post('/schedule/add-course',schedule.add_course);
+	app.post('/schedule/remove-course',schedule.remove_course);
+
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));

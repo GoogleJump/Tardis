@@ -1,4 +1,5 @@
 var selectedCourses = [];
+var suggestedCourses = [];
 
 var currentScheduleIndex = 0;
 var schedules;
@@ -67,7 +68,7 @@ $(function () {
     $("#loading").show();
     $("#calendar-holder").hide();
     $.ajax({
-      url: "/generate-schedule",
+      url: "/schedule/generate",
       type: "POST",
       data: {term:$("#term").val(), courses:selectedCourses}, 
       success: function (data, status) {
@@ -124,6 +125,27 @@ function addSelectedCourse(course) {
   }
   selectedCourses.push(course);
   displaySelectedCourses();
+
+  $.ajax({
+    url: "/schedule/add-course",
+    type: "POST",
+    data: {courseId:course.id}, 
+    success: function (data, status) {
+      $("#error-alert").hide();
+      $("#loading").hide();
+      if(data.error) {
+        $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+      } else {
+        suggestedCourses = data.suggestedCourses;
+        //TODO: display suggested courses
+      }
+      
+    },
+    error: function(xhr,status,error){
+       $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+       $("#loading").hide();
+    }
+  });
 }
 
 function displaySelectedCourses() {
@@ -143,8 +165,29 @@ function displaySelectedCourses() {
 }
 
 function removeCourse(index) {
-   selectedCourses.splice(index, 1);
-   displaySelectedCourses();
+   $.ajax({
+    url: "/schedule/remove-course",
+    type: "POST",
+    data: {courseId:selectedCourses[index].id}, 
+    success: function (data, status) {
+      $("#error-alert").hide();
+      $("#loading").hide();
+      if(data.error) {
+        $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+      } else {
+        suggestedCourses = data.suggestedCourses;
+        //TODO: display suggested courses
+      }
+      
+    },
+    error: function(xhr,status,error){
+       $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+       $("#loading").hide();
+    }
+  });
+
+  selectedCourses.splice(index, 1);
+  displaySelectedCourses();
 }
 
 function setupCalendar() {
