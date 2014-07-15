@@ -12,7 +12,7 @@ $(function () {
 
   $("#loading").hide();
 
-  $("#create-schedule").hide();
+  $("#row-after-courses").hide();
 
   $("#course_input").focus();
 
@@ -130,13 +130,13 @@ function displaySelectedCourses() {
    if(selectedCourses.length==0) {
       $("#none-selected").show();
       $("#selected-courses").hide();
-      $("#create-schedule").hide();
+      $("#row-after-courses").hide();
    } else {
       $("#none-selected").hide();
-      $("#create-schedule").show();
+      $("#row-after-courses").show();
       $("#selected-courses").find("tr:gt(0)").remove(); //remove all existing rows except title
       for(var index in selectedCourses) {
-         $("#selected-courses tr:last").after("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><input value=\"Remove\" type=\"button\" class='btn btn-danger' onclick=\"removeCourse("+index+");\"></td></tr>");
+         $("#selected-courses tr:last").after("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><button class='btn btn-sm btn-danger pull-right' onclick=\"removeCourse("+index+");\">Remove</button></td></tr>");
       }
       $("#selected-courses").show();
    }
