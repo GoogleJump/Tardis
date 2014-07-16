@@ -1,13 +1,12 @@
 var selectedCourses = [];
 var suggestedCourses = [];
 var selectedCourseSections = [];
+var courseCount =0;
 
 var currentScheduleIndex = 0;
 var schedules;
 
 $(function () {
-  $("#selected-courses").hide();
-
   $("#calendar-holder").hide();
 
   $("#error-alert").hide();
@@ -72,10 +71,18 @@ $(function () {
     $("#calendar").empty();
     $("#loading").show();
     $("#calendar-holder").hide();
+
+    console.log(selectedCourses);
+
+    var courseIds = [];
+    for(var index in selectedCourses) {
+      courseIds.push({id:index,number:selectedCourses[index].number});
+    }
+
     $.ajax({
       url: "/schedule/generate",
       type: "POST",
-      data: {term:$("#term").val(), courses:selectedCourses}, 
+      data: {term:$("#term").val(), courses:courseIds}, 
       success: function (data, status) {
         $("#error-alert").hide();
         $("#loading").hide();
@@ -118,18 +125,17 @@ $(function () {
 });
 
 function addSelectedCourse(course) {
-  for(var i=0;i<selectedCourses.length;i++) {
-    if(selectedCourses[i].number==course.number) {
+  if(selectedCourses[course.id]) {
       $("#error-alert").text(course.number+" is already selected").show();
-      return;      
-    }
+      return;          
   }
-  if(selectedCourses.length>=8) {
+  if(courseCount>=8) {
      $("#error-alert").text("There is maximum of 8 courses.").show();
      return;
   }
-  selectedCourses.push(course);
-
+  courseCount++;
+  selectedCourses[course.id]=course;
+  displayCourse(course);
   $.ajax({
     url: "/schedule/add-course",
     type: "POST",
@@ -142,11 +148,10 @@ function addSelectedCourse(course) {
       } else {
         suggestedCourses = data.suggestedCourses;
         console.log(data.sections);
-        selectedCourseSections.push(jQuery.parseJSON(data.sections));
-        displaySelectedCourses();
+        selectedCourseSections[course.id] = jQuery.parseJSON(data.sections);
+        displaySections(course.id);
         //TODO: display suggested courses
       }
-      
     },
     error: function(xhr,status,error){
        $("#error-alert").text("There was an error processing your request. Please try again later.").show();
@@ -155,32 +160,19 @@ function addSelectedCourse(course) {
   });
 }
 
-function displaySelectedCourses() {
-   if(selectedCourses.length==0) {
-      $("#none-selected").show();
-      $("#selected-courses").hide();
-      $("#row-after-courses").hide();
-   } else {
-      $("#none-selected").hide();
-      $("#row-after-courses").fadeIn();
-      $("#selected-courses").find("tr:gt(0)").remove(); //remove all existing rows except title
-      $("#selected-courses tr:last").after("<tr id=\"last-row-pointer\"/>");
-      $("#last-row-pointer").hide();
-      for(var index in selectedCourses) {
-         $("#last-row-pointer").before("<tr><td>"+selectedCourses[index].number+"</td><td>"+selectedCourses[index].name+"</td><td><button class='btn btn-sm btn-danger pull-right' onclick=\"removeCourse("+index+");\">Remove</button></td></tr>");
-        displaySections(index);
-      }
-      $("#selected-courses").show();
-     $('[data-toggle="tooltip"]').tooltip({
-      'placement': 'top'
-      });
-   }
+function displayCourse(course) {
+  $("#none-selected").hide();
+  $("#row-after-courses").fadeIn();
+  var content = '<div class="panel panel-default" style="margin:10px 20px 0px 20px;" id="accordion-'+course.id+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" href="#'+course.id+'">'
+          +course.number+' - '+course.name+'</a><button type="button" class="close pull-right" onclick="removeCourse(\''+course.id+'\')"><span aria-hidden="true">&times;</span></button></h4></div><div id="'+course.id+'" class="panel-collapse collapse"></div></div>'
+  $("#accordion").append(content);
+  console.log("displaying course "+course.id+" at index ");
 }
 
-function displaySections(index) {
-  var content = "<tr><td colspan=\"3\"><table class=\"table table-condensed\">";
-  for(var i=0;i<selectedCourseSections[index].length;i++) {
-    var s = selectedCourseSections[index][i];
+function displaySections(courseId) {
+  var content = "<table class=\"table table-condensed\">";
+  for(var i=0;i<selectedCourseSections[courseId].length;i++) {
+    var s = selectedCourseSections[courseId][i];
     var openSymbol = 'glyphicon glyphicon-ok-sign';
     if(!s.open) {
       openSymbol = 'glyphicon glyphicon-minus-sign'
@@ -194,21 +186,21 @@ function displaySections(index) {
     if(s.meet_time) {
       meetTimeLabel = s.meet_time;
     }
-    content+="<tr><td><h4><span class=\""+
-      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></h4></td><td>"+
+    content+="<tr><td><span class=\""+
+      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td>"+
       s.number+"</td><td>"+
       professorLabel+"</td><td>"+
       meetTimeLabel+"</td></tr>";
   }
-  content+='</table></td></tr>';
-  $("#last-row-pointer").before(content);
+  content+='</table>';
+  $("#"+courseId).append(content);
 }
 
-function removeCourse(index) {
+function removeCourse(courseId) {
    $.ajax({
     url: "/schedule/remove-course",
     type: "POST",
-    data: {courseId:selectedCourses[index].id}, 
+    data: {courseId:courseId}, 
     success: function (data, status) {
       $("#error-alert").hide();
       $("#loading").hide();
@@ -225,10 +217,20 @@ function removeCourse(index) {
        $("#loading").hide();
     }
   });
+   console.log("removing course "+courseId+" at index ");
+  $("#accordion-"+courseId).remove();
 
-  selectedCourses.splice(index, 1);
-  selectedCourseSections.splice(index,1);
-  displaySelectedCourses();
+  delete selectedCourseSections[courseId];
+  delete selectedCourses[courseId];
+
+  courseCount--;
+
+  console.log(selectedCourses);
+
+  if(courseCount==0) {
+    $("#none-selected").fadeIn();
+    $("#row-after-courses").fadeOut();
+  }
 }
 
 function setupCalendar() {
