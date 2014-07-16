@@ -186,10 +186,10 @@ function displaySections(courseId) {
     if(s.meet_time) {
       meetTimeLabel = s.meet_time;
     }
-    content+="<tr><td><span class=\""+
-      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td>"+
-      s.number+"</td><td>"+
-      professorLabel+"</td><td>"+
+    content+="<tr><td class=\"col-xs-1\"><span class=\""+
+      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-xs-1\">"+
+      s.number+"</td><td class=\"col-xs-1\">"+
+      professorLabel+"</td><td class=\"col-xs-2\">"+
       meetTimeLabel+"</td></tr>";
   }
   content+='</table>';
