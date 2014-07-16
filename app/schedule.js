@@ -2,6 +2,7 @@ var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
 var Section = require('../app/models/section');
+var User = require('../app/models/user');
 
 var _ = require('underscore');
 
@@ -43,6 +44,9 @@ exports.add_course = function(req, res) {
 	var courseId = req.body.courseId;
 	console.log("user "+req.user.username+" added course "+courseId);
 
+	req.user.pendingScheduleData.courses.push(courseId);
+	req.user.save();
+
 	//TODO: term
 	Section.find({_courseId:courseId})
 		.populate('_professor', 'name')
@@ -61,7 +65,42 @@ exports.add_course = function(req, res) {
 exports.remove_course = function(req, res) {
 	var courseId = req.body.courseId;
 	console.log("user "+req.user.username+" removed course "+courseId);
+
+	var courseIndex = req.user.pendingScheduleData.courses.indexOf(courseId);
+	if(courseIndex>=0) {
+		req.user.pendingScheduleData.courses.splice(courseIndex, 1);
+		req.user.save();
+	}
+
 	res.send(200);
+}
+
+exports.get_pending_schedule = function(req, res) {
+	if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
+		var courseIds = req.user.pendingScheduleData.courses;
+		var courseSections = [];
+		User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
+			var courses = populatedUser.pendingScheduleData.courses;
+			console.log(JSON.stringify(courses));
+			for(var i=0;i<courses.length;i++) {
+				Section.find({_courseId:courses[i]._id})
+				.populate('_professor', 'name')
+				.select('number open _professor meet_time status')
+				.sort('number')
+				.exec(function(err, sections) {
+					console.log("got sections: "+JSON.stringify(sections));
+					courseSections.push(sections);
+					if(courseSections.length==courses.length) {
+						res.send({courses:courses, sections:courseSections});
+						return;
+					}
+				});
+			}
+		});
+	} else {
+		res.send(200);
+	}
+	
 }
 
 function getSections(courses, term, next) {

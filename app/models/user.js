@@ -2,14 +2,16 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 // define the schema for our user model
 var userSchema = mongoose.Schema({
     username: String,
     reputation: {type: Number, default: 0},
     createdDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, default: Date.now},
-    _schoolId: mongoose.Schema.Types.ObjectId,
-    _majorId: mongoose.Schema.Types.ObjectId,
+    _schoolId: ObjectId,
+    _majorId: ObjectId,
     local            : {
         email        : String,
         password     : String,
@@ -25,6 +27,10 @@ var userSchema = mongoose.Schema({
         token        : String,
         email        : String,
         name         : String
+    },
+    pendingScheduleData: {
+        term: String,
+        courses: [{type:ObjectId, ref:'Course'}],
     }
 
 });
