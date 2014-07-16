@@ -67,6 +67,17 @@ $(function () {
       .appendTo( ul );
   };
 
+  //To get preference selections
+  // for(var index in selectedCourses) {
+  //   var sects = selectedCourseSections[index];
+  //   for(var index2 in sects) {
+  //     var pref = $('#pref-radio-'+sects[index2]._id+' label.active input').val();
+  //     console.log("sect "+sects[index2]._id+" selected: "+pref);
+  //   }
+  // }
+
+
+
   $("#create-schedule").click(function(){
     $("#calendar").empty();
     $("#loading").show();
@@ -169,13 +180,21 @@ function displayCourse(course) {
   console.log("displaying course "+course.id+" at index ");
 }
 
+var preferenceButtons= [
+  {label:"Preferred", icon:"glyphicon glyphicon-heart", style:"btn-default"},
+  {label:"Neutral", icon:"glyphicon glyphicon-minus", style:"btn-default"},
+  {label:"Not preferred", icon:"glyphicon glyphicon-thumbs-down", style:"btn-default"},
+  {label:"Do not consider", icon:"glyphicon glyphicon-ban-circle", style:"btn-danger"}];
+
 function displaySections(courseId) {
-  var content = "<table class=\"table table-condensed\">";
+  var content = "<table class=\"table\">";
   for(var i=0;i<selectedCourseSections[courseId].length;i++) {
     var s = selectedCourseSections[courseId][i];
     var openSymbol = 'glyphicon glyphicon-ok-sign';
+    var defaultButton = 1;//neutral
     if(!s.open) {
       openSymbol = 'glyphicon glyphicon-minus-sign'
+      defaultButton = 3//do not consider
     }
     var openLabel = s.status;
     var professorLabel = 'Unknown';
@@ -186,11 +205,26 @@ function displaySections(courseId) {
     if(s.meet_time) {
       meetTimeLabel = s.meet_time;
     }
+
     content+="<tr><td class=\"col-xs-1\"><span class=\""+
       openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-xs-1\">"+
       s.number+"</td><td class=\"col-xs-1\">"+
-      professorLabel+"</td><td class=\"col-xs-2\">"+
-      meetTimeLabel+"</td></tr>";
+      professorLabel+"</td><td class=\"col-xs-4\">"+
+      meetTimeLabel+"</td><td class=\"col-xs-2\">"+
+    '<div class="btn-group pull-right" data-toggle="buttons" id="pref-radio-'+s._id+'">';
+
+    for(var index in preferenceButtons) {
+      var but = preferenceButtons[index];
+      if(defaultButton==index) {
+        content+='<label class="btn '+but.style+' btn-sm active" title="'+but.label+'" checked>'+
+                    '<input type="radio" name="options" id="option'+index+'" value="'+index+'"> <span class="'+but.icon+'" /></label>';
+      } else {
+        content+='<label class="btn '+but.style+' btn-sm" title="'+but.label+'">'+
+                    '<input type="radio" name="options" id="option'+index+'"> <span class="'+but.icon+'" /></label>';        
+      }
+
+    }
+    content+='</div></td></tr>';
   }
   content+='</table>';
   $("#"+courseId).append(content);
