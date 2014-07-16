@@ -11,8 +11,6 @@ $(function () {
 
   $("#error-alert").hide();
 
-  $("#loading").hide();
-
   $("#row-after-courses").hide();
 
   $("#course_input").focus();
@@ -132,6 +130,40 @@ $(function () {
     updateCalendarEvents();
   });
 
+  //check for pending schedule on load
+   $.ajax({
+      url: "/schedule/get-pending",
+      type: "GET",
+      data: {}, 
+      success: function (data, status) {
+        $("#error-alert").hide();
+        $("#loading").hide();
+        if(data.error) {
+          $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+        } else {
+          if(data.courses) {
+            console.log("got pending schedule");
+
+            for(var i=0;i<data.courses.length;i++) {
+              var cId = data.courses[i]._id;
+              var course = {number:data.courses[i].number, id:cId,name:data.courses[i].name};
+              selectedCourses[cId] = course;
+              displayCourse(course);
+              selectedCourseSections[cId] = data.sections[i];
+              displaySections(cId);
+            }
+          } else {
+            console.log("no pending schedule: "+JSON.stringify(data));
+          }
+
+        }
+        
+      },
+      error: function(xhr,status,error){
+         $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+         $("#loading").hide();
+      }
+    });
 
 });
 
@@ -174,8 +206,8 @@ function addSelectedCourse(course) {
 function displayCourse(course) {
   $("#none-selected").hide();
   $("#row-after-courses").fadeIn();
-  var content = '<div class="panel panel-default" style="margin:10px 20px 0px 20px;" id="accordion-'+course.id+'"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" href="#'+course.id+'">'
-          +course.number+' - '+course.name+'</a><button type="button" class="close pull-right" onclick="removeCourse(\''+course.id+'\')"><span aria-hidden="true">&times;</span></button></h4></div><div id="'+course.id+'" class="panel-collapse collapse"></div></div>'
+  var content = '<div class="panel panel-default table-responsive" style="margin:10px 20px 0px 20px;" id="accordion-'+course.id+'"><div class="panel-heading"><h4 class="panel-title"><a title="View sections" data-toggle="collapse" href="#'+course.id+'"><strong>'
+          +course.number+'</strong> - '+course.name+'</a><button type="button" title="Remove course" class="close pull-right" onclick="removeCourse(\''+course.id+'\')"><span aria-hidden="true">&times;</span></button></h4></div><div id="'+course.id+'" class="panel-collapse collapse"></div></div>'
   $("#accordion").append(content);
   console.log("displaying course "+course.id+" at index ");
 }
@@ -206,11 +238,11 @@ function displaySections(courseId) {
       meetTimeLabel = s.meet_time;
     }
 
-    content+="<tr><td class=\"col-xs-1\"><span class=\""+
-      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-xs-1\">"+
-      s.number+"</td><td class=\"col-xs-1\">"+
-      professorLabel+"</td><td class=\"col-xs-4\">"+
-      meetTimeLabel+"</td><td class=\"col-xs-2\">"+
+    content+="<tr><td class=\"col-md-1\"><span class=\""+
+      openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-md-1\">"+
+      s.number+"</td><td class=\"col-md-2\">"+
+      professorLabel+"</td><td class=\"col-md-6\">"+
+      meetTimeLabel+"</td><td class=\"col-md-2\">"+
     '<div class="btn-group pull-right" data-toggle="buttons" id="pref-radio-'+s._id+'">';
 
     for(var index in preferenceButtons) {

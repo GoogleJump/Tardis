@@ -62,12 +62,12 @@ module.exports = function(app, passport) {
 
 	app.post('/section/:sectionId/add-document', section.add_document);
 
-	app.get('/schedule', schedule.view);
+	app.get('/schedule', isLoggedIn, schedule.view);
 	app.post('/course-autocomplete', course.autocomplete);
 	app.post('/schedule/generate', schedule.generate);
 	app.post('/schedule/add-course',schedule.add_course);
 	app.post('/schedule/remove-course',schedule.remove_course);
-
+	app.get('/schedule/get-pending', schedule.get_pending_schedule);
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
