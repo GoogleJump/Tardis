@@ -57,7 +57,7 @@ exports.generate = function(req, res) {
 		}
 		if(forRemoval.length>0)
 			tree.removeSections(forRemoval);
-		
+
 		if(tree.isEmpty()) {
 			res.send({error:"No schedules found after removal"});
 			return;
@@ -110,17 +110,19 @@ exports.remove_course = function(req, res) {
 exports.get_pending_schedule = function(req, res) {
 	if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
 		var courseIds = req.user.pendingScheduleData.courses;
-		var courseSections = [];
+		var courseSections = {};
+		var count=0;
 		User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
 			var courses = populatedUser.pendingScheduleData.courses;
 			for(var i=0;i<courses.length;i++) {
 				Section.find({_courseId:courses[i]._id})
 				.populate('_professor', 'name')
-				.select('number open _professor meet_time status')
+				.select('number open _professor meet_time status _courseId')
 				.sort('number')
 				.exec(function(err, sections) {
-					courseSections.push(sections);
-					if(courseSections.length==courses.length) {
+					count++
+					courseSections[sections[0]._courseId]= sections; //TODO: no sections?
+					if(count==courses.length) {
 						res.send({courses:courses, sections:courseSections});
 						return;
 					}
