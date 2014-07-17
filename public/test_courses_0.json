@@ -1,0 +1,822 @@
+[
+	{
+		"name":"Test 0",
+		"number":"TEST 0000",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 1",
+		"number":"TEST 0001",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 2",
+		"number":"TEST 0002",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 3",
+		"number":"TEST 0003",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 10",
+		"number":"TEST 1000",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 11",
+		"number":"TEST 1001",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 12",
+		"number":"TEST 1002",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 13",
+		"number":"TEST 1003",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 14",
+		"number":"TEST 1004",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 15",
+		"number":"TEST 1005",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 16",
+		"number":"TEST 1006",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	},
+	{
+		"name":"Test 17",
+		"number":"TEST 1007",
+		"department":"Department of testing",
+		"description":"test",
+		"credits":3,
+		"level":"undergraduate",
+		"sections":
+		[
+			{
+				"number":"00",
+				"location":"Test",
+				"meet_time":"MWF 09:00AM-09:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"01",
+				"location":"Test",
+				"meet_time":"MWF 10:00AM-10:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"02",
+				"location":"Test",
+				"meet_time":"MWF 11:00AM-11:50AM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"03",
+				"location":"Test",
+				"meet_time":"MWF 12:00PM-12:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"04",
+				"location":"Test",
+				"meet_time":"MWF 01:00PM-01:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"05",
+				"location":"Test",
+				"meet_time":"MWF 02:00PM-02:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"06",
+				"location":"Test",
+				"meet_time":"MWF 03:00PM-03:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"07",
+				"location":"Test",
+				"meet_time":"MWF 04:00PM-04:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"08",
+				"location":"Test",
+				"meet_time":"MWF 05:00PM-05:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			},
+			{
+				"number":"09",
+				"location":"Test",
+				"meet_time":"MWF 06:00PM-06:50PM",
+				"status":"open",
+				"open":true,
+				"professor":"Forbes E"
+			}
+		]
+	}
+]

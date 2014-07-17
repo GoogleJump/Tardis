@@ -56,6 +56,8 @@ function Node(l, sId, parent) {
 	this.parentNode = parent;
 	this.children = {};
 
+	//console.log("new node created with parent: "+this.parentNode);
+
 	this.addSections=function(tree, sectionIds) {
 		//console.log("adding sections: "+sectionIds+ " to node "+this.sectionId+" on level "+this.level);
 		var nonConflictingSectionIds = [];
@@ -69,7 +71,7 @@ function Node(l, sId, parent) {
 		}
 		if(nonConflictingSectionIds.length==0) {
 			//console.log("no nonconflicting section ids... removing self");
-			removeSelfFromParent();//CALLBACK?
+			this.removeSelfFromParent();//CALLBACK?
 			return;
 		}
 		if(this.level ==(tree.levels.length-1)){
@@ -106,22 +108,21 @@ function Node(l, sId, parent) {
 		return results;
 	}
 
-	function removeSelfFromParent() {
+	this.removeSelfFromParent=function() {
 		if(this.parentNode) {
 			this.parentNode.removeChild(this.sectionId);
 		}
 	}
 
 	this.removeChild=function(sectionId) {
-		if(sectionId in children) {
-			console.log("child deleted");
-			delete children[sectionId];
+		if(sectionId in this.children) {
+			delete this.children[sectionId];
 		}
-		if(Object.keys(children).length==0) {
+		if(Object.keys(this.children).length==0) {
 			//No children left... remove this node from it's parent
 			if(this.parentNode){
 				//not the root
-				console.log("childless... removing self");
+				//console.log("childless... removing self");
 				this.parentNode.removeChild(this.sectionId);
 			} else {
 				//No branches in tree, no possible schedules

@@ -22,7 +22,15 @@ exports.generate = function(req, res) {
 	getSections(courses, term, function(s){
 		//var sections = _.sortBy(s,function(cs){return cs.length;}); //sort by number of sections (so we take the most restrictive first)
 
+		var potential = 1;
+		for(var i=0;i<courses.length;i++) {
+			potential*=s[courses[i].id].length;
+		}
+
+
 		var tree = new ScheduleTree();
+
+		var beforeDate = new Date();
 
 		for(var i=0;i<courses.length;i++) {
 			tree.addCourse(courses[i],s[courses[i].id]);
@@ -31,9 +39,13 @@ exports.generate = function(req, res) {
 				return;
 			}
 		}
+
+
 		
 		var schedules = tree.getAllSchedules();
-		console.log("generated schedule tree: "+schedules.length+" possible");
+		var afterDate = new Date();
+		var ms = afterDate.getTime() - beforeDate.getTime();
+		console.log("generated schedule tree: "+schedules.length+" possible of "+potential+" potential in "+ms+"ms");
 
 		res.send({results:prepareCalendarResults(schedules, tree)});
 
