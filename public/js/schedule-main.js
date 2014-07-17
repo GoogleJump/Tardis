@@ -129,6 +129,17 @@ $(function () {
     updateCalendarEvents();
   });
 
+  $("#expand-all").click(function(){
+    for(var id in selectedCourses) {
+      $("#"+id).collapse('show');
+    }
+  });
+  $("#collapse-all").click(function(){
+    for(var id in selectedCourses) {
+      $("#"+id).collapse('hide');
+    }
+  });
+
   //check for pending schedule on load
    $.ajax({
       url: "/schedule/get-pending",
