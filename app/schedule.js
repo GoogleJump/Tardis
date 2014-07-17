@@ -8,6 +8,7 @@ var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 var _ = require('underscore');
 
 var POTENTIAL_CUTOFF = 1000000;
+var PREF_DO_NOT_CONSIDER =3;
 
 exports.view = function(req, res) {
 	School.findOne({_id:req.user._schoolId}, function(err, school){
@@ -18,7 +19,8 @@ exports.view = function(req, res) {
 exports.generate = function(req, res) {
 	var courses = req.body.courses;
 	var term = req.body.term;
-	console.log("generating schedules");
+	var sectionPreferences = req.body.sectionPreferences;
+	console.log("generating schedules with prefs: "+JSON.stringify(sectionPreferences));
 
 	
 	getSections(courses, term, function(s){
@@ -46,7 +48,16 @@ exports.generate = function(req, res) {
 			}
 		}
 		
-		//tree.removeSections({"53c5745eb0d511b01cee6899":"53c5745eb0d511b01cee6899"});
+		//remove sections set as do not consider
+		var forRemoval=[];
+		for(var sectionId in sectionPreferences) {
+			if(sectionPreferences[sectionId]==PREF_DO_NOT_CONSIDER) {
+				forRemoval.push(sectionId);
+			}
+		}
+		if(forRemoval.length>0)
+			tree.removeSections(forRemoval);
+		
 		if(tree.isEmpty()) {
 			res.send({error:"No schedules found after removal"});
 			return;

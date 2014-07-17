@@ -65,17 +65,6 @@ $(function () {
       .appendTo( ul );
   };
 
-  //To get preference selections
-  // for(var index in selectedCourses) {
-  //   var sects = selectedCourseSections[index];
-  //   for(var index2 in sects) {
-  //     var pref = $('#pref-radio-'+sects[index2]._id+' label.active input').val();
-  //     console.log("sect "+sects[index2]._id+" selected: "+pref);
-  //   }
-  // }
-
-
-
   $("#create-schedule").click(function(){
     $("#calendar").empty();
     $("#loading").show();
@@ -88,10 +77,20 @@ $(function () {
       courseIds.push({id:index,number:selectedCourses[index].number});
     }
 
+    //To get section preference selections
+    var sectionPreferences = {};
+    for(var index in selectedCourses) {
+      var sects = selectedCourseSections[index];
+      for(var index2 in sects) {
+        var pref = $('#pref-radio-'+sects[index2]._id+' label.active input').val();
+        sectionPreferences[sects[index2]._id] = pref;
+      }
+    }
+
     $.ajax({
       url: "/schedule/generate",
       type: "POST",
-      data: {term:$("#term").val(), courses:courseIds}, 
+      data: {term:$("#term").val(), courses:courseIds, sectionPreferences:sectionPreferences}, 
       success: function (data, status) {
         $("#error-alert").hide();
         $("#loading").hide();
