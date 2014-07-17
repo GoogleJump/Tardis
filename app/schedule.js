@@ -3,6 +3,7 @@ var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
 var Section = require('../app/models/section');
 var User = require('../app/models/user');
+var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 
 var _ = require('underscore');
 
@@ -18,24 +19,23 @@ exports.generate = function(req, res) {
 	console.log("generating schedules");
 
 	
-	getSections(courses, term, function(s, titles){
-		var sections = _.sortBy(s,function(cs){return cs.length;}); //sort by number of sections (so we take the most restrictive first)
-		var results = [];
+	getSections(courses, term, function(s){
+		//var sections = _.sortBy(s,function(cs){return cs.length;}); //sort by number of sections (so we take the most restrictive first)
 
-		for(var index in sections) {
-			results = addToResults(sections[index], results);
-			if(results.length==0) {
+		var tree = new ScheduleTree();
+
+		for(var i=0;i<courses.length;i++) {
+			tree.addCourse(courses[i],s[courses[i].id]);
+			if(tree.isEmpty()) {
 				res.send({error:"No schedules found"});
 				return;
 			}
 		}
-		console.log("generated "+results.length+" possible schedules");
-		if(results.length==0) {
-			res.send({error:"No schedules found"});
-			return;
-		} else{ 
-			res.send({results:prepareCalendarResults(results, titles)});
-		}
+		
+		var schedules = tree.getAllSchedules();
+		console.log("generated schedule tree: "+schedules.length+" possible");
+
+		res.send({results:prepareCalendarResults(schedules, tree)});
 
 	});
 }
@@ -104,17 +104,15 @@ exports.get_pending_schedule = function(req, res) {
 }
 
 function getSections(courses, term, next) {
-	var sections = [];
-	var titles = []
+	var sections = {};
 	var count = 0;
 	for(var index in courses) {
 		var currentCourse = courses[index];
-		titles[currentCourse.id] = currentCourse.number;
 		Section.find({_courseId:currentCourse.id, term:term}, function(err, csections){
-			sections.push(csections);//TODO: what if their arn't any sections?
+			sections[csections[0]._courseId] = csections;//TODO: what if their arn't any sections?
 			count++;
 			if(count==courses.length) {
-				return next(sections, titles);
+				return next(sections);
 			}
 		});
 	}
@@ -158,11 +156,12 @@ function prepareCalendarResults(r, t) {
 		var events = []; 
 
 		for(var j in r[i]) {
-			var section = r[i][j];
+			var sectionId = r[i][j];
+			var section = t.sections[sectionId];
 			var moments = section.moments;
 			for(var k=0;k<moments.length;k++) {
 				var event = {};
-				event.title = t[section._courseId]+"-"+section.number;
+				event.title = t.courses[section._courseId].number+"-"+section.number;
 				event.allDay = false;
 				event.color = colors[j];
 				event.start = formatEventDate(moments[k].day, moments[k].startTime.hour, moments[k].startTime.minute);
