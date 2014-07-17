@@ -246,13 +246,12 @@ function displaySections(courseId) {
     for(var index in preferenceButtons) {
       var but = preferenceButtons[index];
       if(defaultButton==index) {
-        content+='<label class="btn '+but.style+' btn-sm active" title="'+but.label+'" checked>'+
-                    '<input type="radio" name="options" id="option'+index+'" value="'+index+'"> <span class="'+but.icon+'" /></label>';
+        content+='<label class="btn '+but.style+' btn-sm active" title="'+but.label+'" checked>';
+                    
       } else {
-        content+='<label class="btn '+but.style+' btn-sm" title="'+but.label+'">'+
-                    '<input type="radio" name="options" id="option'+index+'"> <span class="'+but.icon+'" /></label>';        
+        content+='<label class="btn '+but.style+' btn-sm" title="'+but.label+'">';        
       }
-
+      content += '<input type="radio" name="options" id="option'+index+'" value="'+index+'"> <span class="'+but.icon+'" /></label>';
     }
     content+='</div></td></tr>';
   }
