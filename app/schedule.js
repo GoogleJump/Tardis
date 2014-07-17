@@ -46,10 +46,15 @@ exports.generate = function(req, res) {
 			}
 		}
 		
+		//tree.removeSections({"53c5745eb0d511b01cee6899":"53c5745eb0d511b01cee6899"});
+		if(tree.isEmpty()) {
+			res.send({error:"No schedules found after removal"});
+			return;
+		}
 		var schedules = tree.getAllSchedules();
 		var afterDate = new Date();
 		var ms = afterDate.getTime() - beforeDate.getTime();
-		console.log("generated schedule tree: "+schedules.length+" possible of "+potential+" potential in "+ms+"ms");
+		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 
 		res.send({results:prepareCalendarResults(schedules, tree)});
 
@@ -97,7 +102,6 @@ exports.get_pending_schedule = function(req, res) {
 		var courseSections = [];
 		User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
 			var courses = populatedUser.pendingScheduleData.courses;
-			console.log(JSON.stringify(courses));
 			for(var i=0;i<courses.length;i++) {
 				Section.find({_courseId:courses[i]._id})
 				.populate('_professor', 'name')

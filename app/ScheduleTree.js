@@ -5,6 +5,8 @@ exports.ScheduleTree= function() {
 	this.sections = {};
 	this.levels = [];
 
+	this.sectionCosts = null;
+
 	this.root = new Node(0);
 
 	this.addCourse=function(course, sections) {
@@ -47,6 +49,14 @@ exports.ScheduleTree= function() {
 
 	this.getAllSchedules = function() {
 		return this.root.getAllSchedules();
+	}
+
+	this.setSectionCosts = function(costs) {
+		this.sectionCosts = costs;
+	}
+
+	this.removeSections = function(sections) {
+		this.root.removeSections(sections, this.levels.length);
 	}
 }
 
@@ -91,11 +101,12 @@ function Node(l, sId, parent) {
 
 	this.getAllSchedules = function() {
 		var results = [];
+		if(Object.keys(this.children).length==0) {
+			//no children... just return self;
+			return [[this.sectionId]];
+		}
 		for(var index in this.children) {
 			var childSchedules = this.children[index].getAllSchedules();
-			if(childSchedules.length==0) {
-				results.push([this.sectionId,this.children[index].sectionId]);
-			}
 			for(var index2 in childSchedules) {
 				if(this.sectionId) {
 					childSchedules[index2].push(this.sectionId);
@@ -128,6 +139,17 @@ function Node(l, sId, parent) {
 				//No branches in tree, no possible schedules
 				console.log("branchless");
 			}
+		}
+	}
+
+	this.removeSections=function(sections, leafLevel) {
+		for(var section in sections) {
+			if(this.level<leafLevel){
+				this.removeChild(sections[section]);
+			}
+		}
+		for(var child in this.children) {
+			this.children[child].removeSections(sections, leafLevel);
 		}
 	}
 }
