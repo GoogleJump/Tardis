@@ -143,7 +143,7 @@ $(function () {
         } else {
           if(data.courses) {
             console.log("got pending schedule");
-
+            courseCount = data.courses.length;
             for(var i=0;i<data.courses.length;i++) {
               var cId = data.courses[i]._id;
               var course = {number:data.courses[i].number, id:cId,name:data.courses[i].name};

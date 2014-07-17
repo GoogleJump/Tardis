@@ -23,7 +23,7 @@ exports.autocomplete = function(req, res) {
 	console.log(req.body.input);
 
 	var regex = new RegExp(req.body.input, 'i');//case insensitive contains
-	var query = Course.find({$or:[{number:regex},{name:regex}]}).limit(10);
+	var query = Course.find({_schoolId:req.user._schoolId, $or:[{number:regex},{name:regex}]}).limit(10);
 
 	query.exec(function(err, courses){
 		if(!err) {
