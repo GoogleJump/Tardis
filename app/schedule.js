@@ -7,6 +7,8 @@ var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 
 var _ = require('underscore');
 
+var POTENTIAL_CUTOFF = 1000000;
+
 exports.view = function(req, res) {
 	School.findOne({_id:req.user._schoolId}, function(err, school){
 		res.render('schedule.ejs', {school:school});
@@ -26,7 +28,11 @@ exports.generate = function(req, res) {
 		for(var i=0;i<courses.length;i++) {
 			potential*=s[courses[i].id].length;
 		}
-
+		if(potential>=POTENTIAL_CUTOFF) {
+			//TODO: alternative approach for especially large solution spaces
+			res.send({error:"I don't have the time or the memory to generate your schedules."});
+			return;
+		}
 
 		var tree = new ScheduleTree();
 
@@ -39,8 +45,6 @@ exports.generate = function(req, res) {
 				return;
 			}
 		}
-
-
 		
 		var schedules = tree.getAllSchedules();
 		var afterDate = new Date();
@@ -100,7 +104,6 @@ exports.get_pending_schedule = function(req, res) {
 				.select('number open _professor meet_time status')
 				.sort('number')
 				.exec(function(err, sections) {
-					console.log("got sections: "+JSON.stringify(sections));
 					courseSections.push(sections);
 					if(courseSections.length==courses.length) {
 						res.send({courses:courses, sections:courseSections});
@@ -128,32 +131,6 @@ function getSections(courses, term, next) {
 			}
 		});
 	}
-}
-
-function addToResults(sections, results) {
-	var localResults = [];
-	if(results.length==0) {
-		for(var index in sections) {
-			localResults.push([sections[index]]);
-		}
-		return localResults;
-	}
-
-	for(var index in results) {
-		for(var index3 in sections) {
-			var ok = true;
-			for(var index2 in results[index]) {
-				//what if time is null?
-				if(results[index][index2].conflictsWith(sections[index3])) {
-					ok = false;
-				}
-			}
-			if(ok) {
-				localResults.push(results[index].concat(sections[index3]));
-			}			
-		}
-	}
-	return localResults;
 }
 
 var sourceYearMonth = "2014-01-";//fixed date for rendering in the calendar
