@@ -7,8 +7,9 @@ var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 
 var _ = require('underscore');
 
-var POTENTIAL_CUTOFF = 1000000;
-var PREF_DO_NOT_CONSIDER =3;
+var POTENTIAL_CUTOFF = 1000000; //if there would be more than this many nodes in the schedule tree, don't generate it
+var PREF_DO_NOT_CONSIDER =3; //value for "do not consider" section preference
+var BATCH_SIZE = 16; //number of schedules to send to the client at once
 
 exports.view = function(req, res) {
 	School.findOne({_id:req.user._schoolId}, function(err, school){
@@ -20,7 +21,7 @@ exports.generate = function(req, res) {
 	var courses = req.body.courses;
 	var term = req.body.term;
 	var sectionPreferences = req.body.sectionPreferences;
-	console.log("generating schedules with prefs: "+JSON.stringify(sectionPreferences));
+	console.log("generating schedules");
 
 	
 	getSections(courses, term, function(s){
@@ -67,8 +68,26 @@ exports.generate = function(req, res) {
 		var ms = afterDate.getTime() - beforeDate.getTime();
 		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 
-		res.send({results:prepareCalendarResults(schedules, tree)});
+		req.user.pendingScheduleData.schedules = schedules;
+		req.user.markModified('pendingScheduleData.schedules');
+		req.user.save();
 
+		var scheduleSections = {};
+		for(var cid in s) {
+			var course = s[cid];
+			for(var i=0;i<course.length;i++) {
+				var section = course[i];
+				scheduleSections[section._id] = section;
+			}
+		}
+
+		if(schedules.length<=BATCH_SIZE) {
+			//send them all
+			res.send({count: schedules.length, results:schedules, sections:scheduleSections});
+		}else {
+			//only send the first batch
+			res.send({count: schedules.length, results:schedules.slice(0, BATCH_SIZE), sections:scheduleSections});
+		}
 	});
 }
 
@@ -89,7 +108,6 @@ exports.add_course = function(req, res) {
 				res.send({error:"Could not find sections"});
 				return;
 			}
-			console.log(sections);
 			res.send({sections:JSON.stringify(sections)});
 		});
 }
@@ -131,8 +149,14 @@ exports.get_pending_schedule = function(req, res) {
 		});
 	} else {
 		res.send(200);
-	}
-	
+	}	
+}
+
+exports.get_batch=function(req, res) {
+	var batch = parseInt(req.query.batch);
+	var schedules = req.user.pendingScheduleData.schedules;
+	var batchSchedules = schedules.slice(batch*BATCH_SIZE, (batch+1)*BATCH_SIZE);
+	res.send({results:batchSchedules});
 }
 
 function getSections(courses, term, next) {
@@ -148,51 +172,4 @@ function getSections(courses, term, next) {
 			}
 		});
 	}
-}
-
-var sourceYearMonth = "2014-01-";//fixed date for rendering in the calendar
-var sourceDay = 12;//the twelveth is a sunday
-
-var colors = ["#16a085","#27ae60","#2980b9","#8e44ad","#2c3e50","#7f8c8d","#bdc3c7","#c0392b","#d35400"];
-
-function prepareCalendarResults(r, t) {
-	var results = [];
-
-	for(var i in r) {
-		var events = []; 
-
-		for(var j in r[i]) {
-			var sectionId = r[i][j];
-			var section = t.sections[sectionId];
-			var moments = section.moments;
-			for(var k=0;k<moments.length;k++) {
-				var event = {};
-				event.title = t.courses[section._courseId].number+"-"+section.number;
-				event.allDay = false;
-				event.color = colors[j];
-				event.start = formatEventDate(moments[k].day, moments[k].startTime.hour, moments[k].startTime.minute);
-				event.end = formatEventDate(moments[k].day, moments[k].endTime.hour, moments[k].endTime.minute);
-
-				event.url = "/section/"+section._id;
-				events.push(event);
-			}
-		}
-
-		results.push(events);
-	}
-
-	return results;
-}
-
-function padWith0(value) {
-	if(value<10) {
-		return "0"+value;
-	}
-	return value;
-}
-
-function formatEventDate(day, hour, minute) {
-	var pHour = padWith0(hour);
-	var pMinute = padWith0(minute);
-	return sourceYearMonth+(sourceDay+day)+'T'+pHour+":"+pMinute+":00";
 }

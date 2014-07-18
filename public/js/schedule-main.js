@@ -4,7 +4,13 @@ var selectedCourseSections = [];
 var courseCount =0;
 
 var currentScheduleIndex = 0;
-var schedules;
+
+var schedules = [];
+var scheduleSections = {};
+var batchNumber = 1;
+var schedulesCount = 0;
+
+var BATCH_SIZE = 16;
 
 $(function () {
   $("#calendar-holder").hide();
@@ -70,8 +76,6 @@ $(function () {
     $("#loading").show();
     $("#calendar-holder").hide();
 
-    console.log(selectedCourses);
-
     var courseIds = [];
     for(var index in selectedCourses) {
       courseIds.push({id:index,number:selectedCourses[index].number});
@@ -98,6 +102,10 @@ $(function () {
           $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
         } else {
           schedules = data.results;
+          updateScheduleCountText(data.count);
+          schedulesCount = data.count;
+          updateCurrentScheduleIndex(1);
+          scheduleSections = data.sections;
           setupCalendar();
         }
         
@@ -115,17 +123,17 @@ $(function () {
       $("#schedule-prev").hide();
     }
     $("#schedule-next").show();
-    updateScheduleCountText();
+    updateCurrentScheduleIndex(currentScheduleIndex+1);
     updateCalendarEvents();
   });
 
   $("#schedule-next").click(function(){
     currentScheduleIndex++;
-    if(currentScheduleIndex>=(schedules.length-1)) {
+    if(currentScheduleIndex>=(schedulesCount-1)) {
       $("#schedule-next").hide();
     }
     $("#schedule-prev").show();
-    updateScheduleCountText();
+    updateCurrentScheduleIndex(currentScheduleIndex+1);
     updateCalendarEvents();
   });
 
@@ -161,8 +169,6 @@ $(function () {
               selectedCourseSections[cId] = data.sections[cId];
               displaySections(cId);
             }
-          } else {
-            console.log("no pending schedule: "+JSON.stringify(data));
           }
 
         }
@@ -199,7 +205,6 @@ function addSelectedCourse(course) {
         $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
       } else {
         suggestedCourses = data.suggestedCourses;
-        console.log(data.sections);
         selectedCourseSections[course.id] = jQuery.parseJSON(data.sections);
         displaySections(course.id);
         //TODO: display suggested courses
@@ -218,7 +223,6 @@ function displayCourse(course) {
   var content = '<div class="panel panel-default table-responsive" style="margin:10px 20px 0px 20px;" id="accordion-'+course.id+'"><div class="panel-heading"><h4 class="panel-title"><a title="View sections" data-toggle="collapse" href="#'+course.id+'"><strong>'
           +course.number+'</strong> - '+course.name+'</a><button type="button" title="Remove course" class="close pull-right" onclick="removeCourse(\''+course.id+'\')"><span aria-hidden="true">&times;</span></button></h4></div><div id="'+course.id+'" class="panel-collapse collapse"></div></div>'
   $("#accordion").append(content);
-  console.log("displaying course "+course.id+" at index ");
 }
 
 var preferenceButtons= [
@@ -291,7 +295,6 @@ function removeCourse(courseId) {
        $("#loading").hide();
     }
   });
-   console.log("removing course "+courseId+" at index ");
   $("#accordion-"+courseId).remove();
 
   delete selectedCourseSections[courseId];
@@ -299,13 +302,14 @@ function removeCourse(courseId) {
 
   courseCount--;
 
-  console.log(selectedCourses);
-
   if(courseCount==0) {
     $("#none-selected").fadeIn();
     $("#row-after-courses").fadeOut();
   }
 }
+
+var sourceYearMonth = "2014-01-";//fixed date for rendering in the calendar
+var sourceDay = 12;//the twelveth is a sunday
 
 function setupCalendar() {
   currentScheduleIndex = 0;
@@ -317,8 +321,6 @@ function setupCalendar() {
     $("#schedule-next").hide();
   }
 
-  updateScheduleCountText();
-
   $("#calendar-holder").show();
   $('#calendar').fullCalendar({
     defaultView:"agendaWeek",
@@ -329,22 +331,91 @@ function setupCalendar() {
     },
     year:2014,
     month:0,
-    date:12,
+    date:sourceDay,
     editable: false,
     minTime:"06:00:00",
     allDaySlot:false,
     columnFormat:'dddd',
-    events:schedules[0]
+    events:getCalendarEvents(schedules[0])
   });
   //$('#calendar').fullCalendar('gotoDate', '2014-01-13');
   
 }
 
-function updateScheduleCountText() {
-  $("#schedule-count").text((currentScheduleIndex+1)+" of "+schedules.length+" possible schedules");
+function updateScheduleCountText(count) {
+  $("#schedule-count").text(count);
+}
+function updateCurrentScheduleIndex(index) {
+  $("#current-index").text(index);
 }
 
 function updateCalendarEvents() {
   $('#calendar').fullCalendar('removeEvents');
-  $('#calendar').fullCalendar('addEventSource', schedules[currentScheduleIndex]);
+  $('#calendar').fullCalendar('addEventSource', getCalendarEvents(schedules[currentScheduleIndex]));
+
+  if(currentScheduleIndex>=(batchNumber*BATCH_SIZE-1)) {
+    $("#schedule-next").attr('disabled','disabled');
+    $.ajax({
+      url: "/schedule/get-batch",
+      type: "GET",
+      data: {batch:batchNumber}, 
+      success: function (data, status) {
+        $("#error-alert").hide();
+        $("#loading").hide();
+        if(data.error) {
+          $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+        } else {
+          $("#schedule-next").removeAttr('disabled');
+          for(var index in data.results)
+            schedules.push(data.results[index]);
+          batchNumber++;
+        }
+        
+      },
+      error: function(xhr,status,error){
+         $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+         $("#loading").hide();
+      }
+    });
+  }
+}
+
+
+
+var colors = ["#16a085","#27ae60","#2980b9","#8e44ad","#2c3e50","#7f8c8d","#bdc3c7","#c0392b","#d35400"];
+
+function getCalendarEvents(sections) {
+  var events = []; 
+  //sections is an array of section ids
+  for(var j in sections) {
+    var sectionId = sections[j];
+    var section = scheduleSections[sectionId];
+    var moments = section.moments;
+    for(var k=0;k<moments.length;k++) {
+      var event = {};
+      event.title = selectedCourses[section._courseId].number+"-"+section.number;
+      event.allDay = false;
+      event.color = colors[j];
+      event.start = formatEventDate(moments[k].day, moments[k].startTime.hour, moments[k].startTime.minute);
+      event.end = formatEventDate(moments[k].day, moments[k].endTime.hour, moments[k].endTime.minute);
+
+      event.url = "/section/"+section._id;
+      events.push(event);
+    }
+  }
+
+  return events;
+}
+
+function padWith0(value) {
+  if(value<10) {
+    return "0"+value;
+  }
+  return value;
+}
+
+function formatEventDate(day, hour, minute) {
+  var pHour = padWith0(hour);
+  var pMinute = padWith0(minute);
+  return sourceYearMonth+(sourceDay+day)+'T'+pHour+":"+pMinute+":00";
 }

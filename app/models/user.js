@@ -31,6 +31,7 @@ var userSchema = mongoose.Schema({
     pendingScheduleData: {
         term: String,
         courses: [{type:ObjectId, ref:'Course'}],
+        schedules: mongoose.Schema.Types.Mixed
     }
 
 });
