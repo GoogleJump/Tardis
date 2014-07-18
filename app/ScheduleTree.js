@@ -5,8 +5,6 @@ exports.ScheduleTree= function() {
 	this.sections = {};
 	this.levels = [];
 
-	this.sectionCosts = null;
-
 	this.root = new Node(0);
 
 	this.addCourse=function(course, sections) {
@@ -51,8 +49,8 @@ exports.ScheduleTree= function() {
 		return this.root.getAllSchedules();
 	}
 
-	this.setSectionCosts = function(costs) {
-		this.sectionCosts = costs;
+	this.getAllSchedulesWithCost = function(costs) {
+		return this.root.getAllSchedulesWithCost(costs);
 	}
 
 	this.removeSections = function(sections) {
@@ -118,6 +116,29 @@ function Node(l, sId, parent) {
 		}
 		return results;
 	}
+
+	this.getAllSchedulesWithCost = function(costs) {
+		var results = [];
+		if(Object.keys(this.children).length==0) {
+			//no children... just return self;
+			return [{schedule:[this.sectionId],cost:costs[this.sectionId]}];
+		}
+		for(var index in this.children) {
+			var childSchedules = this.children[index].getAllSchedulesWithCost(costs);
+			for(var index2 in childSchedules) {
+				if(this.sectionId) {
+					childSchedules[index2].schedule.push(this.sectionId);
+					childSchedules[index2].cost += costs[this.sectionId];
+					results.push(childSchedules[index2]);
+				} else {
+					results.push(childSchedules[index2]);
+				}
+			}
+		}
+		return results;
+	}
+
+
 
 	this.removeSelfFromParent=function() {
 		if(this.parentNode) {

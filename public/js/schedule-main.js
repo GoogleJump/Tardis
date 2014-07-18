@@ -315,7 +315,7 @@ function setupCalendar() {
   currentScheduleIndex = 0;
 
   $("#schedule-prev").hide();
-  if(schedules.length>1) {
+  if(schedulesCount>1) {
     $("#schedule-next").show();
   } else {
     $("#schedule-next").hide();
@@ -385,7 +385,8 @@ function updateCalendarEvents() {
 var colors = ["#16a085","#27ae60","#2980b9","#8e44ad","#2c3e50","#7f8c8d","#bdc3c7","#c0392b","#d35400"];
 
 function getCalendarEvents(sections) {
-  var events = []; 
+  var events = [];
+  sections = sections.schedule;
   //sections is an array of section ids
   for(var j in sections) {
     var sectionId = sections[j];

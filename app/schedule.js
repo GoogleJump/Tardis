@@ -8,6 +8,9 @@ var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 var _ = require('underscore');
 
 var POTENTIAL_CUTOFF = 1000000; //if there would be more than this many nodes in the schedule tree, don't generate it
+var PREF_PREFER = 0;
+var PREF_NEUTRAL = 1;
+var PREF_NOT_PREFER = 2;
 var PREF_DO_NOT_CONSIDER =3; //value for "do not consider" section preference
 var BATCH_SIZE = 16; //number of schedules to send to the client at once
 
@@ -51,11 +54,24 @@ exports.generate = function(req, res) {
 		
 		//remove sections set as do not consider
 		var forRemoval=[];
+		var costs = {};
 		for(var sectionId in sectionPreferences) {
 			if(sectionPreferences[sectionId]==PREF_DO_NOT_CONSIDER) {
 				forRemoval.push(sectionId);
+			} else {
+				var cost = 0;
+				if(sectionPreferences[sectionId]==PREF_PREFER) {
+					cost = 20;
+				}
+				else {
+					if(sectionPreferences[sectionId]==PREF_NEUTRAL){
+						cost = 10;
+					}
+				}
+				costs[sectionId] = cost;
 			}
 		}
+
 		if(forRemoval.length>0)
 			tree.removeSections(forRemoval);
 
@@ -63,11 +79,15 @@ exports.generate = function(req, res) {
 			res.send({error:"No schedules found after removal"});
 			return;
 		}
-		var schedules = tree.getAllSchedules();
+		var schedules = tree.getAllSchedulesWithCost(costs);
+		schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
+
 		var afterDate = new Date();
 		var ms = afterDate.getTime() - beforeDate.getTime();
 		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 
+
+		//Todo: store generated schedule in it's own document; 
 		req.user.pendingScheduleData.schedules = schedules;
 		req.user.markModified('pendingScheduleData.schedules');
 		req.user.save();
