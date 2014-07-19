@@ -239,7 +239,7 @@ function displaySections(courseId) {
     var defaultButton = 1;//neutral
     if(!s.open) {
       openSymbol = 'glyphicon glyphicon-minus-sign'
-      defaultButton = 3//do not consider
+      // defaultButton = 3//do not consider //TODO: temporarily disabled during testing
     }
     var openLabel = s.status;
     var professorLabel = 'Unknown';

@@ -3,6 +3,7 @@ var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
 var Section = require('../app/models/section');
 var User = require('../app/models/user');
+var Schedule = require('../app/models/schedule');
 var ScheduleTree = require('./ScheduleTree').ScheduleTree;
 
 var _ = require('underscore');
@@ -51,7 +52,10 @@ exports.generate = function(req, res) {
 				return;
 			}
 		}
-		
+		var date1 = new Date();
+
+		console.log("adding courses took "+(date1.getTime()-beforeDate.getTime())+"ms");
+
 		//remove sections set as do not consider
 		var forRemoval=[];
 		var costs = {};
@@ -71,7 +75,8 @@ exports.generate = function(req, res) {
 				costs[sectionId] = cost;
 			}
 		}
-
+		var date2 = new Date();
+		console.log("processing preferences took "+(date2.getTime()-date1.getTime())+"ms");
 		if(forRemoval.length>0)
 			tree.removeSections(forRemoval);
 
@@ -79,18 +84,26 @@ exports.generate = function(req, res) {
 			res.send({error:"No schedules found after removal"});
 			return;
 		}
+		var date3 = new Date();
+		console.log("removing according to preferences took "+(date3.getTime()-date2.getTime())+"ms");
 		var schedules = tree.getAllSchedulesWithCost(costs);
+		var date4 = new Date();
+		console.log("getting schedules from tree took "+(date4.getTime()-date3.getTime())+"ms");
 		schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
 
-		var afterDate = new Date();
-		var ms = afterDate.getTime() - beforeDate.getTime();
-		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
+		var date5 = new Date();
+		console.log("sorting schedules by cost took "+(date5.getTime()-date4.getTime())+"ms");
 
-
-		//Todo: store generated schedule in it's own document; 
-		req.user.pendingScheduleData.schedules = schedules;
-		req.user.markModified('pendingScheduleData.schedules');
+		//Fixed: store generated schedule in it's own document; 
+		var dbSchedule = new Schedule();
+		dbSchedule.schedule = schedules;
+		req.user.pendingScheduleData._schedules = dbSchedule._id;
+		dbSchedule.markModified('schedule');
 		req.user.save();
+		dbSchedule.save();
+
+		var date6 = new Date();
+		console.log("saving schedule to user took "+(date6.getTime()-date5.getTime())+"ms");
 
 		var scheduleSections = {};
 		for(var cid in s) {
@@ -101,6 +114,9 @@ exports.generate = function(req, res) {
 			}
 		}
 
+		var date7 = new Date();
+		console.log("creating schedule sections map took "+(date7.getTime()-date6.getTime())+"ms");
+
 		if(schedules.length<=BATCH_SIZE) {
 			//send them all
 			res.send({count: schedules.length, results:schedules, sections:scheduleSections});
@@ -108,6 +124,10 @@ exports.generate = function(req, res) {
 			//only send the first batch
 			res.send({count: schedules.length, results:schedules.slice(0, BATCH_SIZE), sections:scheduleSections});
 		}
+		var afterDate = new Date();
+		console.log("sending schedules took "+(afterDate.getTime()-date7.getTime())+"ms");
+		var ms = afterDate.getTime() - beforeDate.getTime();
+		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 	});
 }
 
@@ -174,9 +194,12 @@ exports.get_pending_schedule = function(req, res) {
 
 exports.get_batch=function(req, res) {
 	var batch = parseInt(req.query.batch);
-	var schedules = req.user.pendingScheduleData.schedules;
-	var batchSchedules = schedules.slice(batch*BATCH_SIZE, (batch+1)*BATCH_SIZE);
-	res.send({results:batchSchedules});
+
+	req.user.populate({path:'pendingScheduleData._schedules'}, function(err, popUser){
+		var schedules = popUser.pendingScheduleData._schedules.schedule;
+		var batchSchedules = schedules.slice(batch*BATCH_SIZE, (batch+1)*BATCH_SIZE);
+		res.send({results:batchSchedules});
+	});
 }
 
 function getSections(courses, term, next) {
