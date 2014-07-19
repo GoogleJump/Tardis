@@ -94,7 +94,7 @@ $(function () {
     $.ajax({
       url: "/schedule/generate",
       type: "POST",
-      data: {term:$("#term").val(), courses:courseIds, sectionPreferences:sectionPreferences}, 
+      data: {term:$("#term").val(), courses:courseIds, sectionPreferences:sectionPreferences, timeRange:{start:$("#slider" ).slider("values",0),end:$("#slider" ).slider("values",1)}}, 
       success: function (data, status) {
         $("#error-alert").hide();
         $("#loading").hide();
@@ -147,6 +147,19 @@ $(function () {
       $("#"+id).collapse('hide');
     }
   });
+
+  $( "#slider" ).slider({
+      range: true,
+      min: 0,
+      max: 24,
+      values: [8, 17],
+      slide: function( event, ui ) {
+        $("#time0").text(formatTime(ui.values[0]));
+        $("#time1").text(formatTime(ui.values[1]));
+      }
+    });
+    // $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+    //   " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 
   //check for pending schedule on load
    $.ajax({
@@ -419,4 +432,19 @@ function formatEventDate(day, hour, minute) {
   var pHour = padWith0(hour);
   var pMinute = padWith0(minute);
   return sourceYearMonth+(sourceDay+day)+'T'+pHour+":"+pMinute+":00";
+}
+
+function formatTime(hr24) {
+  if(hr24<12) {
+    if(hr24==0){
+      return "midnight";
+    }
+    return hr24+"am";
+  } else{
+    if(hr24==12){
+      return "noon";
+    }
+    return (hr24-12)+"pm";
+  }
+
 }

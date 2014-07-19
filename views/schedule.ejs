@@ -9,6 +9,7 @@
 
 	<link rel="stylesheet" href="public/css/jquery-ui.min.css">
 	<link href="public/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+
 	<script src="public/js/jquery-1.11.1.min.js"></script>
   	<script src="public/js/jquery-ui.min.js"></script>
   	<script src="public/assets/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
@@ -82,7 +83,12 @@
 					<h4 class="panel-title">Schedule preferences</h4>
 				</div>
 				<div class="panel-body">
-					<br><br><br>
+					<br>
+					<div class="form-group">
+						<label>Prefered class start time range: <span id="time0">8am</span> to <span id="time1">4pm</span></label>
+						<div id="slider" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+					</div>
+					<br><br>
 				</div>
 				<div class="panel-footer">
 					<button id="create-schedule" class="btn btn-primary pull-right btn-lg">View schedules</button><div class="clearfix"></div>
