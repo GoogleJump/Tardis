@@ -211,7 +211,20 @@ function getTimeRangeCost(section, timeRange) {
 	for(var i=0;i<m.length;i++) {
 		var startHour = m[i].startTime.hour;
 		if(startHour>=timeRange.start&&startHour<=timeRange.end) {
+			//within time range: 5pt bonus
 			cost+=5;
+		}else{
+			var timeDistance = 0;
+			if(startHour<timeRange.start){
+				//startHour is before time range start
+				timeDistance = timeRange.start-startHour;
+			} else {
+				//startHour is after time range end
+				timeDistance = startHour-timeRange.end;
+			}
+			if(timeDistance<5){
+				cost+=(5-timeDistance);
+			}
 		} 
 	}
 	return cost/m.length;//get average cost across all moments of this section
