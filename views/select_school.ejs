@@ -7,6 +7,9 @@
 	<style>
 		body 		{ padding-top:10px; word-wrap:break-word; }
 	</style>
+
+	<script src="public/js/jquery-1.11.1.min.js"></script>
+	<script src="public/js/select-school-main.js"></script>
 </head>
 <body>
 <div class="container">
@@ -26,14 +29,18 @@
 			<div class="well">
 				<h3>Select your school</h3>
 				<form action="/select-school" method="post">
-					<select class="form-control" name="school">
+					<select class="form-control" name="school" id="school-select">
+						<option value="null">Choose school...</option>
 						<% for(var index in schoolArray) { %>
 							<option value="<%=schoolArray[index]._id %>"><%=schoolArray[index].name %></option>
 						<% } %>
 					</select>
 					</br>
+					<select class="form-control" name="major" id="major-select" disabled>
+						<option value="null">Select school first</option>
+					</select>
 					</br>
-					<button type="submit" class="btn btn-warning btn-lg">Next</button>
+					<button type="submit" class="btn btn-primary btn-lg pull-right">Continue</button><div class="clearfix"></div>
 				</form>
 			</div>
 
@@ -104,7 +111,7 @@
 							<option value="WY">Wyoming</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-warning btn-lg">Add</button>
+					<button type="submit" class="btn btn-default">Add</button>
 				</form>
 			</div>
 

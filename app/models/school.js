@@ -6,7 +6,8 @@ var schoolSchema = mongoose.Schema({
     name: String,
     city: String,
     state: String,
-    terms: [String]
+    terms: [String],
+    majors: [{type:mongoose.Model.Types.ObjectId, ref:'Major'}]
 });
 
 // create the model for users and expose it to our app
