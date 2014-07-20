@@ -95,12 +95,12 @@ exports.generate = function(req, res) {
 
 		schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
 
-		var date5 = new Date();
-		console.log("sorting schedules by cost took "+(date5.getTime()-date4.getTime())+"ms");
-
 		//Fixed: store generated schedule in it's own document; 
 		var dbSchedule = new Schedule();
 		dbSchedule.schedule = schedules;
+		if(req.user.pendingScheduleData._schedules){
+			removeSavedSchedule(req.user.pendingScheduleData._schedules);
+		}
 		req.user.pendingScheduleData._schedules = dbSchedule._id;
 		dbSchedule.markModified('schedule');
 		req.user.save();
@@ -215,4 +215,10 @@ function getTimeRangeCost(section, timeRange) {
 		} 
 	}
 	return cost/m.length;//get average cost across all moments of this section
+}
+
+function removeSavedSchedule(scheduleId) {
+	Schedule.findById(scheduleId).remove(function(err){
+		//noop
+	});
 }
