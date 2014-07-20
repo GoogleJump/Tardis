@@ -25,8 +25,8 @@ exports.generate = function(req, res) {
 	var courses = req.body.courses;
 	var term = req.body.term;
 	var sectionPreferences = req.body.sectionPreferences;
+	var timeRange = req.body.timeRange;
 	console.log("generating schedules");
-
 	
 	getSections(courses, term, function(s){
 		//var sections = _.sortBy(s,function(cs){return cs.length;}); //sort by number of sections (so we take the most restrictive first)
@@ -41,6 +41,16 @@ exports.generate = function(req, res) {
 			return;
 		}
 
+		//create map for sectionId:Section
+		var scheduleSections = {};
+		for(var cid in s) {
+			var course = s[cid];
+			for(var i=0;i<course.length;i++) {
+				var section = course[i];
+				scheduleSections[section._id] = section;
+			}
+		}
+
 		var tree = new ScheduleTree();
 
 		var beforeDate = new Date();
@@ -52,9 +62,6 @@ exports.generate = function(req, res) {
 				return;
 			}
 		}
-		var date1 = new Date();
-
-		console.log("adding courses took "+(date1.getTime()-beforeDate.getTime())+"ms");
 
 		//remove sections set as do not consider
 		var forRemoval=[];
@@ -64,19 +71,19 @@ exports.generate = function(req, res) {
 				forRemoval.push(sectionId);
 			} else {
 				var cost = 0;
+				cost += getTimeRangeCost(scheduleSections[sectionId], timeRange);
 				if(sectionPreferences[sectionId]==PREF_PREFER) {
-					cost = 20;
+					cost += 20;
 				}
 				else {
 					if(sectionPreferences[sectionId]==PREF_NEUTRAL){
-						cost = 10;
+						cost += 10;
 					}
 				}
 				costs[sectionId] = cost;
 			}
 		}
-		var date2 = new Date();
-		console.log("processing preferences took "+(date2.getTime()-date1.getTime())+"ms");
+
 		if(forRemoval.length>0)
 			tree.removeSections(forRemoval);
 
@@ -84,11 +91,8 @@ exports.generate = function(req, res) {
 			res.send({error:"No schedules found after removal"});
 			return;
 		}
-		var date3 = new Date();
-		console.log("removing according to preferences took "+(date3.getTime()-date2.getTime())+"ms");
 		var schedules = tree.getAllSchedulesWithCost(costs);
-		var date4 = new Date();
-		console.log("getting schedules from tree took "+(date4.getTime()-date3.getTime())+"ms");
+
 		schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
 
 		var date5 = new Date();
@@ -102,21 +106,6 @@ exports.generate = function(req, res) {
 		req.user.save();
 		dbSchedule.save();
 
-		var date6 = new Date();
-		console.log("saving schedule to user took "+(date6.getTime()-date5.getTime())+"ms");
-
-		var scheduleSections = {};
-		for(var cid in s) {
-			var course = s[cid];
-			for(var i=0;i<course.length;i++) {
-				var section = course[i];
-				scheduleSections[section._id] = section;
-			}
-		}
-
-		var date7 = new Date();
-		console.log("creating schedule sections map took "+(date7.getTime()-date6.getTime())+"ms");
-
 		if(schedules.length<=BATCH_SIZE) {
 			//send them all
 			res.send({count: schedules.length, results:schedules, sections:scheduleSections});
@@ -125,7 +114,6 @@ exports.generate = function(req, res) {
 			res.send({count: schedules.length, results:schedules.slice(0, BATCH_SIZE), sections:scheduleSections});
 		}
 		var afterDate = new Date();
-		console.log("sending schedules took "+(afterDate.getTime()-date7.getTime())+"ms");
 		var ms = afterDate.getTime() - beforeDate.getTime();
 		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 	});
@@ -215,4 +203,16 @@ function getSections(courses, term, next) {
 			}
 		});
 	}
+}
+
+function getTimeRangeCost(section, timeRange) {
+	var cost = 0;
+	var m = section.moments;
+	for(var i=0;i<m.length;i++) {
+		var startHour = m[i].startTime.hour;
+		if(startHour>=timeRange.start&&startHour<=timeRange.end) {
+			cost+=5;
+		} 
+	}
+	return cost/m.length;//get average cost across all moments of this section
 }

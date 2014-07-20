@@ -91,10 +91,12 @@ $(function () {
       }
     }
 
+    var timeRange = {start:$("#slider" ).slider("values",0),end:$("#slider" ).slider("values",1)};
+
     $.ajax({
       url: "/schedule/generate",
       type: "POST",
-      data: {term:$("#term").val(), courses:courseIds, sectionPreferences:sectionPreferences, timeRange:{start:$("#slider" ).slider("values",0),end:$("#slider" ).slider("values",1)}}, 
+      data: {term:$("#term").val(), courses:courseIds, sectionPreferences:sectionPreferences, timeRange:timeRange}, 
       success: function (data, status) {
         $("#error-alert").hide();
         $("#loading").hide();
