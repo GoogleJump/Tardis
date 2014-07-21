@@ -337,7 +337,7 @@ ul.sidebar-menu li a.active i {
 }
 
 .white-bg {
-    background: #fff;
+    background: #C2FFC2;
     border-bottom: 1px solid #f1f2f7;
 }
 
@@ -1874,6 +1874,10 @@ ul.ft-link li a i {
 
 .fontawesome-icon-list .col-sm-4, .fontawesome-icon-list .col-md-3, .fontawesome-icon-list .col-xs-6 {
     margin-bottom: 10px;
+}
+
+.movedown {
+   margin-top: 60px;
 }
 
 .fontawesome-icon-list .page-header {

@@ -1876,6 +1876,10 @@ ul.ft-link li a i {
     margin-bottom: 10px;
 }
 
+.movedown {
+   margin-top: 60px;
+}
+
 .fontawesome-icon-list .page-header {
     border-bottom: 1px solid #C9CDD7;
 }
