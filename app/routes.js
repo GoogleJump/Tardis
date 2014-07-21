@@ -7,7 +7,8 @@ var professor = require('./professor');
 var comment = require('./comment');
 var course = require('./course');
 var section = require('./section');
-var schedule = require('./schedule')
+var schedule = require('./schedule');
+var major = require('./major');
 
 module.exports = function(app, passport) {
 
@@ -70,6 +71,9 @@ module.exports = function(app, passport) {
 	app.post('/schedule/remove-course',schedule.remove_course);
 	app.get('/schedule/get-pending', schedule.get_pending_schedule);
 	app.get('/schedule/get-batch', schedule.get_batch);
+
+	app.get('/major/get', major.get);
+	app.post('/major/add', major.add);
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));

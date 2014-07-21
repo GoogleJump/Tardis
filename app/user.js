@@ -42,8 +42,10 @@ exports.view_select_school = function(req, res) {
 
 exports.select_school =  function(req, res) {
 	var school = req.body.school;
+	var major = req.body.major;
 
 	req.user._schoolId = school;
+	req.user._major = major;
 	req.user.save();
 
     res.redirect('/profile');

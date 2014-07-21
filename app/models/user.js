@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
     createdDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, default: Date.now},
     _schoolId: ObjectId,
-    _major: {type:ObjectId, ref:'Major'}
+    _major: {type:ObjectId, ref:'Major'},
     local            : {
         email        : String,
         password     : String,
