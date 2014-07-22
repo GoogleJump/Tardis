@@ -23,12 +23,22 @@ exports.add = function(req, res){
 	var name = req.body.name;
 	console.log("adding major "+name+" to school "+schoolId);
 
-	var newMajor = new Major();
-	newMajor.name = name;
-	newMajor.save();
+	//TODO: case insensitive
+	Major.findOne({name:name,_school:schoolId}, function(err, major){
+		console.log(major);
+		if(major){
+			res.send({error:"There is already a major with that name"});
+		} else{
+			var newMajor = new Major();
+			newMajor.name = name;
+			newMajor._school = schoolId;
+			newMajor.save();
 
-	School.findById(schoolId).select('majors').exec(function(err, school){
-		school.majors.push(newMajor._id);
-		school.save();
+			School.findById(schoolId).select('majors').exec(function(err, school){
+				school.majors.push(newMajor._id);
+				school.save();
+			});
+			res.send({majorId:newMajor._id,majorName:name});		
+		}
 	});
 }
