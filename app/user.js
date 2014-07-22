@@ -4,9 +4,11 @@ var User = require('../app/models/user');
 //view your own user profile
 exports.view_profile = function(req, res) {
 	School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
-		res.render('profile.ejs', {
-			user : req.user, // get the user out of session and pass to template
-			school: school
+		req.user.populate('_major', function(err, user){
+			res.render('profile.ejs', {
+				user : user, // get the user out of session and pass to template
+				school: school
+			});			
 		});
 	});
 };

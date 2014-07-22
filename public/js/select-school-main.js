@@ -54,6 +54,9 @@ $(function () {
 		         console.log("error");
 		      }
 		    });
+		} else{
+			$("#major-parent").addClass("has-error");
+		    $("#major-error-text").text("Must select school first").show();
 		}
 	});
 })
