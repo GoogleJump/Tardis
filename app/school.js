@@ -6,17 +6,18 @@ var Section = require('../app/models/section');
 var fs = require('fs');
 
 exports.add = function(req, res) {
-	var name = req.body.schoolName;
-	var city = req.body.schoolCity;
-	var state = req.body.schoolState;
+	var name = req.body.name;
+	var city = req.body.city;
+	var state = req.body.state;
+
+	console.log("adding school: "+name);
 
 	//regex to match school name case insensitively mit==MIT
 	var regex = new RegExp(["^",name,"$"].join(""),"i");
 
 	School.findOne({'name':regex}, function(err, school) {
 		if(school) {
-			req.flash('message', 'There is already a school with the name '+name);
-			res.redirect('/select-school');
+			res.send({error:'There is already a school with the name '+name});
 		} else {
 			var newSchool = new School();
 			newSchool.name = name;
@@ -24,14 +25,13 @@ exports.add = function(req, res) {
 			newSchool.state = state;
 			newSchool.save();
 
-			req.user._schoolId = newSchool._id;
-			req.user.save();
-			res.redirect('/profile');
+			res.send({schoolId:newSchool._id,schoolName:name});
 		}
-		
 	});
-
 }
+
+//			req.user._schoolId = newSchool._id;
+//			req.user.save();
 
 exports.view = function(req, res) {
 	var id = req.params.schoolId;

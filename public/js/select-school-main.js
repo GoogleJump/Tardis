@@ -2,6 +2,7 @@ var selectedSchoolId;
 
 $(function () {
 	$("#major-error-text").hide();
+	$("#school-error-text").hide();
 
 	$("#school-select").change(function(){
 		console.log("school selected");
@@ -58,6 +59,37 @@ $(function () {
 			$("#major-parent").addClass("has-error");
 		    $("#major-error-text").text("Must select school first").show();
 		}
+	});
+
+	$("#add-school-button").click(function(){
+		console.log("adding school..");
+		console.log($("#school-name-input").val());
+		 $.ajax({
+	      url: "/school/add",
+	      type: "POST",
+	      data: {name:$("#school-name-input").val(),city:$("#school-city-input").val(),state:$("#school-state-input").val()}, 
+	      success: function (data, status) {
+	      	if(data.error){
+	      		$("#school-parent").addClass("has-error");
+	      		$("#school-error-text").text(data.error).show();
+	      	} else{
+	      		$("#school-parent").removeClass("has-error");
+	      		$("#school-error-text").hide();
+		      	console.log("school added");
+		      	var schoolId= data.schoolId
+		      	var schoolName = data.schoolName;
+		      	$('#school-select').append($('<option>', { value : schoolId }).text(schoolName)); 
+		      	$("#school-select").val(schoolId).focus();
+		      	$("#school-name-input").val(""); 	
+		      	$("#school-city-input").val(""); 
+		      	$("#school-select").change();		
+	      	}
+
+	      },
+	      error: function(xhr,status,error){
+	         console.log("error");
+	      }
+		});
 	});
 })
 

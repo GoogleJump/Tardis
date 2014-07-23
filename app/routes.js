@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
 	app.get('/select-school', user.view_select_school);
 	app.post('/select-school', user.select_school);
 
-	app.post('/add-school', school.add);
+	app.post('/school/add', school.add);
 	app.get('/school/:schoolId', school.view);
 	app.get('/school/:schoolId/courses', school.view_courses);
 	app.post('/school/:schoolId/courses/update', school.update_courses);
