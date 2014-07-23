@@ -29,7 +29,13 @@
 		</div>
 	</div>
 
-	<div class="row" style="padding-bottom: 20px;">
+	<div class="row" id="back-row">
+		<div class="col-sm-12" style="padding-bottom: 20px;">
+			<button class="btn btn-warning" id="back-button"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
+		</div>
+	</div>
+
+	<div class="row" style="padding-bottom: 20px;" id="search-row">
 		<div class="col-sm-3 col-xs-12">
 			<select class="form-control input-lg" name="term" id="term" >
 				<%var terms = school.terms;%>
@@ -48,7 +54,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" id="selected-row">
 		<div class="col-xs-12">
 			<div class="panel panel-primary table-responsive">
 				<div class="panel-heading">
@@ -72,7 +78,7 @@
 					<h4 class="panel-title">Suggested courses</h4>
 				</div>
 				<div class="panel-body">
-					<br><br><br>
+					<p>(not implemented)</p><br><br>
 				</div>
 			</div>
 
@@ -83,15 +89,14 @@
 					<h4 class="panel-title">Schedule preferences</h4>
 				</div>
 				<div class="panel-body">
-					<br>
 					<div class="form-group">
-						<label>Preferred class start time: between <span id="time0">8am</span> and <span id="time1">5pm</span></label>
+						<p><strong>Preferred class time</strong>: between <span id="time0">8am</span> and <span id="time1">5pm</span></p>
 						<div id="slider" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
 					</div>
 					<br><br>
 				</div>
 				<div class="panel-footer">
-					<button id="create-schedule" class="btn btn-primary pull-right btn-lg">View schedules</button><div class="clearfix"></div>
+					<button id="create-schedule" class="btn btn-primary pull-right btn-lg">View best schedules</button><div class="clearfix"></div>
 				</div>
 			</div>
 		</div>

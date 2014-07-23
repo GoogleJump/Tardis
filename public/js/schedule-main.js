@@ -25,6 +25,8 @@ $(function () {
       'placement': 'top'
   });
 
+  $("#back-button").hide();
+
   $("#course_input").autocomplete({
       source: function (request, response) {
          $.ajax({
@@ -75,6 +77,9 @@ $(function () {
     $("#calendar").empty();
     $("#loading").show();
     $("#calendar-holder").hide();
+    $("#selected-row").hide();
+    $("#search-row").hide();
+    $("#row-after-courses").hide();
 
     var courseIds = [];
     for(var index in selectedCourses) {
@@ -102,6 +107,10 @@ $(function () {
         $("#loading").hide();
         if(data.error) {
           $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+          $("#loading").hide();
+         $("#selected-row").show();
+         $("#search-row").show();
+         $("#row-after-courses").show();
         } else {
           schedules = data.results;
           updateScheduleCountText(data.count);
@@ -115,6 +124,9 @@ $(function () {
       error: function(xhr,status,error){
          $("#error-alert").text("There was an error processing your request. Please try again later.").show();
          $("#loading").hide();
+         $("#selected-row").show();
+         $("#search-row").show();
+         $("#row-after-courses").show();
       }
     });
   });
@@ -148,6 +160,14 @@ $(function () {
     for(var id in selectedCourses) {
       $("#"+id).collapse('hide');
     }
+  });
+
+  $("#back-button").click(function(){
+    $("#back-button").hide();
+    $("#row-after-courses").show();
+    $("#calendar-holder").hide();
+    $("#search-row").show();
+    $("#selected-row").show();
   });
 
   $( "#slider" ).slider({
@@ -336,7 +356,9 @@ function setupCalendar() {
     $("#schedule-next").hide();
   }
 
-  $("#calendar-holder").show();
+  $("#calendar-holder").fadeIn();
+  $("#back-button").fadeIn();
+
   $('#calendar').fullCalendar({
     defaultView:"agendaWeek",
     header: {
