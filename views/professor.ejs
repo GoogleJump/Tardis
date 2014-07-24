@@ -93,6 +93,9 @@
 					<h3>Rate this professor</h3>
 				</div>
 				<div class="panel-body">
+					<%if(rateState==2){%>
+						<p>You have already rated this professor</p>
+					<%}else{%>
 					<%if(cUser){%>
 					<input type="hidden" id="professorId" value="<%=professor._id%>"></input>
 					<div class="form-group">
@@ -125,7 +128,7 @@
 					<button type="submit" class="btn btn-primary btn-lg pull-right" id="rate-button">Add rating</button>
 					<%} else {%>
 						<p>You must be <a href="/login">logged in</a> to rate this professor</p>
-					<%}%>
+					<%} }%>
 				</div>
 			</div>
 		</div>

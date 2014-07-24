@@ -51,6 +51,7 @@ $(function () {
 			data: reqParams, 
 			success: function (data, status) {
 				console.log("rate success");
+				location.reload();
 			},
 			error: function(xhr,status,error){
 				console.log("rate error");

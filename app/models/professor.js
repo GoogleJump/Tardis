@@ -5,7 +5,8 @@ var professorSchema = mongoose.Schema({
     name: String,
     department: String,
     _school: {type:mongoose.Schema.Types.ObjectId, ref:'School'},
-    _ratings:[{type:mongoose.Schema.Types.ObjectId, ref:'Rating'}]
+    _ratings:[{type:mongoose.Schema.Types.ObjectId, ref:'Rating'}],
+    _raters:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}]
 });
 
 module.exports = mongoose.model('Professor', professorSchema);

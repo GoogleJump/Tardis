@@ -9,11 +9,23 @@ exports.view = function(req, res) {
 	.populate('_ratings _school')
 	.exec(function(err, professor) {
 		if(err) console.log(err);
+
+		var rateState=0;// user not logged in
+		var uIndex =0;
+		if(req.user){
+			rateState = 1;//user logged in
+			uIndex = professor._raters.indexOf(req.user._id);
+			if(uIndex>=0){
+				rateState = 2;//user already rated this prof
+			}
+		}
+
 		if(professor) {
 			if(professor._ratings.length==0){
 				res.render('professor.ejs', {
 					professor : professor,
-					cUser: req.user
+					cUser: req.user,
+					rateState: rateState
 				});						
 			} else {
 				var posterMap = {};
@@ -28,7 +40,8 @@ exports.view = function(req, res) {
 								res.render('professor.ejs', {
 									professor : professor,
 									posterMap: posterMap,
-									cUser: req.user
+									cUser: req.user,
+									rateState: rateState
 								});						
 							}
 						});
@@ -39,7 +52,8 @@ exports.view = function(req, res) {
 							res.render('professor.ejs', {
 								professor : professor,
 								posterMap: posterMap,
-								cUser: req.user
+								cUser: req.user,
+								rateState: rateState
 							});						
 						}
 					}

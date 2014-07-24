@@ -38,6 +38,7 @@ exports.rate = function(req, res) {
 
 	Professor.findById(professorId, function(err, professor){
 		professor._ratings.push(newRating._id);
+		professor._raters.push(req.user._id);
 		professor.save();
 	});
 
