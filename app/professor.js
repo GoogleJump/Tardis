@@ -3,6 +3,8 @@ var Professor = require('../app/models/professor');
 var Rating = require('../app/models/rating');
 var User = require('../app/models/user');
 
+var _ = require('underscore');
+
 exports.view = function(req, res) {
 	var id = req.params.professorId;
 	Professor.findById(id)
@@ -30,6 +32,7 @@ exports.view = function(req, res) {
 			} else {
 				var posterMap = {};
 				var count = 0;
+				professor._ratings = _.sortBy(professor._ratings, function(rating){return -rating.score;});
 				for(var i=0;i<professor._ratings.length;i++){
 					if(professor._ratings[i]._poster) {
 						User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){

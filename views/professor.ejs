@@ -47,24 +47,23 @@
 						<%for(var i=0;i<professor._ratings.length;i++){%>
 							<%var r = professor._ratings[i];%>
 							<li class="list-group-item">
-								<div class="col-xs-1">
+								<div class="col-xs-1" style="text-align:center;">
 									<button class="btn btn-link pull-left" onclick='upvote("<%=r._id%>");'><span class="glyphicon glyphicon-chevron-up"></span></button><br>
-									<p class="text-center"><span id="score-<%=r._id%>" class=""><%=r.score%></span></p>
+									<p id="score-<%=r._id%>" style="margin-bottom:0px;width:40px;"><%=r.score%></p>
 									<button class="btn btn-link pull-left" onclick='upvote("<%=r._id%>", true);'><span class="glyphicon glyphicon-chevron-down"></span></button>
 								</div>
 								<div class="col-xs-11">
 									<ul class="list-inline col-sm-12">
+										<%if(r.recommend){%>
+											<li class="label label-success" title="would recommend"><span class="glyphicon glyphicon-ok"></span></li>
+										<%} else {%>
+											<li class="label label-warning" title="would not recommend"><span class="glyphicon glyphicon-remove"></span></li>
+										<%}%>
+
 										<li><strong>Overall</strong> <span class="label label-primary"><%=parseFloat(r.overall).toFixed(1)%></span></li>
 										<li>Helpfulness <span class="label label-info"><%=r.helpfulness%></span></li>
 										<li>Difficulty <span class="label label-info"><%=r.difficulty%></span></li>
 										<li>Clarity <span class="label label-info"><%=r.clarity%></span></li>
-									
-									<%if(r.recommend){%>
-										<li class="label label-success" title="would recommend"><span class="glyphicon glyphicon-ok"></span></li>
-									<%} else {%>
-										<li class="label label-warning" title="would not recommend"><span class="glyphicon glyphicon-remove"></span></li>
-									<%}%>
-									
 									</ul>
 									<blockquote class="col-sm-12">
 										<p><%=r.comment%></p>
