@@ -48,29 +48,34 @@
 							<%var r = professor._ratings[i];%>
 							<li class="list-group-item">
 								<div class="col-xs-1">
-									<a href="#"><span class="glyphicon glyphicon-chevron-up pull-left"></span></a><br>
-									<p class="text-center"><span id="score" class=""><%=r.score%></span></p>
-									<a href="#"><span class="glyphicon glyphicon-chevron-down pull-left"></span></a>
+									<button class="btn btn-link pull-left" onclick='upvote("<%=r._id%>");'><span class="glyphicon glyphicon-chevron-up"></span></button><br>
+									<p class="text-center"><span id="score-<%=r._id%>" class=""><%=r.score%></span></p>
+									<button class="btn btn-link pull-left" onclick='upvote("<%=r._id%>", true);'><span class="glyphicon glyphicon-chevron-down"></span></button>
 								</div>
 								<div class="col-xs-11">
-									<span class="label label-primary"><%=r.helpfulness%></span>
-									<span class="label label-primary"><%=r.difficulty%></span>
-									<span class="label label-primary"><%=r.clarity%></span>
+									<ul class="list-inline col-sm-11">
+										<li>Helpfulness <span class="label label-primary"><%=r.helpfulness%></span></li>
+										<li>Difficulty <span class="label label-primary"><%=r.difficulty%></span></li>
+										<li>Clarity <span class="label label-primary"><%=r.clarity%></span></li>
+									</ul>
 									<%if(r.recommend){%>
-										<span class="label label-success pull-right">Would recommend</span>
+										<span class="label label-success col-sm-1" title="would recommend"><span class="glyphicon glyphicon-ok"></span></span>
 									<%} else {%>
-										<span class="label label-warning pull-right">Would not recommend</span>
+										<span class="label label-warning col-sm-1" title="would not recommend"><span class="glyphicon glyphicon-remove"></span></span>
 									<%}%>
-									<p><%=r.comment%></p>
-									<p class="pull-right"><small>
-										posted by 
-										<%if(r._poster){%>
-										<%=posterMap[r._poster].username%> <span class="badge"><%=posterMap[r._poster].reputation%></span>
-										<%}else{%>
-										anonymous
-										<%}%>
-									</small>
-									</p>
+									<blockquote class="col-sm-12">
+										<p><%=r.comment%></p>
+
+										<footer>
+											posted by 
+											<%if(r._poster){%>
+											<%=posterMap[r._poster].username%> <span class="badge"><%=posterMap[r._poster].reputation%></span>
+											<%}else{%>
+											anonymous
+											<%}%>
+										
+										</footer>
+									</blockquote>
 								</div>
 								<div class="clearfix"></div>
 							</li>

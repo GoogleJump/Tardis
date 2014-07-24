@@ -60,7 +60,25 @@ $(function () {
 });
 
 function upvote(ratingId, down) {
-	console.log("upvoting "+ratingId);
+	console.log("voting "+ratingId);
+	var url ="/rating/"+ratingId+"/";
+	if(down){
+		url += "downvote";
+	} else {
+		url+="upvote";
+	}
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: {}, 
+		success: function (data, status) {
+			console.log("vote success: "+data);
+			$("#score-"+ratingId).text(data);
+		},
+		error: function(xhr,status,error){
+			console.log("vote error");
+		}
+	});
 }
 
 

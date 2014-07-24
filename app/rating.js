@@ -65,6 +65,11 @@ exports.rate = function(req, res) {
 exports.upvote = function(req, res) {
 	var ratingId = req.params.ratingId;
 
+	if(!req.user) {
+		res.send(500);
+		return;
+	}
+
 	Rating.findById(ratingId, function(err, rating) {
 		var upvoteIndex = rating.upvoters.indexOf(req.user._id);
 		var delta = 0;
@@ -103,6 +108,11 @@ exports.upvote = function(req, res) {
 exports.downvote = function(req, res) {
 	var ratingId = req.params.ratingId;
 
+	if(!req.user) {
+		res.send(500);
+		return;
+	}
+
 	Rating.findById(ratingId, function(err, rating) {
 		var upvoteIndex = rating.upvoters.indexOf(req.user._id);
 		var delta = 0;
@@ -127,8 +137,8 @@ exports.downvote = function(req, res) {
 
 		rating.save();
 
-		if(comment._poster) {
-			User.findById(comment._poster, function(err, user) {
+		if(rating._poster) {
+			User.findById(rating._poster, function(err, user) {
 				user.reputation+=delta;
 				user.save();
 			});
