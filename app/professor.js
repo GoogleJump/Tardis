@@ -17,17 +17,32 @@ exports.view = function(req, res) {
 				});						
 			} else {
 				for(var i=0;i<professor._ratings.length;i++){
-					var posters = [];
-					User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){
-						posters.push(poster);
-						if(i==professor._ratings.length-1) {
+					var posterMap = {};
+					var count = 0;
+					if(professor._ratings[i]._poster) {
+						User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){
+							posterMap[poster._id] = poster;
+							count++;
+							if(count==professor._ratings.length) {
+								//done populating posters
+								console.log("prof: "+JSON.stringify(professor));
+								res.render('professor.ejs', {
+									professor : professor,
+									posterMap: posterMap
+								});						
+							}
+						});
+					} else {
+						count++;
+						if(count==professor._ratings.length) {
 							//done populating posters
 							console.log("prof: "+JSON.stringify(professor));
 							res.render('professor.ejs', {
-								professor : professor
+								professor : professor,
+								posterMap: posterMap
 							});						
 						}
-					});
+					}
 				}				
 			}
 		} else {

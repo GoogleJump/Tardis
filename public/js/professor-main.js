@@ -38,8 +38,8 @@ $(function () {
 
 		var reqParams = {};
 		reqParams.professorId = $("#professorId").val();
-		reqParams.anon = $("#rating-anon").attr('checked');
-		reqParams.recommend = $('#rating-recommend').attr('checked');
+		reqParams.anon = $("#rating-anon").is(':checked');
+		reqParams.recommend = $('#rating-recommend').is(':checked');
 		reqParams.helpfulness = $("#slider-helpfulness" ).slider("value");
 		reqParams.difficulty = $("#slider-difficulty" ).slider("value");
 		reqParams.clarity = $("#slider-clarity" ).slider("value");
@@ -47,7 +47,7 @@ $(function () {
 
 		console.log(reqParams);
 		$.ajax({
-			url: "/professor/"+professorId+"/rate",
+			url: "/professor/"+reqParams.professorId+"/rate",
 			type: "POST",
 			data: reqParams, 
 			success: function (data, status) {

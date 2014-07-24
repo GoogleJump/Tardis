@@ -48,6 +48,13 @@
 						<%for(var i=0;i<professor._ratings.length;i++){%>
 						<%var r = professor._ratings[i];%>
 							<%=r.comment%><br>
+							<%if(r._poster){%>
+							by <%=posterMap[r._poster].username%>
+							<%}else{%>
+							by anon
+							<%}%>
+							<br><br>
+
 						<%}%>
 					</p>
 				</div>
