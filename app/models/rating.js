@@ -5,6 +5,7 @@ var ObjectId  = mongoose.Schema.Types.ObjectId;
 
 var ratingSchema = mongoose.Schema({
 	helpfulness: Number,
+    overall: Number,
 	difficulty: Number,
 	clarity: Number,
 	recommend: Boolean,

@@ -53,16 +53,19 @@
 									<button class="btn btn-link pull-left" onclick='upvote("<%=r._id%>", true);'><span class="glyphicon glyphicon-chevron-down"></span></button>
 								</div>
 								<div class="col-xs-11">
-									<ul class="list-inline col-sm-11">
-										<li>Helpfulness <span class="label label-primary"><%=r.helpfulness%></span></li>
-										<li>Difficulty <span class="label label-primary"><%=r.difficulty%></span></li>
-										<li>Clarity <span class="label label-primary"><%=r.clarity%></span></li>
-									</ul>
+									<ul class="list-inline col-sm-12">
+										<li><strong>Overall</strong> <span class="label label-primary"><%=parseFloat(r.overall).toFixed(1)%></span></li>
+										<li>Helpfulness <span class="label label-info"><%=r.helpfulness%></span></li>
+										<li>Difficulty <span class="label label-info"><%=r.difficulty%></span></li>
+										<li>Clarity <span class="label label-info"><%=r.clarity%></span></li>
+									
 									<%if(r.recommend){%>
-										<span class="label label-success col-sm-1" title="would recommend"><span class="glyphicon glyphicon-ok"></span></span>
+										<li class="label label-success" title="would recommend"><span class="glyphicon glyphicon-ok"></span></li>
 									<%} else {%>
-										<span class="label label-warning col-sm-1" title="would not recommend"><span class="glyphicon glyphicon-remove"></span></span>
+										<li class="label label-warning" title="would not recommend"><span class="glyphicon glyphicon-remove"></span></li>
 									<%}%>
+									
+									</ul>
 									<blockquote class="col-sm-12">
 										<p><%=r.comment%></p>
 

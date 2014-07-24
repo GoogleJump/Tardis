@@ -3,9 +3,9 @@ var User = require('../app/models/user');
 var Professor = require('../app/models/professor');
 
 exports.rate = function(req, res) {
-	var helpfulness = req.body.helpfulness;
-	var difficulty = req.body.difficulty;
-	var clarity = req.body.clarity;
+	var helpfulness = parseInt(req.body.helpfulness);
+	var difficulty = parseInt(req.body.difficulty);
+	var clarity = parseInt(req.body.clarity);
 	var recommend = req.body.recommend=='true';
 	var comment = req.body.comment;
 	var anon = req.body.anon=='true';
@@ -25,6 +25,8 @@ exports.rate = function(req, res) {
 	newRating.clarity = clarity;
 	newRating.recommend = recommend;
 	newRating.comment = comment;
+
+	newRating.overall = (helpfulness+difficulty+clarity)/3;
 
 	if(anon) {
 		console.log("anon");
