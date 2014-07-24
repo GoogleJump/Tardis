@@ -10,25 +10,25 @@ exports.view = function(req, res) {
 	.exec(function(err, professor) {
 		if(err) console.log(err);
 		if(professor) {
-			console.log("professor: "+JSON.stringify(professor));
 			if(professor._ratings.length==0){
 				res.render('professor.ejs', {
-					professor : professor
+					professor : professor,
+					cUser: req.user
 				});						
 			} else {
+				var posterMap = {};
+				var count = 0;
 				for(var i=0;i<professor._ratings.length;i++){
-					var posterMap = {};
-					var count = 0;
 					if(professor._ratings[i]._poster) {
 						User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){
 							posterMap[poster._id] = poster;
 							count++;
 							if(count==professor._ratings.length) {
 								//done populating posters
-								console.log("prof: "+JSON.stringify(professor));
 								res.render('professor.ejs', {
 									professor : professor,
-									posterMap: posterMap
+									posterMap: posterMap,
+									cUser: req.user
 								});						
 							}
 						});
@@ -36,10 +36,10 @@ exports.view = function(req, res) {
 						count++;
 						if(count==professor._ratings.length) {
 							//done populating posters
-							console.log("prof: "+JSON.stringify(professor));
 							res.render('professor.ejs', {
 								professor : professor,
-								posterMap: posterMap
+								posterMap: posterMap,
+								cUser: req.user
 							});						
 						}
 					}

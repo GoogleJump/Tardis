@@ -3,7 +3,6 @@ var difficultyLabels= ["very hard", "hard", "moderate", "easy", "very easy"];
 var clarityLabels = ["did not understand anything","not understandable","average","understandable", "very understandable"]
 
 $(function () {
-
 	//Rating sliders
 	 $("#slider-helpfulness").slider({
       min: 0,
@@ -58,8 +57,12 @@ $(function () {
 			}
 		});
 	});
-
 });
+
+function upvote(ratingId, down) {
+	console.log("upvoting "+ratingId);
+}
+
 
 
 						// <% for(var index=0;index<comments.length;index++) {%>

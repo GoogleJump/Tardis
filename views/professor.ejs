@@ -9,7 +9,6 @@
 	<style>
 		body 		{ padding-top:10px; word-wrap:break-word; }
 	</style>
-	<script src="/public/js/main.js" type="text/javascript"></script>
 
 	<script src="/public/js/jquery-1.11.1.min.js"></script>
   	<script src="/public/js/jquery-ui.min.js"></script>
@@ -43,21 +42,43 @@
 				<div class="panel-heading">
 					<h3>Ratings</h3>
 				</div>
-				<div class="panel-body">
-					<p>
+				<%if(professor._ratings.length>0){%>
+					<div class="list-group">
 						<%for(var i=0;i<professor._ratings.length;i++){%>
-						<%var r = professor._ratings[i];%>
-							<%=r.comment%><br>
-							<%if(r._poster){%>
-							by <%=posterMap[r._poster].username%>
-							<%}else{%>
-							by anon
-							<%}%>
-							<br><br>
-
+							<%var r = professor._ratings[i];%>
+							<li class="list-group-item">
+								<div class="col-xs-1">
+									<a href="#"><span class="glyphicon glyphicon-chevron-up pull-left"></span></a><br>
+									<p class="text-center"><span id="score" class=""><%=r.score%></span></p>
+									<a href="#"><span class="glyphicon glyphicon-chevron-down pull-left"></span></a>
+								</div>
+								<div class="col-xs-11">
+									<span class="label label-primary"><%=r.helpfulness%></span>
+									<span class="label label-primary"><%=r.difficulty%></span>
+									<span class="label label-primary"><%=r.clarity%></span>
+									<%if(r.recommend){%>
+										<span class="label label-success pull-right">Would recommend</span>
+									<%} else {%>
+										<span class="label label-warning pull-right">Would not recommend</span>
+									<%}%>
+									<p><%=r.comment%></p>
+									<p class="pull-right"><small>
+										posted by 
+										<%if(r._poster){%>
+										<%=posterMap[r._poster].username%> <span class="badge"><%=posterMap[r._poster].reputation%></span>
+										<%}else{%>
+										anonymous
+										<%}%>
+									</small>
+									</p>
+								</div>
+								<div class="clearfix"></div>
+							</li>
 						<%}%>
-					</p>
-				</div>
+					</div>
+				<%} else {%>
+					<div class="panel-body">No ratings yet. Why don't you add one?</div>
+				<%}%>
 			</div>
 		</div>
 			
@@ -67,6 +88,7 @@
 					<h3>Rate this professor</h3>
 				</div>
 				<div class="panel-body">
+					<%if(cUser){%>
 					<input type="hidden" id="professorId" value="<%=professor._id%>"></input>
 					<div class="form-group">
 						<p><strong>Helpfulness</strong>: <span id="helpfulness-label">average</span></p>
@@ -96,6 +118,9 @@
 					   </label>
 					</div>
 					<button type="submit" class="btn btn-primary btn-lg pull-right" id="rate-button">Add rating</button>
+					<%} else {%>
+						<p>You must be <a href="/login">logged in</a> to rate this professor</p>
+					<%}%>
 				</div>
 			</div>
 		</div>

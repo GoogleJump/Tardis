@@ -6,20 +6,31 @@ exports.rate = function(req, res) {
 	var helpfulness = req.body.helpfulness;
 	var difficulty = req.body.difficulty;
 	var clarity = req.body.clarity;
-	var recommend = req.body.recommend;
+	var recommend = req.body.recommend=='true';
 	var comment = req.body.comment;
-	var anon = req.body.anon;
+	var anon = req.body.anon=='true';
 	var professorId = req.body.professorId;
 
-	console.log("rating prof "+professorId+" recommend? "+recommend+" comment: "+comment+" "+helpfulness);
+	console.log("rating prof "+professorId+" recommend? "+recommend+" anon "+anon+" comment: "+comment+" "+helpfulness);
+
+	if(!req.user){
+		res.send(500);
+		return;
+	}
 
 
 	var newRating = new Rating();
+	newRating.helpfulness = helpfulness;
+	newRating.difficulty = difficulty;
+	newRating.clarity = clarity;
+	newRating.recommend = recommend;
 	newRating.comment = comment;
 
 	if(anon) {
+		console.log("anon");
 		newRating._poster = null;
 	} else {
+		console.log("poster: "+req.user);
 		newRating._poster = req.user._id;
 	}
 
