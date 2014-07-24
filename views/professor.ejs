@@ -34,15 +34,15 @@
 			<p>
 				<strong>Name</strong>: <%= professor.name %><br>
 				<strong>Department</strong>: <%= professor.department %><br>
-				<strong>Average rating</strong>: <%= parseFloat(professor.getAverageRating()).toFixed(1)%><br>
+				<strong>Average rating</strong>: <%= professor.getAverageRating()%><br>
 				<strong>Percent recommending</strong>: <%= professor.getRecommendPercent()%><br>
 			</p>
 		</div>
 
-		<div class="col-md-6">
+		<div class="col-md-7">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3>Ratings</h3>
+					<h4>Ratings (<%=professor._ratings.length%>)</h4>
 				</div>
 				<%if(professor._ratings.length>0){%>
 					<div class="list-group">
@@ -91,10 +91,10 @@
 			</div>
 		</div>
 			
-		<div class="col-md-6">
+		<div class="col-md-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3>Rate this professor</h3>
+					<h4>Rate this professor</h4>
 				</div>
 				<div class="panel-body">
 					<%if(rateState==2){%>

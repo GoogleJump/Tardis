@@ -10,14 +10,16 @@ var professorSchema = mongoose.Schema({
 });
 
 professorSchema.methods.getAverageRating = function() {
+	if(this._ratings.length==0) return 'No data';
     var sum=0;
     for(var i=0;i<this._ratings.length;i++) {
     	sum+=this._ratings[i].overall;
     }
-    return sum/this._ratings.length;
+    return parseFloat(sum/this._ratings.length).toFixed(1);
 };
 
 professorSchema.methods.getRecommendPercent = function() {
+	if(this._ratings.length==0) return 'No data';
     var sum=0;
     for(var i=0;i<this._ratings.length;i++) {
     	if(this._ratings[i].recommend){
