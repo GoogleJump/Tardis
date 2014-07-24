@@ -33,6 +33,48 @@ $(function () {
       }
     });
 
+	$("#rate-button").click(function(){
+		console.log("rating");
 
+		var reqParams = {};
+		reqParams.professorId = $("#professorId").val();
+		reqParams.anon = $("#rating-anon").attr('checked');
+		reqParams.recommend = $('#rating-recommend').attr('checked');
+		reqParams.helpfulness = $("#slider-helpfulness" ).slider("value");
+		reqParams.difficulty = $("#slider-difficulty" ).slider("value");
+		reqParams.clarity = $("#slider-clarity" ).slider("value");
+		reqParams.comment = $("#rating-comment").val();
+
+		console.log(reqParams);
+		$.ajax({
+			url: "/professor/"+professorId+"/rate",
+			type: "POST",
+			data: reqParams, 
+			success: function (data, status) {
+				console.log("rate success");
+			},
+			error: function(xhr,status,error){
+				console.log("rate error");
+			}
+		});
+	});
 
 });
+
+
+						// <% for(var index=0;index<comments.length;index++) {%>
+						// 	<%var c = comments[index];%>
+						// 	<%var p = c._poster;%>
+						// 	<span id='reputation-<%=c._id%>'><B><%=c.helpfulness%></B></span> <%=c.comment%> 
+						// 	<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=c._id%>', false);" />
+						// 	<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=c._id%>', true);" /><br>
+						// 	<%if(p) {%>
+						// 		posted by <a href="/user/<%=p._id%>"><%=p.username%></a> (<%=p.reputation%>)
+						// 	<%} else {%>
+						// 		posted anonymously
+						// 	<%}%>
+						// 	<br><br>
+						// <%}%>
+						// <% if (comments.length==0) {%>
+						// 	No comments to show
+						// <%}%>

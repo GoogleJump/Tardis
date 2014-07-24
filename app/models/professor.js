@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var professorSchema = mongoose.Schema({
     name: String,
     department: String,
-    _schoolId: mongoose.Schema.Types.ObjectId
+    _school: {type:mongoose.Schema.Types.ObjectId, ref:'School'},
+    _ratings:[{type:mongoose.Schema.Types.ObjectId, ref:'Rating'}]
 });
 
 module.exports = mongoose.model('Professor', professorSchema);

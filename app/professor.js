@@ -1,29 +1,39 @@
 var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
-var Comment = require('../app/models/comment');
+var Rating = require('../app/models/rating');
 var User = require('../app/models/user');
 
 exports.view = function(req, res) {
 	var id = req.params.professorId;
-	Professor.findOne({'_id':id}, function(err, professor) {
+	Professor.findById(id)
+	.populate('_ratings _school')
+	.exec(function(err, professor) {
+		if(err) console.log(err);
 		if(professor) {
-			School.findOne({ '_id' : professor._schoolId }, function(err, school) {
-				Comment.find({'type':'professor', '_onId':id})
-				.populate('_poster')
-				.exec(function(err, comments) {
-					console.log(comments);
-					res.render('professor.ejs', {
-						professor : professor, 
-						school: school,
-						comments: comments
+			console.log("professor: "+JSON.stringify(professor));
+			if(professor._ratings.length==0){
+				res.render('professor.ejs', {
+					professor : professor
+				});						
+			} else {
+				for(var i=0;i<professor._ratings.length;i++){
+					var posters = [];
+					User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){
+						posters.push(poster);
+						if(i==professor._ratings.length-1) {
+							//done populating posters
+							console.log("prof: "+JSON.stringify(professor));
+							res.render('professor.ejs', {
+								professor : professor
+							});						
+						}
 					});
-				});
-			});
+				}				
+			}
 		} else {
 			//Error!
 			res.redirect('/error');
 		}
-		
 	});
 };
 
@@ -51,22 +61,4 @@ exports.add = function(req, res) {
 		
 	});
 
-};
-
-exports.comment = function(req, res) {
-	var comment = req.body.comment;
-	var anon = req.body.anon;
-	var professorId = req.params.professorId;
-
-	var newComment = new Comment();
-	newComment.comment = comment;
-	newComment.type = 'professor';
-	newComment._onId = professorId;
-	if(!anon)
-		newComment._poster = req.user._id;
-	else
-		newComment._poster = null;
-	newComment.save(function(err){
-		res.redirect('/professor/'+professorId);
-	});
 };

@@ -37,7 +37,7 @@ exports.view = function(req, res) {
 	var id = req.params.schoolId;
 	School.findOne({'_id':id}, function(err, school) {
 		if(school) {
-			Professor.find({'_schoolId':id}, function(err, professors) {
+			Professor.find({'_school':id}, function(err, professors) {
 				res.render('school.ejs', {school:school, professors:professors, message: req.flash('message')});
 			});
 		} else {
@@ -183,13 +183,13 @@ function createSectionFromJSON(course, term, jsonSection, next) {
 				newSection.save();
 				return next();
 			}
-			Professor.findOne({"name":jsonSection.professor,"_schoolId":course._schoolId}, function(err, professor){
+			Professor.findOne({"name":jsonSection.professor,"_school":course._schoolId}, function(err, professor){
 				if(professor) {
 					newSection._professor = professor._id;
 				} else {
 					var newProfessor = new Professor();
 					newProfessor.name = jsonSection.professor;
-					newProfessor._schoolId = course._schoolId;
+					newProfessor._school = course._schoolId;
 					newProfessor.department = course.department;
 					newSection._professor = newProfessor._id;
 

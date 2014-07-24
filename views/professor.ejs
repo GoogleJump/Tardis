@@ -28,7 +28,7 @@
 		<div class="col-sm-12">
 			<ol class="breadcrumb">
 			  <li><a href="/">Home</a></li>
-			  <li><a href="/school/<%=school._id%>"><%=school.name%></a></li>
+			  <li><a href="/school/<%=professor._school._id%>"><%=professor._school.name%></a></li>
 			  <li class="active"><%= professor.name %></li>
 			</ol>
 			<h3></span>Professor details</h3>
@@ -45,21 +45,9 @@
 				</div>
 				<div class="panel-body">
 					<p>
-						<% for(var index=0;index<comments.length;index++) {%>
-							<%var c = comments[index];%>
-							<%var p = c._poster;%>
-							<span id='reputation-<%=c._id%>'><B><%=c.helpfulness%></B></span> <%=c.comment%> 
-							<input input id="upvote" type="button" value="Upvote" onclick="upvote('<%=c._id%>', false);" />
-							<input input id="downvote" type="button" value="Downvote" onclick="upvote('<%=c._id%>', true);" /><br>
-							<%if(p) {%>
-								posted by <a href="/user/<%=p._id%>"><%=p.username%></a> (<%=p.reputation%>)
-							<%} else {%>
-								posted anonymously
-							<%}%>
-							<br><br>
-						<%}%>
-						<% if (comments.length==0) {%>
-							No comments to show
+						<%for(var i=0;i<professor._ratings.length;i++){%>
+						<%var r = professor._ratings[i];%>
+							<%=r.comment%><br>
 						<%}%>
 					</p>
 				</div>
@@ -72,36 +60,35 @@
 					<h3>Rate this professor</h3>
 				</div>
 				<div class="panel-body">
-					<form action="/professor/<%=professor._id%>/comment" method="post">
-						<div class="form-group">
-							<p><strong>Helpfulness</strong>: <span id="helpfulness-label">average</span></p>
-							<div id="slider-helpfulness" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
-						</div>
-						<div class="form-group">
-							<p><strong>Difficulty</strong>: <span id="difficulty-label">moderate</span></p>
-							<div id="slider-difficulty" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
-						</div>
-						<div class="form-group">
-							<p><strong>Clarity</strong>: <span id="clarity-label">average</span></p>
-							<div id="slider-clarity" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
-						</div>
-						<div class="checkbox">
-		                   <label>
-						    <input type="checkbox" name="refer">
-						    Would you recommend this professor to a friend?
-						  </label>
-                        </div>
-						<div class="form-group">
-							<label>Comment:</label>
-							<textarea rows="4" cols="50" class="form-control" name="comment"></textarea>
-						</div>
-						<div class="checkbox">
-						  <label>
-						  	<input type="checkbox" name="anon"> Post anonymously
-						   </label>
-						</div>
-						<button type="submit" class="btn btn-primary btn-lg pull-right">Add rating</button>
-					</form>
+					<input type="hidden" id="professorId" value="<%=professor._id%>"></input>
+					<div class="form-group">
+						<p><strong>Helpfulness</strong>: <span id="helpfulness-label">average</span></p>
+						<div id="slider-helpfulness" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+					</div>
+					<div class="form-group">
+						<p><strong>Difficulty</strong>: <span id="difficulty-label">moderate</span></p>
+						<div id="slider-difficulty" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+					</div>
+					<div class="form-group">
+						<p><strong>Clarity</strong>: <span id="clarity-label">average</span></p>
+						<div id="slider-clarity" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"></div>
+					</div>
+					<div class="checkbox">
+	                   <label>
+					    <input type="checkbox" id="rating-recommend">
+					    Would you recommend this professor to a friend?
+					  </label>
+                    </div>
+					<div class="form-group">
+						<label>Comment:</label>
+						<textarea rows="4" cols="50" class="form-control" id="rating-comment"></textarea>
+					</div>
+					<div class="checkbox">
+					  <label>
+					  	<input type="checkbox" id="rating-anon"> Post anonymously
+					   </label>
+					</div>
+					<button type="submit" class="btn btn-primary btn-lg pull-right" id="rate-button">Add rating</button>
 				</div>
 			</div>
 		</div>

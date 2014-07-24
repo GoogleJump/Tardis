@@ -4,7 +4,7 @@ var fs = require('fs'), express = require('express');
 var user = require('./user'); 
 var school = require('./school'); 
 var professor = require('./professor');
-var comment = require('./comment');
+var rating = require('./rating');
 var course = require('./course');
 var section = require('./section');
 var schedule = require('./schedule');
@@ -52,10 +52,10 @@ module.exports = function(app, passport) {
 
 	app.get('/professor/:professorId', professor.view);
 	app.post('/add-professor/:schoolId', professor.add);
-	app.post('/professor/:professorId/comment', professor.comment);
 
-	app.post('/comment/:commentId/upvote', comment.upvote);
-	app.post('/comment/:commentId/downvote', comment.downvote);
+	app.post('/professor/:professorId/rate', rating.rate);
+	app.post('/rating/:ratingId/upvote', rating.upvote);
+	app.post('/rating/:ratingId/downvote', rating.downvote);
 
 	app.get('/course/:courseId', course.view);
 
