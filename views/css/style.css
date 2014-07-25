@@ -39,11 +39,27 @@ a, a:hover, a:focus {
 
 .login-body {
     background-color: #f1f2f7;
+    background-image: url("http://wallpaperscraft.com/image/books_board_chalk_inscription_school_63404_1920x1080.jpg?orig=1");
+    background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-image-opacity: 0.5;
+}
+
+.loginheading{
+    color: #fff;
+    position: center;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .form-signin {
     max-width: 330px;
-    margin: 100px auto 0;
+    margin: 40px auto 0;
     background: #fff;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -367,7 +383,23 @@ a.logonew{
     text-shadow: 1px 1px #006600;
 }
 
-a.logo:hover, a.logo:focus {
+a.loginlogo{
+
+    font-size: 35px;
+    color: #6DCD6D;
+    float: center;
+    text-align:centre;
+    margin-top: 40px;
+    font-weight:bold;
+    
+    text-transform: uppercase;   
+}
+
+a.loginlogo span {
+    color: #E6F0FF;
+}
+
+a.logo:hover, a.logo:focus, a.loginlogo, a.logonew {
     font-weight: bold
     text-decoration: underline;
     outline: none;
