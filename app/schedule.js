@@ -128,17 +128,41 @@ exports.add_course = function(req, res) {
 
 	//TODO: term
 	Section.find({_courseId:courseId})
-		.populate('_professor', 'name')
-		.select('number open _professor meet_time status')
-		.sort('number')
-		.exec(function(err, sections){
-			if(err) {
-				res.send({error:"Could not find sections"});
-				return;
+	.populate('_professor', 'name')
+	.select('number open _professor meet_time status')
+	.sort('number')
+	.exec(function(err, sections){
+		if(err) {
+			res.send({error:"Could not find sections"});
+			return;
+		}
+		var count=0;
+		for(var i=0;i<sections.length;i++) {
+			if(sections[i]._professor){
+				Professor.findById(sections[i]._professor._id, profCallback(i));
+			} else {
+				profCallback(-1)();
 			}
-			res.send({sections:JSON.stringify(sections)});
-		});
+			
+		}
+		function profCallback(index){
+			return function(err, professor){
+				if(index>=0){
+					console.log(index+" setting rp: "+professor.getAverageRating());
+					sections[index]._professor.recommendPercent = professor.getRecommendPercent();
+					console.log("prof now: "+JSON.stringify(sections[index]._professor));
+				}
+				count++;
+				if(count==sections.length) {
+					console.log("sending "+JSON.stringify(sections));
+					res.send({sections:JSON.stringify(sections)});
+				}
+			}
+		}
+	});
 }
+
+
 
 exports.remove_course = function(req, res) {
 	var courseId = req.body.courseId;

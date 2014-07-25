@@ -278,14 +278,17 @@ function displaySections(courseId) {
     }
     var openLabel = s.status;
     var professorLabel = 'Unknown';
+    var recommendPercent;
     if(s._professor) {
       professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a>";
+      recommendPercent = s._professor.recommendPercent;
+      console.log(recommendPercent+" rp");
     }
     var meetTimeLabel = 'Unknown';
     if(s.meet_time) {
       meetTimeLabel = s.meet_time;
     }
-
+    
     content+="<tr><td class=\"col-md-1\"><span class=\""+
       openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-md-1\">"+
       s.number+"</td><td class=\"col-md-2\">"+
