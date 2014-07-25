@@ -1,46 +1,73 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-	<title>Scheduler - Login</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<style>
-		body 		{ padding-top:10px; }
-	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Login Page</title>
+ <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="public/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="public/css/style.css" rel="stylesheet" >
+    <link href="public/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-<div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+  <body class="login-body">
 
-	<h1><span class="fa fa-sign-in"></span> Login</h1>
 
-	<!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
 
-	<!-- LOGIN FORM -->
-	<form action="/login" method="post">
-		<div class="form-group">
-			<label>Email</label>
-			<input type="text" class="form-control" name="email">
-		</div>
-		<div class="form-group">
-			<label>Password</label>
-			<input type="password" class="form-control" name="password">
-		</div>
+    <div class="container">
+     
+                      <section>
+                          <div class="loginheading">
+                              Finally! The Student Class Scheduler You've Been Looking For...
+                          </div>
+                          <a href="/login" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
+                      </section>                    
 
-		<button type="submit" class="btn btn-warning btn-lg">Login</button>
-	</form>
+  <!-- show any messages that come back with authentication -->
+  <% if (message.length > 0) { %>
+    <div class="alert alert-danger"><%= message %></div>
+  <% } %>
 
-	<hr>
+      <form class="form-signin" action="/login" method="post">
+        <h2 class="form-signin-heading"><b>sign in now </b></h2>
+        <div class="login-wrap">
+            <input type="text" class="form-control" name="email" placeholder="Enter your e-mail" autofocus >
+            <input type="password" class="form-control" name="password" placeholder="Enter your Password">
+           
+            <button class="btn btn-lg btn-login btn-block btn-danger" type="submit"><b>Sign in</b></button>
+            
+            <div class="registration">
+                Don't have an account yet?
+                <a class="" href="/signup">
+                    Create an account
+                </a>
+            </div>
 
-	<p>Need an account? <a href="/signup">Signup</a></p>
-	<p>Or go <a href="/">home</a>.</p>
+        </div>
 
-</div>
+      </form>
 
-</div>
-</body>
+    </div>
+
+
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+  </body>
 </html>

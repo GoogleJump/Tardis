@@ -59,7 +59,7 @@ a, a:hover, a:focus {
 
 .form-signin {
     max-width: 330px;
-    margin: 60px auto 0;
+    margin: 40px auto 0;
     background: #fff;
     border-radius: 5px;
     -webkit-border-radius: 5px;
