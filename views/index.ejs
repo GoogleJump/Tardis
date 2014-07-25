@@ -5,21 +5,35 @@
 	<title>Scheduler - Home</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<style>
-		body 		{ padding-top:10px; }
-	</style>
+	 <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="public/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="public/css/style.css" rel="stylesheet" >
+    <link href="public/css/style-responsive.css" rel="stylesheet" />
 </head>
-<body>
+<body class="login-body">
 <div class="container">
 
-	<div class="jumbotron text-center">
-		<h1>Scheduler</h1>
+	 				 <section>
+                          <div class="loginheading">
+                              Finally! The Student Class Scheduler You've Been Looking For...
+                          </div>
+                          <a href="/login" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
+                      </section>  
 
-		<p>Login or Register:</p>
+	<section class="scheduler">
 
-		<a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
-		<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup</a>
-	</div>
+		<span><center><b> Login or Register </b></center></span>
+		<br>
+		<center>
+		<a href="/login" class="btn btn-default btn-lg"><span class="fa fa-key"></span> Login</a> 
+
+		<a href="/signup" class="btn btn-default btn-lg"><span class="fa fa-pencil-square-o"></span> Signup</a>
+		</center>
+	</section>
 
 </div>
 </body>

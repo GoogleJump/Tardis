@@ -35,11 +35,20 @@ a, a:hover, a:focus {
     height: 100%;
 }
 
+.scheduler{
+    position: center;
+    color: #fff;
+    position: center;
+    font-weight: bold;
+    font-size: 50px;
+    
+}
+
 /*login page*/
 
 .login-body {
     background-color: #f1f2f7;
-    background-image: url("http://wallpaperscraft.com/image/books_board_chalk_inscription_school_63404_1920x1080.jpg?orig=1");
+    background-image: url("background.jpg");
     background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
