@@ -19,7 +19,7 @@ professorSchema.methods.getAverageRating = function() {
 };
 
 professorSchema.methods.getRecommendPercent = function() {
-	if(this._ratings.length==0) return 'No data';
+	if(this._ratings.length==0) return null;
     var sum=0;
     for(var i=0;i<this._ratings.length;i++) {
     	if(this._ratings[i].recommend){
@@ -27,7 +27,7 @@ professorSchema.methods.getRecommendPercent = function() {
     	}
     }
     var dec = sum/this._ratings.length;
-    return parseFloat(dec*100).toFixed(0)+'%';
+    return dec*100;
 };
 
 module.exports = mongoose.model('Professor', professorSchema);

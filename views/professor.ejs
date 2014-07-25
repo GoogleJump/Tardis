@@ -34,8 +34,12 @@
 			<p>
 				<strong>Name</strong>: <%= professor.name %><br>
 				<strong>Department</strong>: <%= professor.department %><br>
-				<strong>Average rating</strong>: <%= professor.getAverageRating()%><br>
-				<strong>Percent recommending</strong>: <%= professor.getRecommendPercent()%><br>
+				<%var avgRating= professor.getAverageRating();%>
+				<%var recPercent = professor.getRecommendPercent();%>
+				<%if(recPercent){%>
+					<strong>Average rating</strong>: <%= parseFloat(avgRating).toFixed(1)%><br>
+					<strong>Percent recommending</strong>: <%= parseFloat(recPercent).toFixed(0)%>%<br>
+				<%}%>
 			</p>
 		</div>
 
