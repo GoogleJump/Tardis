@@ -17,7 +17,7 @@ var BATCH_SIZE = 16; //number of schedules to send to the client at once
 
 exports.view = function(req, res) {
 	School.findOne({_id:req.user._schoolId}, function(err, school){
-		res.render('schedule.ejs', {school:school});
+		res.render('schedule.ejs', {school:school, cUser:req.user});
 	});
 }
 

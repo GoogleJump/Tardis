@@ -17,15 +17,15 @@
     <!--external css-->
     <link href="public/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="public/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+    <link rel="stylesheet" href="public/css/owl.carousel.css" type="text/css">
     <!-- Custom styles for this template -->
     <link href="public/css/style.css" rel="stylesheet">
     <link href="public/css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <script src="js/respond.min.js"></script>
+      <script src="public/js/html5shiv.js"></script>
+      <script src="public/js/respond.min.js"></script>
     <![endif]-->
     <script src="public/js/jquery-1.11.1.min.js"></script>
     <script src="public/js/jquery-ui.min.js"></script>
@@ -58,14 +58,14 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <img alt="" src="public/img/avatar1_small.jpg">
-                            <span class="username">Jon Doe</span>
+                            <span class="username"><%=cUser.username%></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
-                            <li><a href="profile.html"><i class=" fa fa-suitcase"></i>  Profile</a></li>
-                            <li><a href="profile-edit.html"><i class="fa fa-cog"></i>  Settings</a></li>
-                            <li><a href="login.html"><i class="fa fa-key"></i>  Log Out</a></li>
+                            <li><a href="/profile"><i class=" fa fa-suitcase"></i>  Profile</a></li>
+                            <li><a href="/profile/edit"><i class="fa fa-cog"></i>  Settings</a></li>
+                            <li><a href="/logout"><i class="fa fa-key"></i>  Log Out</a></li>
                         </ul>
                     </li>
                     <!-- user login dropdown end -->
@@ -144,7 +144,7 @@
                   <div class="col-lg-12">
                                   <section class = "panel">
                                     <header class="panel-heading" style="background: #19BF6C;">
-                                      <b><font color = "white"> My Scheduler </font></b>
+                                      <b><font color = "white"> My Schedule </font></b>
                                     </header>
       <div class="panel-group m-bot20 schedulepad" >
 
@@ -152,12 +152,6 @@
   <div class="row">
     <div class="col-xs-12">
       <p id="error-alert" class="alert alert-danger text-center">There was an error processing your request. Please try again later.</p>
-    </div>
-  </div>
-
-  <div class="row" id="back-row">
-    <div class="col-sm-12" style="padding-bottom: 20px;">
-      <button class="btn btn-warning" id="back-button"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
     </div>
   </div>
 
@@ -250,7 +244,11 @@
       
     </div>
   </div>
-  <div id="calendar" class="col-xs-12"></div>
+  <div id="calendar" class="col-xs-12" style="padding-top:20px;"></div>
+  <div id="select-schedule-wrapper" class="col-xs-12" style="padding-top:20px;">
+    <button class="btn btn-link" id="back-button"><span class="glyphicon glyphicon-chevron-left"></span> change courses and preferences</button>
+    <button class="btn btn-lg btn-primary pull-right" id="select-schedule-button">Save this schedule</button>
+  </div>
   </div>
 
   <div class="row">
@@ -274,50 +272,6 @@
       </footer>
       <!--footer end-->
   </section>
-
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script class="include" type="text/javascript" src="js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="js/jquery.scrollTo.min.js"></script>
-    <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
-    <script src="js/jquery.sparkline.js" type="text/javascript"></script>
-    <script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-    <script src="js/owl.carousel.js" ></script>
-    <script src="js/jquery.customSelect.min.js" ></script>
-    <script src="js/respond.min.js" ></script>
-
-    <!--common script for all pages-->
-    <script src="js/common-scripts.js"></script>
-
-    <!--script for this page-->
-    <script src="js/sparkline-chart.js"></script>
-    <script src="js/easy-pie-chart.js"></script>
-    <script src="js/count.js"></script>
-
-  <script>
-
-      //owl carousel
-
-      $(document).ready(function() {
-          $("#owl-demo").owlCarousel({
-              navigation : true,
-              slideSpeed : 300,
-              paginationSpeed : 400,
-              singleItem : true,
-			  autoPlay:true
-
-          });
-      });
-
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
-
-  </script>
 
   </body>
 </html>

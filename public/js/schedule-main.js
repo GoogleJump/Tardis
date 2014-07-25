@@ -292,8 +292,8 @@ function displaySections(courseId) {
     content+="<tr><td class=\"col-md-1\"><span class=\""+
       openSymbol+"\" data-toggle=\"tooltip\" title=\""+openLabel+"\"/></td><td class=\"col-md-1\">"+
       s.number+"</td><td class=\"col-md-2\">"+
-      professorLabel+"</td><td class=\"col-md-6\">"+
-      meetTimeLabel+"</td><td class=\"col-md-2\">"+
+      professorLabel+"</td><td class=\"col-md-5\">"+
+      meetTimeLabel+"</td><td class=\"col-md-3\">"+
     '<div class="btn-group pull-right" data-toggle="buttons" id="pref-radio-'+s._id+'">';
 
     for(var index in preferenceButtons) {
