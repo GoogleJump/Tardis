@@ -45,6 +45,10 @@ a, a:hover, a:focus {
     
 }
 
+.schedulepad {
+    padding: 10px;
+}
+
 /*login page*/
 
 .login-body {
