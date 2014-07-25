@@ -214,6 +214,19 @@ exports.get_batch=function(req, res) {
 	});
 }
 
+exports.save = function(req, res) {
+	var scheduleIndex = req.body.index;
+
+	console.log("saving schedule "+scheduleIndex);
+
+	req.user.populate('pendingScheduleData._schedules',function(err, user){
+		user.schedule= user.pendingScheduleData._schedules[scheduleIndex];
+		user.save();
+		console.log("user: "+JSON.stringify(user.schedule));
+	});
+	res.send(200);
+}
+
 function getSections(courses, term, next) {
 	var sections = {};
 	var count = 0;

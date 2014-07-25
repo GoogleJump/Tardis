@@ -32,8 +32,8 @@ var userSchema = mongoose.Schema({
         term: String,
         courses: [{type:ObjectId, ref:'Course'}],
         _schedules: {type:ObjectId, ref:"Schedule"}
-    }
-
+    },
+    schedule:[{type:ObjectId, ref:"Section"}]
 });
 
 // methods ======================

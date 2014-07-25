@@ -71,6 +71,7 @@ module.exports = function(app, passport) {
 	app.post('/schedule/remove-course',schedule.remove_course);
 	app.get('/schedule/get-pending', schedule.get_pending_schedule);
 	app.get('/schedule/get-batch', schedule.get_batch);
+	app.post('/schedule/save', schedule.save);
 
 	app.get('/major/get', major.get);
 	app.post('/major/add', major.add);

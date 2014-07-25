@@ -168,6 +168,8 @@ $(function () {
     $("#calendar-holder").hide();
     $("#search-row").show();
     $("#selected-row").show();
+    $("#select-schedule-button").show();
+    $("#calendar-control").show();
   });
 
   $( "#slider" ).slider({
@@ -182,6 +184,23 @@ $(function () {
     });
     // $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
     //   " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+  $("#select-schedule-button").click(function(){
+    $("#calendar-control").slideUp();
+    $("#select-schedule-button").fadeOut();
+    
+      $.ajax({
+      url: "/schedule/save",
+      type: "POST",
+      data: {index:currentScheduleIndex}, 
+      success: function (data, status) {
+        console.log("save success")
+      },
+      error: function(xhr,status,error){
+         console.log("save error");
+      }
+    });
+  });
 
   //check for pending schedule on load
    $.ajax({
