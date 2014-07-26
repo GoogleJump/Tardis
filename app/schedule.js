@@ -220,11 +220,16 @@ exports.save = function(req, res) {
 	console.log("saving schedule "+scheduleIndex);
 
 	req.user.populate('pendingScheduleData._schedules',function(err, user){
-		user.schedule= user.pendingScheduleData._schedules[scheduleIndex];
+		if(err) {
+			res.send(500);
+			return;
+		}
+		user.schedule= user.pendingScheduleData._schedules.schedule[scheduleIndex].schedule;
 		user.save();
-		console.log("user: "+JSON.stringify(user.schedule));
+		console.log("sections: "+JSON.stringify(user.schedule));
+		res.send(200);
 	});
-	res.send(200);
+	
 }
 
 function getSections(courses, term, next) {
