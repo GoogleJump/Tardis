@@ -19,6 +19,8 @@ $(function () {
 
   $("#row-after-courses").hide();
 
+  $("#schedule-table").hide();
+
   $("#course_input").focus();
 
   $('[data-toggle="tooltip"]').tooltip({
@@ -106,12 +108,13 @@ $(function () {
         $("#error-alert").hide();
         $("#loading").hide();
         if(data.error) {
-          $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+          $("#error-alert").text("There was an error processing your request: "+data.error+". Please change your request or try again later.").show();
           $("#loading").hide();
          $("#selected-row").show();
          $("#search-row").show();
          $("#row-after-courses").show();
         } else {
+          $("#calendar").fadeIn();
           schedules = data.results;
           updateScheduleCountText(data.count);
           schedulesCount = data.count;
@@ -170,6 +173,7 @@ $(function () {
     $("#selected-row").show();
     $("#select-schedule-button").show();
     $("#calendar-control").show();
+    $("#schedule-table").hide();
   });
 
   $( "#slider" ).slider({
@@ -188,16 +192,20 @@ $(function () {
   $("#select-schedule-button").click(function(){
     $("#calendar-control").slideUp();
     $("#select-schedule-button").fadeOut();
-    
+    $("#calendar").fadeOut();
+    $("loading").show();
       $.ajax({
       url: "/schedule/save",
       type: "POST",
       data: {index:currentScheduleIndex}, 
       success: function (data, status) {
-        console.log("save success")
+        console.log("save success");
+        $("loading").hide();
+        $("#schedule-table").fadeIn();
       },
       error: function(xhr,status,error){
          console.log("save error");
+         $("loading").hide();
       }
     });
   });

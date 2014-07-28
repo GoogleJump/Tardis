@@ -231,24 +231,47 @@
 
   <div class="row" id="calendar-holder">
     <div class="col-xs-12" style="padding-bottom: 20px;">
-    <div id="calendar-control" class="well">
-      <div class="col-md-2">
-        <input type="button" id="schedule-prev" class="btn btn-primary btn-sm" value="Previous"/>
+      <div id="calendar-control" class="well">
+        <div class="col-md-2">
+          <input type="button" id="schedule-prev" class="btn btn-primary btn-sm" value="Previous"/>
+        </div>
+        <div class="col-md-8">
+          <h4 class="text-center"><span id="current-index">1</span> of <span id="schedule-count">1000</span> possible schedules <small>Sorted by best</small></h4>
+        </div>
+        <div class="col-md-2">
+          <input type="button" id="schedule-next" class="btn btn-primary btn-sm pull-right" value="Next" />
+        </div><br>
+        
       </div>
-      <div class="col-md-8">
-        <h4 class="text-center"><span id="current-index">1</span> of <span id="schedule-count">1000</span> possible schedules <small>Sorted by best</small></h4>
-      </div>
-      <div class="col-md-2">
-        <input type="button" id="schedule-next" class="btn btn-primary btn-sm pull-right" value="Next" />
-      </div><br>
-      
+    </div>
+    <div id="calendar" class="col-xs-12" style="padding-top:20px;"></div>
+    <div id="select-schedule-wrapper" class="col-xs-12" style="padding-top:20px;">
+      <button class="btn btn-link" id="back-button"><span class="glyphicon glyphicon-chevron-left"></span> change courses and preferences</button>
+      <button class="btn btn-lg btn-primary pull-right" id="select-schedule-button">Save this schedule</button>
     </div>
   </div>
-  <div id="calendar" class="col-xs-12" style="padding-top:20px;"></div>
-  <div id="select-schedule-wrapper" class="col-xs-12" style="padding-top:20px;">
-    <button class="btn btn-link" id="back-button"><span class="glyphicon glyphicon-chevron-left"></span> change courses and preferences</button>
-    <button class="btn btn-lg btn-primary pull-right" id="select-schedule-button">Save this schedule</button>
-  </div>
+
+  <div class="row" id="schedule-table">
+    <div class="col-sm-12">
+      <table class="table table-hover table-striped">
+        <tr>
+          <th>Course number</th>
+          <th>Section number</th>
+          <th>Course name</th>
+          <th>Professor</th>
+          <th>Meet time</th>
+          <th>Location</th>
+        </tr>
+        <tr>
+          <td>CS2000</td>
+          <td>CS2000</td>
+          <td>CS2000</td>
+          <td>CS2000</td>
+          <td>CS2000</td>
+          <td>CS2000</td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <div class="row">
