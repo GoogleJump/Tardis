@@ -223,20 +223,30 @@ $(function () {
         if(data.error) {
           $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
         } else {
-          if(data.courses) {
-            courseCount = data.courses.length;
-            for(var i=0;i<data.courses.length;i++) {
-              var cId = data.courses[i]._id;
-              var course = {number:data.courses[i].number, id:cId,name:data.courses[i].name};
-              selectedCourses[cId] = course;
-              displayCourse(course);
-              selectedCourseSections[cId] = data.sections[cId];
-              displaySections(cId);
-            }
+          if(data.tableData){
+            populateScheduleTable(data.tableData);
+            $("#schedule-table").show();
+            $("#search-row").hide();
+            $("#selected-row").hide();
+            $("#calendar").hide();
+            $("#calendar-control").hide();
+            $("#calendar-holder").show();
+            $("#back-button").show();
+            $("#select-schedule-button").hide();
+          } else{
+            if(data.courses) {
+              courseCount = data.courses.length;
+              for(var i=0;i<data.courses.length;i++) {
+                var cId = data.courses[i]._id;
+                var course = {number:data.courses[i].number, id:cId,name:data.courses[i].name};
+                selectedCourses[cId] = course;
+                displayCourse(course);
+                selectedCourseSections[cId] = data.sections[cId];
+                displaySections(cId);
+              }
+            }            
           }
-
         }
-        
       },
       error: function(xhr,status,error){
          $("#error-alert").text("There was an error processing your request. Please try again later.").show();

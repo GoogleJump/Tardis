@@ -178,30 +178,39 @@ exports.remove_course = function(req, res) {
 }
 
 exports.get_pending_schedule = function(req, res) {
-	if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
-		var courseIds = req.user.pendingScheduleData.courses;
-		var courseSections = {};
-		var count=0;
-		User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
-			var courses = populatedUser.pendingScheduleData.courses;
-			for(var i=0;i<courses.length;i++) {
-				Section.find({_courseId:courses[i]._id})
-				.populate('_professor', 'name')
-				.select('number open _professor meet_time status _courseId')
-				.sort('number')
-				.exec(function(err, sections) {
-					count++
-					courseSections[sections[0]._courseId]= sections; //TODO: no sections?
-					if(count==courses.length) {
-						res.send({courses:courses, sections:courseSections});
-						return;
-					}
-				});
-			}
+	if(req.user.schedule){
+		//if the user has already generated a schedule, show it
+		var sectionIds = req.user.schedule;
+		getTableData(sectionIds, function(tableData){
+			res.send({tableData:tableData});
 		});
-	} else {
-		res.send(200);
-	}	
+	} else{
+		if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
+			//if a user has already added courses to their list, show them
+			var courseIds = req.user.pendingScheduleData.courses;
+			var courseSections = {};
+			var count=0;
+			User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
+				var courses = populatedUser.pendingScheduleData.courses;
+				for(var i=0;i<courses.length;i++) {
+					Section.find({_courseId:courses[i]._id})
+					.populate('_professor', 'name')
+					.select('number open _professor meet_time status _courseId')
+					.sort('number')
+					.exec(function(err, sections) {
+						count++
+						courseSections[sections[0]._courseId]= sections; //TODO: no sections?
+						if(count==courses.length) {
+							res.send({courses:courses, sections:courseSections});
+							return;
+						}
+					});
+				}
+			});
+		} else {
+			res.send(200);
+		}			
+	}
 }
 
 exports.get_batch=function(req, res) {
