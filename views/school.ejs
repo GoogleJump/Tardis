@@ -42,8 +42,8 @@
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="img/avatar1_small.jpg">
-                            <span class="username">Jon Doe</span>
+                            <img alt="" src="public/img/avatar1_small.jpg">
+                            <span class="username">Username</span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
@@ -131,7 +131,7 @@
                 <section class = "panel" style="padding: 20px;">
 
 				<header class="panel-heading" style="background: #0099CC; text-transform: uppercase;">
-                  <b><font color = "white"><center> Find out Information about your School and Professors!</center></font></b>
+                  <b><font color = "white"><center><i class=" fa fa-info-circle"></i>   School Information </center></font></b>
                 </header>
 
 	<div class="row" style="padding-bottom: 20px;">
@@ -144,7 +144,7 @@
 		
 			<section class="panel-body bio-graph-info" >
 				<header class="panel-heading" style="background: #19BF6C;">
-                  <b><font color = "white"> School Details </font></b>
+                  <b><font color = "white"><i class=" fa fa-folder-open-o"></i> School Details </font></b>
                 </header>
 
 					<p>
@@ -159,11 +159,12 @@
 
             <section class="panel" style="padding: 20px;">
         <header class="panel-heading" style="background: #19BF6C;">
-                  <b><font color = "white"> Add a Professor </font></b>
+                  <b><font color = "white"><i class=" fa fa-plus-square-o"></i> Add a Professor </font></b>
                 </header>
 
           <form action="/add-professor/<%=school._id%>" method="post">
             <div class="form-group">
+              <br>
               <label>Professor's name</label>
               <input type="text" class="form-control" name="name">
             </div>
@@ -172,20 +173,40 @@
               <input type="text" class="form-control" name="department">
             </div>
 
-            <button type="submit" class="btn btn-info btn-lg"> <i class=" fa fa-plus-square"></i>Add Professor</button>
+            <button type="submit" class="btn btn-info btn-lg"> <i class=" fa fa-plus-square"></i> Add Professor</button>
           </form>
       </section>
 
 			<section class="panel" style="padding: 20px;">
 				<header class="panel-heading" style="background: #19BF6C;">
-                  <b><font color = "white"> Professors </font></b>
+                  <b><font color = "white"><i class=" fa fa-users"></i> Professors </font></b>
                 </header>
+                <br>
 
-					<p>
-						<% for(var index in professors) {%>
-							<a href="/professor/<%=professors[index]._id%>"><%=professors[index].name%></a><br>
-						<%}%>
-					</p>
+                              <table class="table table-striped table-advance table-hover">
+                              <thead>
+                              <tr>
+                                  <th><i class="fa fa-bullhorn"></i> Professor </th>
+                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i> Department </th>
+                                  <th><i class="fa fa-calendar"></i> Rating </th>
+                                  <th><i class="fa fa-gift"></i> Records </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <% for(var index in professors) {%>
+                              <tr>
+                                  <td><a href="/professor/<%=professors[index]._id%>"><%=professors[index].name%></a></td>
+                                  <td class="hidden-phone"> <%=professors[index].department%> </td>
+                                  <td><%=professors[index].Rating%></td>
+                                  <td>
+                                  <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-folder-open"></i> <a href="/professor/<%=professors[index]._id%>"> <font color = "white"> View </font></a></button>
+                                  </td>  
+                              </tr>
+                              <%}%>                  
+                              </tbody>
+                          </table>
+
+
 
 			</section>
 
