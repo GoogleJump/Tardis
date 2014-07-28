@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+	<title>School Information - <%=school.name%></title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+      <link rel="stylesheet" href="public/css/jquery-ui.min.css">
+      <link href="public/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="public/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="public/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="public/css/owl.carousel.css" type="text/css">
+    <!-- Custom styles for this template -->
+    <link href="public/css/style.css" rel="stylesheet">
+    <link href="public/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="public/js/html5shiv.js"></script>
+      <script src="public/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="public/js/jquery-1.11.1.min.js"></script>
+    <script src="public/js/jquery-ui.min.js"></script>
+    <script src="public/assets/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
+    <script src="public/js/bootstrap.min.js"></script>
+    <script src="public/js/schedule-main.js"></script>
+
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1>School details</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+
+		<!-- LOCAL INFORMATION -->
+		
+			<div class="well">
+				<h3>School details</h3>
+
+					<p>
+						<strong>Id</strong>: <%= school._id %><br>
+						<strong>Name</strong>: <%= school.name %><br>
+						<strong>Location</strong>: <%= school.city %>, <%= school.state %><br>
+						<strong>Courses</strong>: <a href="/school/<%=school._id%>/courses">View</a><br>
+					</p>
+
+			</div>
+
+			<div class="well">
+				<h3>Professors</h3>
+
+					<p>
+						<% for(var index in professors) {%>
+							<a href="/professor/<%=professors[index]._id%>"><%=professors[index].name%></a><br>
+						<%}%>
+					</p>
+
+			</div>
+
+			<div class="well">
+				<h3>Add a professor</h3>
+
+					<form action="/add-professor/<%=school._id%>" method="post">
+						<div class="form-group">
+							<label>Professor's name</label>
+							<input type="text" class="form-control" name="name">
+						</div>
+						<div class="form-group">
+							<label>Department</label>
+							<input type="text" class="form-control" name="department">
+						</div>
+
+						<button type="submit" class="btn btn-warning btn-lg">Add</button>
+					</form>
+			</div>
+		
+
+	</div>
+
+</div>
+</body>
+</html>
