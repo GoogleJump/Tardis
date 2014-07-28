@@ -200,6 +200,8 @@ $(function () {
       data: {index:currentScheduleIndex}, 
       success: function (data, status) {
         console.log("save success");
+        console.log(data.tableData);
+        populateScheduleTable(data.tableData);
         $("loading").hide();
         $("#schedule-table").fadeIn();
       },
@@ -243,6 +245,33 @@ $(function () {
     });
 
 });
+
+function populateScheduleTable(tableData) {
+  $("#schedule-table").find("tr:gt(0)").remove();
+
+
+  for(var sectionId in tableData){
+    var profLabel = 'Unknown';
+    if(tableData[sectionId].professor){
+      profLabel='<a target="_blank" href="/professor/'+tableData[sectionId].professor._id+'">'+tableData[sectionId].professor.name+'</a>';
+    }
+    var meetTimeLabel = 'Unknown';
+    if(tableData[sectionId].meetTime){
+      meetTimeLabel = tableData[sectionId].meetTime;
+    }
+    var locationLabel = 'Unknown';
+    if(tableData[sectionId].location){
+      locationLabel = tableData[sectionId].location;
+    }
+
+    $('#schedule-table tr:last').after('<tr><td><a target="_blank" href="/course/'+tableData[sectionId].course._id+'">'+tableData[sectionId].course.number+'</a>'+
+      '</td><td><a target="_blank" href="/section/'+tableData[sectionId].section._id+'">'+tableData[sectionId].section.number+
+      '</td><td>'+tableData[sectionId].course.name+
+      '</td><td>'+profLabel+
+      '</td><td>'+meetTimeLabel+
+      '</td><td>'+locationLabel+'</td></tr>');
+  }
+}
 
 function addSelectedCourse(course) {
   if(selectedCourses[course.id]) {

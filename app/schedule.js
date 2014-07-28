@@ -227,9 +227,50 @@ exports.save = function(req, res) {
 		user.schedule= user.pendingScheduleData._schedules.schedule[scheduleIndex].schedule;
 		user.save();
 		console.log("sections: "+JSON.stringify(user.schedule));
-		res.send(200);
+
+		getTableData(user.schedule, function(tableData){
+			console.log(JSON.stringify(tableData));
+			res.send({tableData:tableData});
+		});
 	});
 	
+}
+
+function getTableData(sectionIds, next) {
+	Section.find({_id:{$in:sectionIds}}).populate('_professor _courseId').exec(function(err, sections){
+		var tableData = {};
+		for(var i=0;i<sections.length;i++) {
+			var csection = sections[i];
+			var professor;
+			if(csection._professor) {
+				professor = {
+					name: csection._professor.name,
+					_id:csection._professor._id
+				}
+			} else {
+				professor = null;
+			}
+
+			tableData[csection._id] = {
+				course: {
+					name: csection._courseId.name,
+					number: csection._courseId.number,
+					_id: csection._courseId._id
+				},
+				section:{
+					number: csection.number,
+					_id: csection._id
+				},
+				courseName: csection._courseId.name,
+				professor:professor,
+				meetTime: csection.meet_time,
+				location: csection.location
+			}
+			if(i==(sections.length-1)){
+				return next(tableData);
+			}
+		}
+	});
 }
 
 function getSections(courses, term, next) {
