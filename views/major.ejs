@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scheduler - <%=major.name%></title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:10px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><%=major.name%></h1>
+		<h4><%=school.name%></h4>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+
+		<!-- LOCAL INFORMATION -->
+		
+			<div class="well">
+				<h3>Major details</h3>
+
+					<p>
+						<strong>Name</strong>: <%= major.name %><br>
+						<strong>School</strong>: <%= school.name %><br>
+						<strong>Department</strong>: <%= major.department %><br>
+					</p>
+
+			</div>
+
+		<div class="panel-group m-bot20" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				  <h4 class="panel-title">
+				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+				          Core Requirements (Not implemented)
+				      </a>
+				  </h4>
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse in">
+				  <div class="panel-body">
+				      These are the courses offered by the department of your major that are necessary to complete in order to obtain the degree in this discipline from your University.
+				      <br>
+				      <br>
+				      <p>
+						<strong>CS 125</strong>: Intro to Computer Science<br>
+						<strong>CS 173</strong>: Discrete Structures<br>
+						<strong>CS 225</strong>: Data Structures<br>
+					  </p>
+
+				  </div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                          Breadth Requirements (Not implemented)
+                      </a>
+                  </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                     Breadth courses are those that are offered by other departments within the school of your major, in order to broaden your knowledge. The listings below show which courses can be taken to fulfill this requirement.
+                     <br>
+				     <br>
+				      <p>
+						<strong>CS 440</strong>: Artificial Intelligence<br>
+						<strong>MATH 444</strong>: Graph Theory<br>
+					  </p>
+                  </div>
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                          Language Requirements (Not implemented)
+                      </a>
+                  </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                      These are language courses (French, German, Spanish, Italian etc.) offered by the Liberal Arts Dept. of your University, two of which must be taken to fulfil this requirement. Refer to the listing below.
+                      <br>
+				      <br>
+				      <p>
+						<strong>SPAN 100</strong>: Intro to Spanish<br>
+						<strong>SPAN 222</strong>: Spanish Literature<br>
+					  </p>
+                  </div>
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                          General Elective Requirements (Not implemented)
+                      </a>
+                  </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                      These are courses offered by departments other than the school of your major. These are also intended to increase one's overall know-how.
+                      <br>
+				      <br>
+				      <p>
+						<strong>PSYCH 100</strong>: Intro to Psychology<br>
+						<strong>LIT 200</strong>: Russian Literature<br>
+					  </p>
+                  </div>
+              </div>
+          </div>
+		</div>
+
+		<br>
+
+	</div>
+
+</div>
+</body>
+</html>
