@@ -42,3 +42,19 @@ exports.add = function(req, res){
 		}
 	});
 }
+
+exports.view = function(req, res) {
+	var majorid = req.user._major;
+	var schoolid = req.user._schoolId;
+	School.findOne({'_id':schoolid}, function(err, school) {
+		if(school) {
+			Major.findOne({'_id':majorid}, function(err, major) {
+				res.render('major.ejs', {school:school, major:major, user:req.user, message: req.flash('message')});
+			});
+		} else {
+			//Error!
+			res.redirect('/error');
+		}
+		
+	});
+}

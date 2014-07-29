@@ -1,5 +1,61 @@
 var School = require('../app/models/school');
 var User = require('../app/models/user');
+var Major = require('../app/models/major');
+
+//edit your own user profile
+exports.edit = function(req, res) {
+	School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
+		User.findOne({'_id' : req.user._id}, function(err, user){
+			Major.findOne({'_id' : req.user._major}, function(err, major){
+				res.render('profile-edit.ejs', {
+					user : user, // get the user out of session and pass to template
+					school: school,
+					major: major
+				});
+			});			
+		});
+	});
+};
+
+//update user profile
+exports.update = function(req, res) {
+	// email was not changed - update rest of info
+    if( req.user.local.email === req.body.email ) {
+    	console.log("Success");
+    	req.user.local.firstname = req.body.firstname;
+		req.user.local.lastname = req.body.lastname;
+		req.user.local.firstname = req.body.firstname;
+		req.user.username = req.body.username;
+		req.user.save();
+		exports.edit(req, res);
+
+    }
+    else{
+
+		User.findOne({ 'local.email' :  req.body.email }, function(err, user) {
+	        // if there are any errors, return the error
+	        if (err)
+	            console.log(err);
+
+
+	        // check to see if theres already another user with that email
+	        if ( user ) {
+	            console.log("There is already a user with that email");
+	        } else {
+	        	console.log("Success");
+	        	req.user.local.firstname = req.body.firstname;
+				req.user.local.lastname = req.body.lastname;
+				req.user.local.firstname = req.body.firstname;
+				req.user.local.email = req.body.email;
+				req.user.username = req.body.username;
+				req.user.save();
+				exports.edit(req, res);      	
+	        }
+		});
+	}
+
+};
+
 
 //view your own user profile
 exports.view_profile = function(req, res) {

@@ -39,8 +39,12 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
+
 	app.get('/profile', isLoggedIn, user.view_profile);	
 	app.get('/user/:userId', user.view);
+	app.post('/profile-edit', user.update);
+	app.get('/profile-edit', isLoggedIn, user.edit);
+	
 
 	app.get('/select-school', user.view_select_school);
 	app.post('/select-school', user.select_school);
@@ -64,6 +68,8 @@ module.exports = function(app, passport) {
 	app.post('/section/:sectionId/add-document', section.add_document);
 
 	app.post('/course-autocomplete', course.autocomplete);
+
+	app.get('/degree', isLoggedIn, major.view);
 
 	app.get('/schedule', isLoggedIn, schedule.view);
 	app.post('/schedule/generate', schedule.generate);

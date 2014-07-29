@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Profile</title>
+    <title>Account Settings</title>
 
     <!-- Bootstrap core CSS -->
     <link href="public/css/bootstrap.min.css" rel="stylesheet">
@@ -24,10 +24,9 @@
     <![endif]-->
   </head>
 
-  <body>
-
+<body>
   <section id="container" class="">
-      <!--header start-->
+        <!--header start-->
       <header class="header white-bg">
           <div class="sidebar-toggle-box">
               <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
@@ -51,7 +50,7 @@
                       </a>
                       <ul class="dropdown-menu extended logout">
                           <li><a href="/profile"><i class=" fa fa-suitcase"></i>Profile</a></li>
-                          <li><a href="profile-edit"><i class="fa fa-cog"></i> Settings</a></li>
+                          <li><a href="/profile-edit"><i class="fa fa-cog"></i> Settings</a></li>
                           <li><a href="/logout"><i class="fa fa-key"></i> Log Out</a></li>
                       </ul>
                   </li>
@@ -80,30 +79,30 @@
                   </li>
 
                   <li class="sub-menu">
-                      <a href="" >
+                      <a href="course.html" >
                           <i class="fa fa-tasks"></i>
                           <span>Class Information</span>
                       </a>
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="course_resource.html" >
                           <i class="fa fa-shopping-cart"></i>
                           <span>Course Resources</span>
                       </a>
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="prof_rating.html" >
                           <i class="fa fa-bar-chart-o"></i>
                           <span>Professor Rating</span>
                       </a>
                       
                   </li>
                   <li class="sub-menu">
-                      <a href="/school/<%= school._id%>" >
+                      <a href="javascript:;" >
                           <i class="fa fa-comments-o"></i>
-                          <span> School Information </span>
+                          <span>Discussion Board</span>
                       </a>
                      
                   </li>
@@ -114,13 +113,12 @@
                       </a>
                   </li>
 
-
-
               </ul>
               <!-- sidebar menu end-->
           </div>
       </aside>
       <!--sidebar end-->
+          
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
@@ -132,8 +130,8 @@
                               <a href="#">
                                   <img src="public/img/profile-avatar.jpg" alt="">
                               </a>
-                              <h1><b><%= user.username %></b></h1>
-                              <p><b><%= user.local.email %></b></p>
+                              <h1><b><%=user.local.firstname%> <%=user.local.lastname%></b></h1>
+                              <p><b><%=user.local.email%> </b></p>
                           </div>
 
                       </section>
@@ -141,52 +139,96 @@
                   <aside class="profile-info col-lg-9">
                       <section class="panel">
                           <div class="bio-graph-heading">
-                              Student Information
+                              Account Settings
                           </div>
                           <div class="panel-body bio-graph-info">
-                              <div class="row">
-                                  <div class="bio-row">
-                                      <p><span>First Name: </span><%= user.local.firstname %></p>
+                              <h1> Profile Info</h1>
+                              <form class="form-horizontal" role="form" action="/profile-edit" method="post">                                  
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">First Name</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="firstname" id="f-name" value="<%=user.local.firstname%>">
+                                      </div>
                                   </div>
-                                  <div class="bio-row">
-                                      <p><span>Last Name: </span><%= user.local.lastname %></p>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">Last Name</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="lastname" id="l-name" value="<%=user.local.lastname%>">
+                                      </div>
                                   </div>
-                                  <div class="bio-row">
-                                      <p><span>Email: </span><%= user.local.email %></p>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">Email Id</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="email" id="c-name" value="<%=user.local.email%>">
+                                      </div>
                                   </div>
-                                  <div class="bio-row">
-                                      <p><span>Username: </span><%= user.username %></p>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">School Name (Not implemented)</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="school" id="b-day" value="<%=school.name%>">
+                                      </div>
                                   </div>
-                                  <div class="bio-row">
-                                      <p><span>School: </span><a href="/school/<%= school._id%>"><%= school.name %></a></p>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">School Major (Not impelemented)</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="major" id="occupation" value="<%= major.name%>">
+                                      </div>
                                   </div>
-                                  <div class="bio-row">
-                                      <p><span>Major: </span><%=user._major.name%></p>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">User Name</label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" name="username" id="email" value="<%=user.username%>">
+                                      </div>
                                   </div>
-                               
-                              </div>
+
+                                  <div class="form-group">
+                                      <div class="col-lg-offset-2 col-lg-10">
+                                          <button type="submit" class="btn btn-success" >Save</button>
+                                          <button type="button" class="btn btn-default" onclick="window.location='/profile'">Cancel</button>
+                                      </div>
+                                  </div>
+                              </form>
                           </div>
                       </section>
                       <section>
-                          <div class="row">
-                              <div class="col-lg-12">
-                                  <div class="panel">
-                                      <div class="panel-body">
-                                          <div class="bio-chart">
-                                              <input class="knob" data-width="100" data-height="100" data-displayPrevious=true  data-thickness=".4" value="59" data-fgColor="#e06b7d" data-bgColor="#e8e8e8">
-                                          </div>
-                                          <div class="bio-desk">
-                                              <h4 class="red"><b>Course Progress</b></h4>
-                                              <p> Total Number of Credit Hours Required for Degree : 182</p>
-                                              <p> Total Number of Credit Hours Completed : 108</p>
-                                              <p> Progress: 59.34 %</p>
-                                              <p> Current Standing: Sophomore</p>
+                          <div class="panel panel-primary">
+                              <div class="panel-heading"> Change Password & Profile Picture (Not implemented)</div>
+                              <div class="panel-body">
+                                  <form class="form-horizontal" role="form">
+                                      <div class="form-group">
+                                          <label  class="col-lg-2 control-label">Current Password</label>
+                                          <div class="col-lg-6">
+                                              <input type="password" class="form-control" id="c-pwd" placeholder=" ">
                                           </div>
                                       </div>
-                                  </div>
+                                      <div class="form-group">
+                                          <label  class="col-lg-2 control-label">New Password</label>
+                                          <div class="col-lg-6">
+                                              <input type="password" class="form-control" id="n-pwd" placeholder=" ">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label  class="col-lg-2 control-label">Re-type New Password</label>
+                                          <div class="col-lg-6">
+                                              <input type="password" class="form-control" id="rt-pwd" placeholder=" ">
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label  class="col-lg-2 control-label">Change Avatar</label>
+                                          <div class="col-lg-6">
+                                              <input type="file" class="file-pos" id="exampleInputFile">
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <div class="col-lg-offset-2 col-lg-10">
+                                              <button type="submit" class="btn btn-info" onclick="window.location='/profile-edit'">Save</button>
+                                              <button type="button" class="btn btn-default" onclick="window.location='/profile'">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </form>
                               </div>
-                              
-                              
                           </div>
                       </section>
                   </aside>
@@ -199,7 +241,7 @@
       <!--footer start-->
       <footer class="site-footer">
           <div class="text-center">
-              2014 &copy; Student Scheduler by Tardis, GoogleJump.
+              2013 &copy; FlatLab by VectorLab.
               <a href="#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>

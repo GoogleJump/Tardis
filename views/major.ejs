@@ -1,130 +1,281 @@
 <!doctype html>
 <html>
 <head>
-	<title>Scheduler - <%=major.name%></title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-	<style>
-		body 		{ padding-top:10px; word-wrap:break-word; }
-	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title><%=major.name%></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="public/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="public/css/style.css" rel="stylesheet">
+    <link href="public/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
-<div class="container">
+<section id="container" class="">
+        <!--header start-->
+      <header class="header white-bg">
+          <div class="sidebar-toggle-box">
+              <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
+          </div>
+          <!--logo start-->
+          <a href="/" class="logo">Student <span>Scheduler</span></a>
+            <a class="logonew">Welcome To Your Class Scheduler!</a>
+          <!--logo end-->
+        
+          <div class="top-nav ">
+              <ul class="nav pull-right top-menu">
+                  <li>
+                      <input type="text" class="form-control search" placeholder="Search">
+                  </li>
+                  <!-- user login dropdown start-->
+                  <li class="dropdown">
+                      <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                          <img alt="" src="public/img/avatar1_small.jpg">
+                          <span class="username"><%=user.username%></span>
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu extended logout">
+                          <li><a href="/profile"><i class=" fa fa-suitcase"></i>Profile</a></li>
+                          <li><a href="/profile-edit"><i class="fa fa-cog"></i> Settings</a></li>
+                          <li><a href="/logout"><i class="fa fa-key"></i> Log Out</a></li>
+                      </ul>
+                  </li>
+                  <!-- user login dropdown end -->
+              </ul>
+          </div>
+      </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+                          <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+                  <li class="sub-menu">
+                      <a href="/profile">
+                          <i class="fa fa-suitcase"></i>
+                          <span>Profile</span>
+                      </a>
+                  </li>
 
-	<div class="page-header text-center">
-		<h1><%=major.name%></h1>
-		<h4><%=school.name%></h4>
-		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
-	</div>
+                  <li class="sub-menu">
+                      <a class="active" href="/degree" >
+                          <i class="fa fa-book"></i>
+                          <span>Degree Requirements</span>
+                      </a>
+                  </li>
 
-	<div class="row">
+                  <li class="sub-menu">
+                      <a href="course.html" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Class Information</span>
+                      </a>
+                  </li>
 
-	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
+                  <li class="sub-menu">
+                      <a href="course_resource.html" >
+                          <i class="fa fa-shopping-cart"></i>
+                          <span>Course Resources</span>
+                      </a>
+                  </li>
 
-		<!-- LOCAL INFORMATION -->
-		
-			<div class="well">
-				<h3>Major details</h3>
+                  <li class="sub-menu">
+                      <a href="prof_rating.html" >
+                          <i class="fa fa-bar-chart-o"></i>
+                          <span>Professor Rating</span>
+                      </a>
+                      
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-comments-o"></i>
+                          <span>Discussion Board</span>
+                      </a>
+                     
+                  </li>
+                  <li class="sub-menu">
+                      <a href="/schedule" >
+                          <i class=" fa fa-th"></i>
+                          <span>My Schedule</span>
+                      </a>
+                  </li>
 
-					<p>
-						<strong>Name</strong>: <%= major.name %><br>
-						<strong>School</strong>: <%= school.name %><br>
-						<strong>Department</strong>: <%= major.department %><br>
-					</p>
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+          	<!-- page start -->
+          	<aside class="profile-info col-lg-9">
+                      <section class="panel">
+                          <div class="bio-graph-heading">
+                              <h1><%=major.name%></h1>
+							  <h4>at the <%=school.name%></h4>
+                          </div>
+                          <div class="panel-body bio-graph-info">
+                              <h1> Degree Requirements</h1>
+
+					<div class="row">
+
+					<% if (message.length > 0) { %>
+						<div class="alert alert-danger"><%= message %></div>
+					<% } %>
+
+				<!-- LOCAL INFORMATION -->
+				
+					<div class="panel-body">
+
+							<p>
+								<strong>Major</strong>: <%= major.name %><br>
+								<strong>School</strong>: <%= school.name %><br>
+								<strong>Department</strong>: <%= major.department %><br>
+							</p>
+
+					</div>
+
+				<div class="panel-group m-bot20" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h4 class="panel-title">
+						      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+						          Core Requirements (Not implemented)
+						      </a>
+						  </h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+						  <div class="panel-body">
+						      These are the courses offered by the department of your major that are necessary to complete in order to obtain the degree in this discipline from your University.
+						      <br>
+						      <br>
+						      <p>
+								<strong>CS 125</strong>: Intro to Computer Science<br>
+								<strong>CS 173</strong>: Discrete Structures<br>
+								<strong>CS 225</strong>: Data Structures<br>
+							  </p>
+
+						  </div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+		              <div class="panel-heading">
+		                  <h4 class="panel-title">
+		                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+		                          Breadth Requirements (Not implemented)
+		                      </a>
+		                  </h4>
+		              </div>
+		              <div id="collapseTwo" class="panel-collapse collapse in">
+		                  <div class="panel-body">
+		                     Breadth courses are those that are offered by other departments within the school of your major, in order to broaden your knowledge. The listings below show which courses can be taken to fulfill this requirement.
+		                     <br>
+						     <br>
+						      <p>
+								<strong>CS 440</strong>: Artificial Intelligence<br>
+								<strong>MATH 444</strong>: Graph Theory<br>
+							  </p>
+		                  </div>
+		              </div>
+		          </div>
+		          <div class="panel panel-default">
+		              <div class="panel-heading">
+		                  <h4 class="panel-title">
+		                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+		                          Language Requirements (Not implemented)
+		                      </a>
+		                  </h4>
+		              </div>
+		              <div id="collapseThree" class="panel-collapse collapse in">
+		                  <div class="panel-body">
+		                      These are language courses (French, German, Spanish, Italian etc.) offered by the Liberal Arts Dept. of your University, two of which must be taken to fulfil this requirement. Refer to the listing below.
+		                      <br>
+						      <br>
+						      <p>
+								<strong>SPAN 100</strong>: Intro to Spanish<br>
+								<strong>SPAN 222</strong>: Spanish Literature<br>
+							  </p>
+		                  </div>
+		              </div>
+		          </div>
+		          <div class="panel panel-default">
+		              <div class="panel-heading">
+		                  <h4 class="panel-title">
+		                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+		                          General Elective Requirements (Not implemented)
+		                      </a>
+		                  </h4>
+		              </div>
+		              <div id="collapseFour" class="panel-collapse collapse in">
+		                  <div class="panel-body">
+		                      These are courses offered by departments other than the school of your major. These are also intended to increase one's overall know-how.
+		                      <br>
+						      <br>
+						      <p>
+								<strong>PSYCH 100</strong>: Intro to Psychology<br>
+								<strong>LIT 200</strong>: Russian Literature<br>
+							  </p>
+		                  </div>
+		              </div>
+		          </div>
+				</div>
+
+				<br>
 
 			</div>
 
-		<div class="panel-group m-bot20" id="accordion">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-				  <h4 class="panel-title">
-				      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-				          Core Requirements (Not implemented)
-				      </a>
-				  </h4>
-				</div>
-				<div id="collapseOne" class="panel-collapse collapse in">
-				  <div class="panel-body">
-				      These are the courses offered by the department of your major that are necessary to complete in order to obtain the degree in this discipline from your University.
-				      <br>
-				      <br>
-				      <p>
-						<strong>CS 125</strong>: Intro to Computer Science<br>
-						<strong>CS 173</strong>: Discrete Structures<br>
-						<strong>CS 225</strong>: Data Structures<br>
-					  </p>
-
-				  </div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-              <div class="panel-heading">
-                  <h4 class="panel-title">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                          Breadth Requirements (Not implemented)
-                      </a>
-                  </h4>
-              </div>
-              <div id="collapseTwo" class="panel-collapse collapse in">
-                  <div class="panel-body">
-                     Breadth courses are those that are offered by other departments within the school of your major, in order to broaden your knowledge. The listings below show which courses can be taken to fulfill this requirement.
-                     <br>
-				     <br>
-				      <p>
-						<strong>CS 440</strong>: Artificial Intelligence<br>
-						<strong>MATH 444</strong>: Graph Theory<br>
-					  </p>
-                  </div>
-              </div>
-          </div>
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                  <h4 class="panel-title">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                          Language Requirements (Not implemented)
-                      </a>
-                  </h4>
-              </div>
-              <div id="collapseThree" class="panel-collapse collapse in">
-                  <div class="panel-body">
-                      These are language courses (French, German, Spanish, Italian etc.) offered by the Liberal Arts Dept. of your University, two of which must be taken to fulfil this requirement. Refer to the listing below.
-                      <br>
-				      <br>
-				      <p>
-						<strong>SPAN 100</strong>: Intro to Spanish<br>
-						<strong>SPAN 222</strong>: Spanish Literature<br>
-					  </p>
-                  </div>
-              </div>
-          </div>
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                  <h4 class="panel-title">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                          General Elective Requirements (Not implemented)
-                      </a>
-                  </h4>
-              </div>
-              <div id="collapseFour" class="panel-collapse collapse in">
-                  <div class="panel-body">
-                      These are courses offered by departments other than the school of your major. These are also intended to increase one's overall know-how.
-                      <br>
-				      <br>
-				      <p>
-						<strong>PSYCH 100</strong>: Intro to Psychology<br>
-						<strong>LIT 200</strong>: Russian Literature<br>
-					  </p>
-                  </div>
-              </div>
-          </div>
 		</div>
-
-		<br>
-
+		</div>
 	</div>
+	</section>
+	</aside>
+		<!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2014 &copy; Student Scheduler by Tardis, GoogleJump.
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+</section>
 
-</div>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="public/js/jquery.js"></script>
+    <script src="public/js/bootstrap.min.js"></script>
+    <script class="include" type="text/javascript" src="public/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="public/js/jquery.scrollTo.min.js"></script>
+    <script src="public/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="public/assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="public/js/respond.min.js" ></script>
+
+    <!--common script for all pages-->
+    <script src="public/js/common-scripts.js"></script>
+
+  <script>
+
+      //knob
+      $(".knob").knob();
+
+  </script>
 </body>
 </html>
