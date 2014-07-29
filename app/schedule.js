@@ -178,30 +178,39 @@ exports.remove_course = function(req, res) {
 }
 
 exports.get_pending_schedule = function(req, res) {
-	if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
-		var courseIds = req.user.pendingScheduleData.courses;
-		var courseSections = {};
-		var count=0;
-		User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
-			var courses = populatedUser.pendingScheduleData.courses;
-			for(var i=0;i<courses.length;i++) {
-				Section.find({_courseId:courses[i]._id})
-				.populate('_professor', 'name')
-				.select('number open _professor meet_time status _courseId')
-				.sort('number')
-				.exec(function(err, sections) {
-					count++
-					courseSections[sections[0]._courseId]= sections; //TODO: no sections?
-					if(count==courses.length) {
-						res.send({courses:courses, sections:courseSections});
-						return;
-					}
-				});
-			}
+	if(req.user.schedule){
+		//if the user has already generated a schedule, show it
+		var sectionIds = req.user.schedule;
+		getTableData(sectionIds, function(tableData){
+			res.send({tableData:tableData});
 		});
-	} else {
-		res.send(200);
-	}	
+	} else{
+		if(req.user.pendingScheduleData && req.user.pendingScheduleData.courses.length>0) {
+			//if a user has already added courses to their list, show them
+			var courseIds = req.user.pendingScheduleData.courses;
+			var courseSections = {};
+			var count=0;
+			User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
+				var courses = populatedUser.pendingScheduleData.courses;
+				for(var i=0;i<courses.length;i++) {
+					Section.find({_courseId:courses[i]._id})
+					.populate('_professor', 'name')
+					.select('number open _professor meet_time status _courseId')
+					.sort('number')
+					.exec(function(err, sections) {
+						count++
+						courseSections[sections[0]._courseId]= sections; //TODO: no sections?
+						if(count==courses.length) {
+							res.send({courses:courses, sections:courseSections});
+							return;
+						}
+					});
+				}
+			});
+		} else {
+			res.send(200);
+		}			
+	}
 }
 
 exports.get_batch=function(req, res) {
@@ -227,9 +236,50 @@ exports.save = function(req, res) {
 		user.schedule= user.pendingScheduleData._schedules.schedule[scheduleIndex].schedule;
 		user.save();
 		console.log("sections: "+JSON.stringify(user.schedule));
-		res.send(200);
+
+		getTableData(user.schedule, function(tableData){
+			console.log(JSON.stringify(tableData));
+			res.send({tableData:tableData});
+		});
 	});
 	
+}
+
+function getTableData(sectionIds, next) {
+	Section.find({_id:{$in:sectionIds}}).populate('_professor _courseId').exec(function(err, sections){
+		var tableData = {};
+		for(var i=0;i<sections.length;i++) {
+			var csection = sections[i];
+			var professor;
+			if(csection._professor) {
+				professor = {
+					name: csection._professor.name,
+					_id:csection._professor._id
+				}
+			} else {
+				professor = null;
+			}
+
+			tableData[csection._id] = {
+				course: {
+					name: csection._courseId.name,
+					number: csection._courseId.number,
+					_id: csection._courseId._id
+				},
+				section:{
+					number: csection.number,
+					_id: csection._id
+				},
+				courseName: csection._courseId.name,
+				professor:professor,
+				meetTime: csection.meet_time,
+				location: csection.location
+			}
+			if(i==(sections.length-1)){
+				return next(tableData);
+			}
+		}
+	});
 }
 
 function getSections(courses, term, next) {

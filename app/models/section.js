@@ -21,7 +21,7 @@ var sectionSchema = mongoose.Schema({
     term: String,
     documents: [Document.documentSchema],
     moments: [mongoose.Schema.Types.Mixed],
-    _courseId: ObjectId,
+    _courseId: {type:ObjectId, ref:'Course'},
     _professor: {type:ObjectId, ref:'Professor'}
 });
 
