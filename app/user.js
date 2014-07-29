@@ -19,6 +19,7 @@ exports.edit = function(req, res) {
 
 //update user profile
 exports.update = function(req, res) {
+	
 	// email was not changed - update rest of info
     if( req.user.local.email === req.body.email ) {
     	console.log("Success");
@@ -41,6 +42,9 @@ exports.update = function(req, res) {
 	        // check to see if theres already another user with that email
 	        if ( user ) {
 	            console.log("There is already a user with that email");
+	        } else if(req.body.email.substring(req.body.email.length-4,req.body.email.length)!='.edu') {
+	        	console.log("Email must end with .edu");
+	        	exports.edit(req, res); 
 	        } else {
 	        	console.log("Success");
 	        	req.user.local.firstname = req.body.firstname;
