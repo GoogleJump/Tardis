@@ -9,7 +9,7 @@ exports.unlock_profile = function(req, res) {
 				user : user, // get the user out of session and pass to template
 			});			
 		});
-	});
+};
 
 
 //edit your own user profile
