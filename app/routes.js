@@ -25,9 +25,8 @@ module.exports = function(app, passport) {
 		failureFlash : true
 	}));
 
-	app.get('/lock_screen', isLoggedIn, function(req, res) {
-		res.render('lock_screen.ejs', { user : req.user}); 
-	});
+	app.get('/lock_screen', isLoggedIn, user.unlock_profile);	
+	
 	app.post('/lock_screen', passport.authenticate('local-login', {
 		successRedirect : '/profile',
 		failureRedirect : '/lock_screen', 
@@ -54,9 +53,6 @@ module.exports = function(app, passport) {
 	app.get('/user/:userId', user.view);
 	app.post('/profile-edit', user.update);
 	app.get('/profile-edit', isLoggedIn, user.edit);
-
-	app.get('/lock_screen', isLoggedIn, user.unlock_profile);	
-	
 
 	app.get('/select-school', user.view_select_school);
 	app.post('/select-school', user.select_school);

@@ -6,6 +6,7 @@ var Major = require('../app/models/major');
 exports.unlock_profile = function(req, res) {
 	res.render('lock_screen.ejs', {
 		user : req.user, // get the user out of session and pass to template
+		message: req.flash('loginMessage')
 	});	
 };
 
