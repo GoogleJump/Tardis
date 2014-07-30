@@ -4,11 +4,9 @@ var Major = require('../app/models/major');
 
 //view your own user profile
 exports.unlock_profile = function(req, res) {
-	User.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
-			res.render('lock_screen.ejs', {
-				user : user, // get the user out of session and pass to template
-			});			
-		});
+	res.render('lock_screen.ejs', {
+		user : req.user, // get the user out of session and pass to template
+	});	
 };
 
 
