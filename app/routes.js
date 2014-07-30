@@ -48,6 +48,13 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
+	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+	app.get('/auth/google/callback',
+        passport.authenticate('google', {
+                successRedirect : '/select-school',
+                failureRedirect : '/'
+        })
+    );
 
 	app.get('/profile', isLoggedIn, user.view_profile);	
 	app.get('/user/:userId', user.view);
