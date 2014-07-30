@@ -29,15 +29,14 @@
 
         <div id="time"></div>
 
-
-
         <div class="lock-box text-center">
             <img src="public/img/follower-avatar.jpg" alt="lock avatar"/>
-            <h1>username</h1>
+            <h1><%=user.username%></h1>
             <span class="locked">Locked</span>
             <form role="form" class="form-inline" action="/lock_screen" method="post">
                 <div class="form-group col-lg-12">
-                    <input type="password" placeholder="Password" id="exampleInputPassword2" class="form-control lock-input">
+                    <input type="hidden" id="email" value="<%=user.local.email%>">
+                    <input type="password" placeholder="Password" id="password" class="form-control lock-input">
                     <button class="btn btn-lock" type="submit">
                         <i class="fa fa-arrow-right"></i>
                     </button>
