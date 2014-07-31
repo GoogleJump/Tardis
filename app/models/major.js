@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var majorSchema = mongoose.Schema({
     name: String,
+    college: String, 
+    coreClasses: [],
+    electives: [],
+    langReqs: [],
+    genEds: [], 
     _school:{type:mongoose.Schema.Types.ObjectId, ref:'School'}
 });
 

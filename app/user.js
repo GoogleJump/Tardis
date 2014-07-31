@@ -26,6 +26,28 @@ exports.edit = function(req, res) {
 	});
 };
 
+//update user password
+exports.update_password = function(req, res) {
+	user = req.user;
+	if (!user.validPassword(req.body.currpassword)){
+		req.flash('signupMessage', 'Current password is incorrect');
+		console.log("Current password is incorrect")
+		exports.edit(res, req);
+	} else if (req.body.newpassword != req.body.newpassword2){
+		console.log('New passwords do not match')
+		exports.edit(res, req);
+	} else if (req.body.newpassword.length < 8 ){
+		console.log('Password must be 8 or more characters')
+		exports.edit(res, req);
+	} else {
+		console.log("Success");
+		user.local.password = user.generateHash(req.body.newpassword);
+		user.save(function(err){
+			res.redirect('/profile');
+		});
+	}
+};
+
 //update user profile
 exports.update = function(req, res) {
 	
