@@ -36,7 +36,7 @@
 				<strong>Department</strong>: <%= professor.department %><br>
 				<%var avgRating= professor.getAverageRating();%>
 				<%var recPercent = professor.getRecommendPercent();%>
-				<%if(recPercent){%>
+				<%if(recPercent||recPercent==0){%>
 					<strong>Average rating</strong>: <%= parseFloat(avgRating).toFixed(1)%><br>
 					<strong>Percent recommending</strong>: <%= parseFloat(recPercent).toFixed(0)%>%<br>
 				<%}%>

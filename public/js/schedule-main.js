@@ -12,6 +12,8 @@ var schedulesCount = 0;
 
 var BATCH_SIZE = 16;
 
+var pending_init = false;
+
 $(function () {
   $("#calendar-holder").hide();
 
@@ -176,6 +178,36 @@ $(function () {
     $("#calendar-control").show();
     $("#schedule-table").hide();
     $("#gcal-button").hide();
+
+    if(!pending_init){
+      pending_init=true;
+      $.ajax({
+        url: "/schedule/get-pending",
+        type: "GET",
+        data: {override:true}, 
+        success: function (data, status) {
+          if(data.error) {
+            $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
+          } else {
+            if(data.courses) {
+              courseCount = data.courses.length;
+              for(var i=0;i<data.courses.length;i++) {
+                var cId = data.courses[i]._id;
+                var course = {number:data.courses[i].number, id:cId,name:data.courses[i].name};
+                selectedCourses[cId] = course;
+                displayCourse(course);
+                selectedCourseSections[cId] = data.sections[cId];
+                displaySections(cId);
+              }
+            }            
+          } 
+        },
+        error: function(xhr,status,error){
+           $("#error-alert").text("There was an error processing your request. Please try again later.").show();
+           $("#loading").hide();
+        }
+      });
+    }
   });
 
   $( "#slider" ).slider({
@@ -238,6 +270,7 @@ $(function () {
             $("#select-schedule-button").hide();
             $("#gcal-button").show();
           } else{
+            pending_init = true;
             if(data.courses) {
               courseCount = data.courses.length;
               for(var i=0;i<data.courses.length;i++) {
