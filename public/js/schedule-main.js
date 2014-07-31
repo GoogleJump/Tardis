@@ -28,6 +28,7 @@ $(function () {
   });
 
   $("#back-button").hide();
+  $("#gcal-button").hide();
 
   $("#course_input").autocomplete({
       source: function (request, response) {
@@ -174,6 +175,7 @@ $(function () {
     $("#select-schedule-button").show();
     $("#calendar-control").show();
     $("#schedule-table").hide();
+    $("#gcal-button").hide();
   });
 
   $( "#slider" ).slider({
@@ -204,6 +206,7 @@ $(function () {
         populateScheduleTable(data.tableData);
         $("loading").hide();
         $("#schedule-table").fadeIn();
+        $("#gcal-button").show();
       },
       error: function(xhr,status,error){
          console.log("save error");
@@ -233,6 +236,7 @@ $(function () {
             $("#calendar-holder").show();
             $("#back-button").show();
             $("#select-schedule-button").hide();
+            $("#gcal-button").show();
           } else{
             if(data.courses) {
               courseCount = data.courses.length;

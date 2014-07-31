@@ -4,5 +4,11 @@ module.exports = {
 		'clientID' 		: '246442007241-0itoj190jok4s8idjqgbtrt7j9m4u5g7.apps.googleusercontent.com', // your App ID
 		'clientSecret' 	: 'j3nqWEVqI0Fa3xk9h_eSQMH5', // your App Secret
 		'callbackURL' 	: 'http://localhost:4000/auth/google/callback'
+	},
+
+	'gcalAuth' : {
+		'clientID' : '246442007241-4uu91h8p4vgt1ijkmmh74t27lgfch3ic.apps.googleusercontent.com',
+		'clientSecret' : 'LeiiAsr5gB-9eyJVjiWiyBY_',
+		'callbackURL': 'http://localhost:4000/auth/google/gcal/callback'
 	}
 }

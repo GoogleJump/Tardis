@@ -3,7 +3,10 @@ var LocalStrategy   = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
 var User       		= require('../app/models/user');
+var Section            = require('../app/models/section');
 var configAuth = require('./auth');
+var gcal = require('google-calendar');
+
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -140,6 +143,7 @@ module.exports = function(passport) {
 
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                console.log("1");
                 if (err)
                     return done(err);
 
@@ -177,5 +181,74 @@ module.exports = function(passport) {
 
     }));
 
+    passport.use('gcal', new GoogleStrategy(configAuth.gcalAuth,
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+
+            // try to find the user based on their google id
+            User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                if (err)
+                    return done(err);
+
+                if (user) {
+                    var calendar = new gcal.GoogleCalendar(token);
+
+                    //make a calendar
+
+                    //calendar.calendars.insert({summary:'Course schedule'}, function(err, response){
+                        //var newCalendarId = response.id;
+
+                    var sectionIds= user.schedule;
+                    Section.find({_id:{$in:sectionIds}}).populate('_professor _courseId').exec(function(err, sections){
+                        for(var i=0;i<sections.length;i++) {
+                            var csection = sections[i];
+                            for(var j=0;j<csection.moments.length;j++) {
+                                var cmoment = csection.moments[j];
+                                console.log("cmoment: "+JSON.stringify(cmoment));
+                                var startDate = startDates[cmoment.day];
+                                calendar.events.insert('primary', {
+                                    start: {
+                                        dateTime: startDate+'T'+pad(cmoment.startTime.hour)+':'+pad(cmoment.startTime.minute)+':00-07:00',
+                                        timeZone: "America/Los_Angeles"
+                                    },
+                                    end: {
+                                        dateTime: startDate+'T'+pad(cmoment.endTime.hour)+':'+pad(cmoment.endTime.minute)+':00-07:00',
+                                        timeZone: "America/Los_Angeles"
+                                    },
+                                    summary: csection._courseId.name,
+                                    recurrence: ["RRULE:FREQ=WEEKLY;UNTIL="+endDate+"T235900Z"],
+                                    location: csection.location,
+                                    description: csection._courseId.number+"-"+csection.number+" with "+csection._professor.name
+                                }, function(err, res){
+                                    console.log(err);
+                                    console.log(JSON.stringify(res));
+                                });                               
+                            }
+                        }
+                    });
+
+
+                    //});
+
+                    return done(null, user);
+                } else {
+                    console.log('no user');
+                }
+            });
+        });
+
+    }));
 
 };
+
+var startDates = ['2014-08-24','2014-08-25','2014-08-26','2014-08-27','2014-08-28','2014-08-29','2014-08-30'];
+
+var endDate = '20141208';
+
+function pad(num) {
+    if(num>9) return num;
+    else return '0'+num;
+}
