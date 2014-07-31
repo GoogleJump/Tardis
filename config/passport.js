@@ -149,13 +149,21 @@ module.exports = function(passport) {
                     return done(null, user);
                 } else {
                     // if the user isnt in our database, create a new user
-                    var newUser          = new User();
+                    var newUser = new User();
 
                     // set all of the relevant information
                     newUser.google.id    = profile.id;
                     newUser.google.token = token;
                     newUser.google.name  = profile.displayName;
                     newUser.google.email = profile.emails[0].value; // pull the first email
+
+                    var splitName = profile.displayName.split(' ');
+                    if(splitName.length>=2){
+                        newUser.local.firstname = splitName[0];
+                        newUser.local.lastname = splitName[splitName.length-1];
+                    }
+                    newUser.local.email = profile.emails[0].value;
+
 
                     // save the user
                     newUser.save(function(err) {

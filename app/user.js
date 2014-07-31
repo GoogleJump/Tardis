@@ -108,6 +108,7 @@ exports.view_select_school = function(req, res) {
 	School.find({}, function (err, schools) {
 		res.render('select_school.ejs', {
 			schoolArray : 	schools,
+			user: req.user,
 			message: 		req.flash('message')
 		});
 	});
@@ -116,10 +117,14 @@ exports.view_select_school = function(req, res) {
 exports.select_school =  function(req, res) {
 	var school = req.body.school;
 	var major = req.body.major;
+	var username = req.body.username;
 
 	req.user._schoolId = school;
 	req.user._major = major;
-	req.user.save();
-
-    res.redirect('/profile');
+	if(username){
+		req.user.username = username;
+	}
+	req.user.save(function(err){
+		res.redirect('/profile');
+	});
 };

@@ -51,12 +51,12 @@ module.exports = function(app, passport) {
 	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 	app.get('/auth/google/callback',
         passport.authenticate('google', {
-                successRedirect : '/select-school',
+                successRedirect : '/profile',
                 failureRedirect : '/'
         })
     );
 
-	app.get('/profile', isLoggedIn, user.view_profile);	
+	app.get('/profile', isLoggedIn, accountFullyCreated, user.view_profile);	
 	app.get('/user/:userId', user.view);
 	app.post('/profile-edit', user.update);
 	app.get('/profile-edit', isLoggedIn, user.edit);
@@ -138,4 +138,12 @@ function isNotLoggedIn(req, res, next) {
 
 	// if they are redirect them to the profile page
 	res.redirect('/profile');
+}
+
+function accountFullyCreated(req, res, next) {
+	if(req.user._schoolId) {
+		return next();
+	}
+
+	res.redirect('/select-school');
 }

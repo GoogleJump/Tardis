@@ -38,7 +38,7 @@
                       </section>  
 
 	<div class="page-header text-center">
-		<font color = "white" size="12"><center><i class=" fa fa-th-list"></i>   Add School and Major </center></font>
+		<font color = "white" size="12"><center><i class=" fa fa-th-list"></i>Finish creating your account</center></font>
 	</div>
 
 	<div class="row">
@@ -52,6 +52,12 @@
 			<div class="well" >
 				<h3><b>Select your school<b></h3>
 				<form action="/select-school" method="post">
+					<%if(!user.username){%>
+					<div class="form-group">
+						<input type="text" placeholder="Username" name="username" class="form-control">
+					</div>
+					<%}%>
+
 					<select class="form-control" name="school" id="school-select">
 						<option value="null">Choose school...</option>
 						<% for(var index in schoolArray) { %>
