@@ -191,6 +191,7 @@ exports.get_pending_schedule = function(req, res) {
 			var courseIds = req.user.pendingScheduleData.courses;
 			var courseSections = {};
 			var count=0;
+			var stats={};
 			User.populate(req.user,{path:"pendingScheduleData.courses"}, function (err, populatedUser) {
 				var courses = populatedUser.pendingScheduleData.courses;
 				for(var i=0;i<courses.length;i++) {
@@ -199,18 +200,60 @@ exports.get_pending_schedule = function(req, res) {
 					.select('number open _professor meet_time status _courseId')
 					.sort('number')
 					.exec(function(err, sections) {
-						count++
 						courseSections[sections[0]._courseId]= sections; //TODO: no sections?
-						if(count==courses.length) {
-							res.send({courses:courses, sections:courseSections});
-							return;
-						}
+						getProfessorStats(sections, function(pstats){
+							stats = merge(stats, pstats);
+							count++;
+							if(count==courses.length) {
+								res.send({courses:courses, sections:courseSections, professorStats:stats});
+								return;
+							}
+						});
 					});
 				}
 			});
 		} else {
 			res.send(200);
 		}			
+	}
+}
+/**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj1
+ * @param obj2
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+function merge(obj1,obj2){
+    var obj3 = {};
+    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    return obj3;
+}
+
+function getProfessorStats(sections, next) {
+	var stats = {};
+	var count= 0;
+	var professorIds = {};
+	for(var i =0;i<sections.length;i++){
+		if(sections[i]._professor){	
+			professorIds[sections[i]._professor._id]=true;
+		}
+	}
+	var keys = Object.keys(professorIds);
+	for(var professorId in professorIds){
+		Professor.findById(professorId).populate('_ratings').exec(function(err, professor){
+			stats[professor._id] = {
+				recommendPercent:professor.getRecommendPercent(),
+				averageRating: professor.getAverageRating()
+			};
+			count++;
+			if(count==keys.length) {
+				return next(stats);
+			}
+		});	
+	}
+	if(keys.length==0) {
+		return next({});
 	}
 }
 

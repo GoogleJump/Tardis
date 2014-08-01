@@ -14,6 +14,7 @@ var BATCH_SIZE = 16;
 
 var pending_init = false;
 
+var professorStats = {};
 $(function () {
   $("#calendar-holder").hide();
 
@@ -190,6 +191,7 @@ $(function () {
             $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
           } else {
             if(data.courses) {
+              professorStats = data.professorStats;
               courseCount = data.courses.length;
               for(var i=0;i<data.courses.length;i++) {
                 var cId = data.courses[i]._id;
@@ -272,6 +274,7 @@ $(function () {
           } else{
             pending_init = true;
             if(data.courses) {
+              professorStats = data.professorStats;
               courseCount = data.courses.length;
               for(var i=0;i<data.courses.length;i++) {
                 var cId = data.courses[i]._id;
@@ -383,7 +386,7 @@ function displaySections(courseId) {
     var professorLabel = 'Unknown';
     var recommendPercent;
     if(s._professor) {
-      professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a>";
+      professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a> <span class=\"label label-success\">"+professorStats[s._professor._id].recommendPercent+"</span>";
       recommendPercent = s._professor.recommendPercent;
       console.log(recommendPercent+" rp");
     }
