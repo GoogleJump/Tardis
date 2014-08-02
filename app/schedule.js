@@ -26,6 +26,7 @@ exports.generate = function(req, res) {
 	var term = req.body.term;
 	var sectionPreferences = req.body.sectionPreferences;
 	var timeRange = req.body.timeRange;
+	var preferHigherRatedProfessors = req.body.preferHigherRatedProfessors;
 	console.log("generating schedules");
 	
 	getSections(courses, term, function(s){
@@ -53,8 +54,6 @@ exports.generate = function(req, res) {
 
 		var tree = new ScheduleTree();
 
-		var beforeDate = new Date();
-
 		for(var i=0;i<courses.length;i++) {
 			tree.addCourse(courses[i],s[courses[i].id]);
 			if(tree.isEmpty()) {
@@ -63,60 +62,87 @@ exports.generate = function(req, res) {
 			}
 		}
 
-		//remove sections set as do not consider
-		var forRemoval=[];
-		var costs = {};
-		for(var sectionId in sectionPreferences) {
-			if(sectionPreferences[sectionId]==PREF_DO_NOT_CONSIDER) {
-				forRemoval.push(sectionId);
-			} else {
-				var cost = 0;
-				cost += getTimeRangeCost(scheduleSections[sectionId], timeRange);
-				if(sectionPreferences[sectionId]==PREF_PREFER) {
-					cost += 20;
-				}
-				else {
-					if(sectionPreferences[sectionId]==PREF_NEUTRAL){
-						cost += 10;
-					}
-				}
-				costs[sectionId] = cost;
-			}
+		if(preferHigherRatedProfessors){
+			getProfessorStats(scheduleSections, function(stats){
+				finishSchedule(req, res, tree, sectionPreferences, scheduleSections, timeRange, stats);
+			});
+		} else {
+			finishSchedule(req, res, tree, sectionPreferences, scheduleSections, timeRange, null);
 		}
-
-		if(forRemoval.length>0)
-			tree.removeSections(forRemoval);
-
-		if(tree.isEmpty()) {
-			res.send({error:"No schedules found after removal"});
-			return;
-		}
-		var schedules = tree.getAllSchedulesWithCost(costs);
-
-		schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
-
-		//Fixed: store generated schedule in it's own document; 
-		var dbSchedule = new Schedule();
-		dbSchedule.schedule = schedules;
-		if(req.user.pendingScheduleData._schedules){
-			removeSavedSchedule(req.user.pendingScheduleData._schedules);
-		}
-		req.user.pendingScheduleData._schedules = dbSchedule._id;
-		dbSchedule.markModified('schedule');
-		req.user.save();
-		dbSchedule.save();
-
-		if(schedules.length<=BATCH_SIZE) {
-			//send them all
-			res.send({count: schedules.length, results:schedules, sections:scheduleSections});
-		}else {
-			//only send the first batch
-			res.send({count: schedules.length, results:schedules.slice(0, BATCH_SIZE), sections:scheduleSections});
-		}
-		var afterDate = new Date();
-		var ms = afterDate.getTime() - beforeDate.getTime();
-		console.log("generated schedule tree: "+schedules.length+" found of "+potential+" potential in "+ms+"ms");
 	});
+}
+
+function finishSchedule(req, res, tree, sectionPreferences, scheduleSections, timeRange, stats){
+	//remove sections set as do not consider, set costs
+	var forRemoval=[];
+	var costs = {};
+	for(var sectionId in sectionPreferences) {
+		if(sectionPreferences[sectionId]==PREF_DO_NOT_CONSIDER) {
+			forRemoval.push(sectionId);
+		} else {
+			var cost = 0;
+
+			//time range
+			cost += getTimeRangeCost(scheduleSections[sectionId], timeRange);
+
+			//manual preference
+			if(sectionPreferences[sectionId]==PREF_PREFER) {
+				cost += 20;
+			}
+			else {
+				if(sectionPreferences[sectionId]==PREF_NEUTRAL){
+					cost += 10;
+				}
+			}
+
+			//professor rating
+			if(stats) {
+				var pStats = stats[scheduleSections[sectionId]._professor];
+				if(scheduleSections[sectionId]._professor&&pStats.averageRating!=null){
+					//there is a professor and it has been rated at least once
+					cost += pStats.averageRating;
+				} else{
+					//no professor
+					cost+=2;//assume average since there is no data
+				}
+			}
+
+			costs[sectionId] = cost;
+		}
+	}
+
+	if(forRemoval.length>0)
+		tree.removeSections(forRemoval);
+
+	if(tree.isEmpty()) {
+		res.send({error:"No schedules found. Try setting fewer sections as 'Do not consider'"});
+		return;
+	}
+	var schedules = tree.getAllSchedulesWithCost(costs);
+
+	schedules = _.sortBy(schedules, function(cs){return -cs.cost;}); //negative to sort highest to lowest
+
+	//Fixed: store generated schedule in it's own document; 
+	var dbSchedule = new Schedule();
+	dbSchedule.schedule = schedules;
+	if(req.user.pendingScheduleData._schedules){
+		removeSavedSchedule(req.user.pendingScheduleData._schedules);
+	}
+	req.user.pendingScheduleData._schedules = dbSchedule._id;
+	dbSchedule.markModified('schedule');
+	req.user.save();
+	dbSchedule.save();
+
+	if(schedules.length<=BATCH_SIZE) {
+		//send them all
+		res.send({count: schedules.length, results:schedules, sections:scheduleSections});
+	}else {
+		//only send the first batch
+		res.send({count: schedules.length, results:schedules.slice(0, BATCH_SIZE), sections:scheduleSections});
+	}
+
+	console.log("generated schedule tree: "+schedules.length+" found");
+	
 }
 
 exports.add_course = function(req, res) {
@@ -214,11 +240,20 @@ function getProfessorStats(sections, next) {
 	var stats = {};
 	var count= 0;
 	var professorIds = {};
-	for(var i =0;i<sections.length;i++){
-		if(sections[i]._professor){	
-			professorIds[sections[i]._professor._id]=true;
+	if(sections instanceof Array) {
+		for(var i =0;i<sections.length;i++){
+			if(sections[i]._professor){	
+				professorIds[sections[i]._professor._id]=true;
+			}
+		}		
+	} else {
+		for(var sectionId in sections){
+			if(sections[sectionId]._professor){
+				professorIds[sections[sectionId]._professor]=true;
+			}
 		}
 	}
+
 	var keys = Object.keys(professorIds);
 	for(var professorId in professorIds){
 		Professor.findById(professorId).populate('_ratings').exec(function(err, professor){
