@@ -36,15 +36,15 @@ exports.rate = function(req, res) {
 		newRating._poster = req.user._id;
 	}
 
-	newRating.save();
-
-	Professor.findById(professorId, function(err, professor){
-		professor._ratings.push(newRating._id);
-		professor._raters.push(req.user._id);
-		professor.save();
+	newRating.save(function(err){
+		Professor.findById(professorId, function(err, professor){
+			professor._ratings.push(newRating._id);
+			professor._raters.push(req.user._id);
+			professor.save(function(err){
+				res.send(200);
+			});
+		});		
 	});
-
-	res.send(200);
 }
 
 // exports.comment = function(req, res) {

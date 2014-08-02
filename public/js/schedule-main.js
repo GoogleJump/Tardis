@@ -14,6 +14,7 @@ var BATCH_SIZE = 16;
 
 var pending_init = false;
 
+var professorStats = {};
 $(function () {
   $("#calendar-holder").hide();
 
@@ -190,6 +191,7 @@ $(function () {
             $("#error-alert").text("There was an error processing your request: "+data.error+". Please try again later.").show();
           } else {
             if(data.courses) {
+              professorStats = data.professorStats;
               courseCount = data.courses.length;
               for(var i=0;i<data.courses.length;i++) {
                 var cId = data.courses[i]._id;
@@ -272,6 +274,7 @@ $(function () {
           } else{
             pending_init = true;
             if(data.courses) {
+              professorStats = data.professorStats;
               courseCount = data.courses.length;
               for(var i=0;i<data.courses.length;i++) {
                 var cId = data.courses[i]._id;
@@ -344,7 +347,15 @@ function addSelectedCourse(course) {
       } else {
         suggestedCourses = data.suggestedCourses;
         selectedCourseSections[course.id] = jQuery.parseJSON(data.sections);
+        console.log(data.professorStats);
+
+        for(var professorId in data.professorStats){
+          professorStats[professorId] = data.professorStats[professorId];
+        }
+        
+
         displaySections(course.id);
+
         //TODO: display suggested courses
       }
     },
@@ -383,9 +394,23 @@ function displaySections(courseId) {
     var professorLabel = 'Unknown';
     var recommendPercent;
     if(s._professor) {
-      professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a>";
-      recommendPercent = s._professor.recommendPercent;
-      console.log(recommendPercent+" rp");
+      var pid = s._professor._id;
+      professorLabel = "<a href=\"/professor/"+pid+"\" target=\"_blank\">"+s._professor.name+"</a>  ";
+      if(professorStats[pid].recommendPercent||professorStats[pid].recommendPercent==0){
+        //there is at least one rating
+        var rp = professorStats[pid].recommendPercent;
+        var color = 'label-warning';
+        if(rp>=75) {
+          color = 'label-success';
+        } else if(rp<=25){
+          color = 'label-danger';
+        }
+        professorLabel+="<span class=\"label "+color+"\">"+rp+"% recommend</span>";
+      } else{
+        //no ratings
+        professorLabel+="<span class=\"label label-default\">No ratings</span>";
+      }
+      
     }
     var meetTimeLabel = 'Unknown';
     if(s.meet_time) {
