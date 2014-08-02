@@ -136,29 +136,9 @@ exports.add_course = function(req, res) {
 			res.send({error:"Could not find sections"});
 			return;
 		}
-		var count=0;
-		for(var i=0;i<sections.length;i++) {
-			if(sections[i]._professor){
-				Professor.findById(sections[i]._professor._id, profCallback(i));
-			} else {
-				profCallback(-1)();
-			}
-			
-		}
-		function profCallback(index){
-			return function(err, professor){
-				if(index>=0){
-					console.log(index+" setting rp: "+professor.getAverageRating());
-					sections[index]._professor.recommendPercent = professor.getRecommendPercent();
-					console.log("prof now: "+JSON.stringify(sections[index]._professor));
-				}
-				count++;
-				if(count==sections.length) {
-					console.log("sending "+JSON.stringify(sections));
-					res.send({sections:JSON.stringify(sections)});
-				}
-			}
-		}
+		getProfessorStats(sections, function(stats){
+			res.send({sections:JSON.stringify(sections), professorStats:stats});
+		})
 	});
 }
 

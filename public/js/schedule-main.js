@@ -347,7 +347,15 @@ function addSelectedCourse(course) {
       } else {
         suggestedCourses = data.suggestedCourses;
         selectedCourseSections[course.id] = jQuery.parseJSON(data.sections);
+        console.log(data.professorStats);
+
+        for(var professorId in data.professorStats){
+          professorStats[professorId] = data.professorStats[professorId];
+        }
+        
+
         displaySections(course.id);
+
         //TODO: display suggested courses
       }
     },
@@ -386,9 +394,23 @@ function displaySections(courseId) {
     var professorLabel = 'Unknown';
     var recommendPercent;
     if(s._professor) {
-      professorLabel = "<a href=\"/professor/"+s._professor._id+"\" target=\"_blank\">"+s._professor.name+"</a> <span class=\"label label-success\">"+professorStats[s._professor._id].recommendPercent+"</span>";
-      recommendPercent = s._professor.recommendPercent;
-      console.log(recommendPercent+" rp");
+      var pid = s._professor._id;
+      professorLabel = "<a href=\"/professor/"+pid+"\" target=\"_blank\">"+s._professor.name+"</a>  ";
+      if(professorStats[pid].recommendPercent||professorStats[pid].recommendPercent==0){
+        //there is at least one rating
+        var rp = professorStats[pid].recommendPercent;
+        var color = 'label-warning';
+        if(rp>=75) {
+          color = 'label-success';
+        } else if(rp<=25){
+          color = 'label-danger';
+        }
+        professorLabel+="<span class=\"label "+color+"\">"+rp+"% recommend</span>";
+      } else{
+        //no ratings
+        professorLabel+="<span class=\"label label-default\">No ratings</span>";
+      }
+      
     }
     var meetTimeLabel = 'Unknown';
     if(s.meet_time) {
