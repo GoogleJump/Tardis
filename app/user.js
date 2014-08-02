@@ -13,44 +13,27 @@ exports.unlock_profile = function(req, res) {
 
 //edit your own user profile
 exports.edit = function(req, res) {
-	School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
-		User.findOne({'_id' : req.user._id}, function(err, user){
-			Major.findOne({'_id' : req.user._major}, function(err, major){
-				res.render('profile-edit.ejs', {
-					user : user, // get the user out of session and pass to template
-					school: school,
-					major: major
-				});
-			});			
+	//get all schools from the database
+	School.find({}, function (err, schools) {
+		School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
+			User.findOne({'_id' : req.user._id}, function(err, user){
+				Major.findOne({'_id' : req.user._major}, function(err, major){
+					res.render('profile-edit.ejs', {
+						schoolArray : schools, 
+						user : user, // get the user out of session and pass to template
+						school: school,
+						major: major, 
+						message: req.flash('message')
+					});
+				});			
+			});
 		});
 	});
 };
 
-//update user password
-exports.update_password = function(req, res) {
-	user = req.user;
-	if (!user.validPassword(req.body.currpassword)){
-		req.flash('signupMessage', 'Current password is incorrect');
-		console.log("Current password is incorrect")
-		exports.edit(res, req);
-	} else if (req.body.newpassword != req.body.newpassword2){
-		console.log('New passwords do not match')
-		exports.edit(res, req);
-	} else if (req.body.newpassword.length < 8 ){
-		console.log('Password must be 8 or more characters')
-		exports.edit(res, req);
-	} else {
-		console.log("Success");
-		user.local.password = user.generateHash(req.body.newpassword);
-		user.save(function(err){
-			res.redirect('/profile');
-		});
-	}
-};
-
 //update user profile
 exports.update = function(req, res) {
-	
+	console.log(req.body);
 	// email was not changed - update rest of info
     if( req.user.local.email === req.body.email ) {
     	console.log("Success");
@@ -91,7 +74,54 @@ exports.update = function(req, res) {
 
 };
 
+//update user password
+exports.update_password = function(req, res) {
+	user = req.user;
+	if (!user.validPassword(req.body.currpassword)){
+		req.flash('signupMessage', 'Current password is incorrect');
+		console.log("Current password is incorrect")
+		res.redirect('/profile-edit');
+	} else if (req.body.newpassword != req.body.newpassword2){
+		console.log('New passwords do not match')
+		res.redirect('/profile-edit');
+	} else if (req.body.newpassword.length < 8 ){
+		console.log('Password must be 8 or more characters')
+		res.redirect('/profile-edit');
+	} else {
+		console.log("Success");
+		user.local.password = user.generateHash(req.body.newpassword);
+		user.save(function(err){
+			res.redirect('/profile-edit');
+		});
+	}
+};
 
+//update user school info
+exports.update_school = function(req, res) {
+	user = req.user;
+	School.findOne({'_id': req.body.school}, function(err, school) {
+		if ( school._id != user._schoolId ) {
+			user._schoolId = school._id;
+			user.save();
+		}
+		Major.findOne({name:req.body.major,_school:school._id}, function(err, major) {
+			if ( major ){
+				user._major = major._id;
+				user.save();
+			}
+			else {
+				var newMajor = new Major();
+				newMajor.name = req.body.major;
+				newMajor._school = school._id;
+				newMajor.save();
+
+				school.majors.push(newMajor._id);
+				school.save();
+			}
+		});
+	});
+	res.redirect('/profile-edit');
+};
 //view your own user profile
 exports.view_profile = function(req, res) {
 	School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {

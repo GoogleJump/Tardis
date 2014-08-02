@@ -67,6 +67,7 @@ module.exports = function(app, passport) {
 	app.get('/user/:userId', user.view);
 	app.post('/profile-edit', user.update);
 	app.post('/password-edit', user.update_password);
+	app.post('/school-edit', user.update_school);
 	app.get('/profile-edit', isLoggedIn, user.edit);
 
 	app.get('/select-school', user.view_select_school);

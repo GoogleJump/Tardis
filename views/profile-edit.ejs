@@ -175,18 +175,7 @@
                                           <input type="text" class="form-control" name="email" id="c-name" value="<%=user.local.email%>">
                                       </div>
                                   </div>
-                                  <div class="form-group">
-                                      <label  class="col-lg-2 control-label">School Name (Not implemented)</label>
-                                      <div class="col-lg-6">
-                                          <input type="text" class="form-control" name="school" id="b-day" value="<%=school.name%>">
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label  class="col-lg-2 control-label">School Major (Not impleemented)</label>
-                                      <div class="col-lg-6">
-                                          <input type="text" class="form-control" name="major" id="occupation" value="<%= major.name%>">
-                                      </div>
-                                  </div>
+
                                   <div class="form-group">
                                       <label  class="col-lg-2 control-label">User Name</label>
                                       <div class="col-lg-6">
@@ -196,12 +185,50 @@
 
                                   <div class="form-group">
                                       <div class="col-lg-offset-2 col-lg-10">
-                                          <button type="submit" class="btn btn-success" >Save</button>
+                                          <button type="submit" class="btn btn-info" >Save</button>
                                           <button type="button" class="btn btn-default" onclick="window.location='/profile'">Cancel</button>
                                       </div>
                                   </div>
                               </form>
                           </div>
+                      </section>
+                      <section>
+                        <div class="panel panel-primary">
+                              <div class="panel-heading"> Change School Info </div>
+                              <div class="panel-body">
+                                  <form class="form-horizontal" role="form" action="/school-edit" method="post">
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">School</label>
+                                    <div class="col-lg-6">
+                                 <select class="form-control" name="school" id="school-select">
+
+                                  <option value="<%=school.name%>"><%=school.name%></option>
+
+                                  <% for(var index in schoolArray) {
+                                        if( schoolArray[index].name == school.name ){ continue;} %>
+                                    <option value="<%=schoolArray[index]._id %>"><%=schoolArray[index].name %></option>
+                                  <% } %>
+                                </select> 
+                              </div>
+                              </div>
+                                  <div class="form-group">
+                                      <label  class="col-lg-2 control-label">School Major </label>
+                                    <div class="col-lg-6">
+                                 <select class="form-control" name="major" id="school-select">
+
+                                  <option value="<%=major.name%>"><%=major.name%></option>
+                                </select> 
+                              </div>
+                                  </div>
+                                  <div class="form-group">
+                                          <div class="col-lg-offset-2 col-lg-10">
+                                              <button type="submit" class="btn btn-info" onclick="window.location='/profile-edit'">Save</button>
+                                              <button type="button" class="btn btn-default" onclick="window.location='/profile'">Cancel</button>
+                                          </div>
+                                      </div>
+                                </form>
+                              </div>
+                            </div>
                       </section>
                       <section>
                           <div class="panel panel-primary">
