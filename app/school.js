@@ -61,7 +61,7 @@ exports.view_courses = function(req, res) {
 			});
 
 			Course.find({'_schoolId':id}).sort('number').exec(function(err, courses){
-				res.render('courses.ejs', {courses:courses, school:school});
+				res.render('courses.ejs', {courses:courses, school:school, cUser:req.user});
 			});
 		} else {
 			//Error!
