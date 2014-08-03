@@ -141,22 +141,67 @@
 
 	<div class="row" style="padding-bottom: 20px;">
 
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+
 		<!-- LOCAL INFORMATION -->
-		
-			<section class="panel-body bio-graph-info" >
-				<header class="panel-heading" style="background: #0099CC;">
-                  <b><font color = "white"><i class=" fa fa-folder-open-o"></i> School Details </font></b>
+	
+      <section class="panel" style="padding: 20px;">
+        <header class="panel-heading" style="background: #0099CC;">
+                  <b><font color = "white"><i class=" fa fa-plus-square-o"></i> Add a Professor </font></b>
                 </header>
 
-					<p>
-            <br>
-						<font color="#19D119"><strong>Name</strong>: <%= school.name %></font><br>
-						<font color="#19D119"><strong>Location</strong>: <%= school.city %>, <%= school.state %></font><br><br>
-						<a href="/school/<%=school._id%>/courses" class='btn btn-primary'>View courses</a><br><br>
-            <a href="/school/<%=school._id%>/professors" class='btn btn-primary'>View professors</a>
-					</p>
+          <form action="/add-professor/<%=school._id%>" method="post">
+            <div class="form-group">
+              <br>
+              <label>Professor's name</label>
+              <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" class="form-control" name="department">
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg pull-right"> <i class=" fa fa-plus-square"></i> Add Professor</button>
+          </form>
+      </section>
+
+			<section class="panel" style="padding: 20px;">
+				<header class="panel-heading" style="background: #0099CC;">
+                  <b><font color = "white"><i class=" fa fa-users"></i> Professors Listing </font></b>
+                </header>
+                <br>
+
+                              <table class="table table-striped table-advance table-hover">
+                              <thead>
+                              <tr>
+                                  <th><i class="fa fa-bullhorn"></i> Professor </th>
+                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i> Department </th>
+                                  <th><i class="fa fa-calendar"></i> Rating </th>
+                                  <th><i class="fa fa-gift"></i> Records </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <% for(var index in professors) {%>
+                              <tr>
+                                  <td><a href="/professor/<%=professors[index]._id%>"><%=professors[index].name%></a></td>
+                                  <td class="hidden-phone"> <%=professors[index].department%> </td>
+                                  <td><%=professors[index].Rating%></td>
+                                  <td>
+                                  <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-folder-open"></i> <a href="/professor/<%=professors[index]._id%>"> <font color = "white"> View </font></a></button>
+                                  </td>  
+                              </tr>
+                              <%}%>                  
+                              </tbody>
+                          </table>
+
+
 
 			</section>
+
+
+		
 
 	</div>
 </section>

@@ -79,6 +79,8 @@ module.exports = function(app, passport) {
 	app.get('/school/:schoolId/courses', school.view_courses);
 	app.post('/school/:schoolId/courses/update', school.update_courses);
 
+	app.get('/school/:schoolId/professors', professor.view_all);
+
 	app.get('/professor/:professorId', professor.view);
 	app.post('/add-professor/:schoolId', professor.add);
 

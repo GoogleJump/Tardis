@@ -12,17 +12,16 @@ exports.view = function(req, res) {
 	.exec(function(err, professor) {
 		if(err) console.log(err);
 
-		var rateState=0;// user not logged in
-		var uIndex =0;
-		if(req.user){
-			rateState = 1;//user logged in
-			uIndex = professor._raters.indexOf(req.user._id);
-			if(uIndex>=0){
-				rateState = 2;//user already rated this prof
-			}
-		}
-
 		if(professor) {
+			var rateState=0;// user not logged in
+			var uIndex =0;
+			if(req.user){
+				rateState = 1;//user logged in
+				uIndex = professor._raters.indexOf(req.user._id);
+				if(uIndex>=0){
+					rateState = 2;//user already rated this prof
+				}
+			}
 			if(professor._ratings.length==0){
 				res.render('professor.ejs', {
 					professor : professor,
@@ -64,15 +63,33 @@ exports.view = function(req, res) {
 			}
 		} else {
 			//Error!
+			console.log("prof not found");
 			res.redirect('/error');
 		}
 	});
 };
 
+exports.view_all = function(req, res) {
+	var schoolId = req.params.schoolId;
+	console.log("viewing professors for "+schoolId);
+	School.findById(schoolId, function(err, school) {
+		if(school) {
+			Professor.find({'_school':schoolId}, function(err, professors) {
+				res.render('professors.ejs', {school:school, professors:professors, message: req.flash('message'), cUser:req.user});
+			});
+		} else {
+			//Error!
+			res.redirect('/error');
+		}
+	});
+}
+
 exports.add = function(req, res) {
 	var name = req.body.name;
 	var department = req.body.department;
 	var schoolId = req.params.schoolId;
+
+	console.log("adding professor to school "+schoolId+": "+name);
 
 	//regex to match professor name case insensitively mit==MIT
 	var regex = new RegExp(["^",name,"$"].join(""),"i");
@@ -85,7 +102,7 @@ exports.add = function(req, res) {
 			var newProfessor = new Professor();
 			newProfessor.name = name;
 			newProfessor.department = department;
-			newProfessor._schoolId = schoolId;
+			newProfessor._school = schoolId;
 			newProfessor.save();
 
 			res.redirect('/professor/'+newProfessor._id);
