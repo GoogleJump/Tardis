@@ -60,7 +60,7 @@ exports.view_courses = function(req, res) {
 				console.log(result);
 			});
 
-			Course.find({'_schoolId':id}, function(err, courses){
+			Course.find({'_schoolId':id}).sort('number').exec(function(err, courses){
 				res.render('courses.ejs', {courses:courses, school:school});
 			});
 		} else {
