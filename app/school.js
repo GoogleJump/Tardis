@@ -37,7 +37,7 @@ exports.view = function(req, res) {
 	var id = req.params.schoolId;
 	School.findOne({'_id':id}, function(err, school) {
 		if(school) {
-			
+
 			res.render('school.ejs', {school:school, cUser:req.user});
 		} else {
 			//Error!
@@ -106,6 +106,54 @@ exports.update_courses = function(req, res) {
 
 	res.redirect('/school/'+id+"/courses");
 }
+
+exports.search_within =function(req, res) {
+	console.log('searching within school: '+req.body.input);
+
+	var regex = new RegExp(req.body.input, 'i');//case insensitive contains
+	var courseQuery = Course.find({_schoolId:req.user._schoolId, $or:[{number:regex},{name:regex}]}).limit(10);
+	var professorQuery = Professor.find({_school:req.user._schoolId, name:regex}).limit(10);
+
+	var doneCount = 0;
+	var results = {courses:[], professors:[]};
+
+	courseQuery.exec(function(err, courses){
+		if(!err) {
+			for(var index in courses) {
+				results.courses.push({_id:courses[index]._id,number:courses[index].number, name:courses[index].name});
+			}
+			//res.send(results);
+			finishSearch();
+		} else {
+			console.error(err);
+			res.send(500, err);
+		}
+	});
+	professorQuery.exec(function(err, professors){
+		if(!err) {
+			for(var index in professors) {
+				results.professors.push({_id:professors[index]._id,name:professors[index].name, department:professors[index].department});
+			}
+			//res.send(results);
+			finishSearch();
+		} else {
+			console.error(err);
+			res.send(500, err);
+		}
+	});
+
+	function finishSearch(){
+		doneCount++;
+		if(doneCount==2){
+			//both queries returned
+			//send results
+			console.log("sending: "+JSON.stringify(results));
+			res.send(results);
+		}
+	}
+}
+
+
 
 function createCourseFromJSON(schoolId, term, data, next) {
 	//number is a unique key- see if there is already a course with this number
@@ -201,6 +249,4 @@ function createSectionFromJSON(course, term, jsonSection, next) {
 			//TODO: books
 		}
 	});		
-	
-
 }
