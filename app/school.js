@@ -108,11 +108,13 @@ exports.update_courses = function(req, res) {
 }
 
 exports.search_within =function(req, res) {
-	console.log('searching within school: '+req.body.input);
+	var term = req.query.term;
+	var schoolId = req.params.schoolId;
+	console.log('searching within school '+schoolId+': '+term);
 
-	var regex = new RegExp(req.body.input, 'i');//case insensitive contains
-	var courseQuery = Course.find({_schoolId:req.user._schoolId, $or:[{number:regex},{name:regex}]}).limit(10);
-	var professorQuery = Professor.find({_school:req.user._schoolId, name:regex}).limit(10);
+	var regex = new RegExp(term, 'i');//case insensitive contains
+	var courseQuery = Course.find({_schoolId:schoolId, $or:[{number:regex},{name:regex}]}).limit(10);
+	var professorQuery = Professor.find({_school:schoolId, name:regex}).limit(10);
 
 	var doneCount = 0;
 	var results = {courses:[], professors:[]};

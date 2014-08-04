@@ -18,7 +18,6 @@
       <script src="public/js/html5shiv.js"></script>
       <script src="public/js/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <body>
   <section id="container" >
@@ -142,21 +141,18 @@
 	<div class="row" style="padding-bottom: 20px;">
 
 		<!-- LOCAL INFORMATION -->
-		
+		  <input type="hidden" id="schoolId" value="<%=school._id%>"></input>
 			<section class="panel-body bio-graph-info" >
-				<header class="panel-heading" style="background: #0099CC;">
-                  <b><font color = "white"><i class=" fa fa-folder-open-o"></i> School Details </font></b>
-                </header>
-
-					<p>
-            <br>
-						<font color="#19D119"><strong>Name</strong>: <%= school.name %></font><br>
-						<font color="#19D119"><strong>Location</strong>: <%= school.city %>, <%= school.state %></font><br><br>
-						<a href="/school/<%=school._id%>/courses" class='btn btn-primary'>View courses</a><br><br>
-            <a href="/school/<%=school._id%>/professors" class='btn btn-primary'>View professors</a>
-					</p>
-
-          <label>Search this school</label><input type="text" placeholder="Professor name or course name/number" class="form-control input-lg"></input>
+          <h1><strong><font color="#19D119"><%= school.name %></font></strong><small> <%= school.city %>, <%= school.state %></small></h1>
+          <hr>
+          <a href="/school/<%=school._id%>/courses" class='btn btn-primary'>View courses</a><br><br>
+          <a href="/school/<%=school._id%>/professors" class='btn btn-primary'>View professors</a><br><br>
+          <div class="input-group input-group-lg">
+            <input id="omnibox" placeholder="Professor name or course name/number" class="form-control">
+            <span class="input-group-btn">
+                  <button class="btn btn-default btn-primary" type="button" id="omnibox-button"><span class="glyphicon glyphicon-search" /></button>
+              </span>
+          </div>
 
 			</section>
 
@@ -194,9 +190,7 @@
     <!--common script for all pages-->
     <script src="/public/js/common-scripts.js"></script>
 
-    <!--script for this page-->
-    <script src="js/count.js"></script>
-
-
+    <!-- scripts for this page-->
+    <script src="/public/js/school-main.js"></script>
 </body>
 </html>
