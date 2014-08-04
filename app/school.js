@@ -113,8 +113,8 @@ exports.search_within =function(req, res) {
 	console.log('searching within school '+schoolId+': '+term);
 
 	var regex = new RegExp(term, 'i');//case insensitive contains
-	var courseQuery = Course.find({_schoolId:schoolId, $or:[{number:regex},{name:regex}]}).limit(10);
-	var professorQuery = Professor.find({_school:schoolId, name:regex}).limit(10);
+	var courseQuery = Course.find({_schoolId:schoolId, $or:[{number:regex},{name:regex}]}).limit(25);
+	var professorQuery = Professor.find({_school:schoolId, name:regex}).limit(25);
 
 	var doneCount = 0;
 	var results = {courses:[], professors:[]};
