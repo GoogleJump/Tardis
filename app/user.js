@@ -16,17 +16,19 @@ exports.edit = function(req, res) {
 	//get all schools from the database
 	School.find({}, function (err, schools) {
 		School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
-			User.findOne({'_id' : req.user._id}, function(err, user){
+			Major.find({'_id' : { $in : school.majors }}, function (err, majorArray){
 				Major.findOne({'_id' : req.user._major}, function(err, major){
 					res.render('profile-edit.ejs', {
+						majorArray : majorArray, 
 						schoolArray : schools, 
-						user : user, // get the user out of session and pass to template
+						user : req.user, // get the user out of session and pass to template
 						school: school,
 						major: major, 
 						message: req.flash('message')
 					});
-				});			
+				});
 			});
+			
 		});
 	});
 };
@@ -105,22 +107,15 @@ exports.update_school = function(req, res) {
 			user.save();
 		}
 		Major.findOne({name:req.body.major,_school:school._id}, function(err, major) {
-			if ( major ){
-				user._major = major._id;
-				user.save();
-			}
-			else {
-				var newMajor = new Major();
-				newMajor.name = req.body.major;
-				newMajor._school = school._id;
-				newMajor.save();
-
-				school.majors.push(newMajor._id);
-				school.save();
-			}
+			if ( major ) {
+				if ( user._major != major._id ){
+					user._major = major._id;
+					user.save();
+				}
+			} 
+			res.redirect('/profile-edit');
 		});
 	});
-	res.redirect('/profile-edit');
 };
 //view your own user profile
 exports.view_profile = function(req, res) {
