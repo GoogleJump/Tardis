@@ -143,12 +143,17 @@
 
 
 		<!-- LOCAL INFORMATION -->
+    <input type="hidden" value="<%=course._id%>" id="courseId"></input>
 		  <ol class="breadcrumb">
         <li><a href="/">Home</a></li>
         <li><a href="/school/<%=school._id%>"><%=school.name%></a></li>
+        <li><a href="/school/<%=school._id%>/courses">Courses</a></li>
         <li class="active"><%=course.number%></li>
       </ol>
-			<section class="panel-body bio-graph-info" >
+      <%if(cUser){%>
+        <button class="btn btn-primary pull-right" id="add-to-schedule-button"><span class="glyphicon glyphicon-plus"></span> Add to schedule</button><div class="clearfix"></div>
+			<%}%>
+      <section class="panel-body bio-graph-info" >
 				<header class="panel-heading" style="background: #0099CC;">
                   <b><font color = "white"><i class=" fa fa-folder-open-o"></i> Course Details </font></b>
                 </header>
@@ -176,7 +181,6 @@
                                
                               </div>
 					</div>
-
 			</section>
 
 
@@ -252,7 +256,7 @@
     <script src="/public/js/common-scripts.js"></script>
 
     <!--script for this page-->
-    <script src="js/count.js"></script>
+    <script src="/public/js/course-main.js"></script>
 
 
 </body>
