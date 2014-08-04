@@ -80,6 +80,7 @@ module.exports = function(app, passport) {
 	app.post('/school/:schoolId/courses/update', school.update_courses);
 
 	app.get('/school/:schoolId/professors', professor.view_all);
+	app.get('/school/:schoolId/search', school.search_within);
 
 	app.get('/professor/:professorId', professor.view);
 	app.post('/add-professor/:schoolId', professor.add);

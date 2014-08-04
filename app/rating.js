@@ -18,6 +18,8 @@ exports.rate = function(req, res) {
 		return;
 	}
 
+	req.user.reputation+=10;//bonus rep for submitting rating
+	req.user.save();
 
 	var newRating = new Rating();
 	newRating.helpfulness = helpfulness;

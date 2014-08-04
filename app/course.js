@@ -6,10 +6,10 @@ var Section = require('../app/models/section');
 
 exports.view = function(req, res) {
 	var id = req.params.courseId;
-	Course.findOne({'_id':id}, function(err, course) {
+	Course.findOne({'_id':id}).populate('_schoolId').exec(function(err, course) {
 		if(course) {
 			Section.find({'_courseId':id}, function(err, sections){
-				res.render('course.ejs',{course:course,sections:sections});
+				res.render('course.ejs',{course:course,sections:sections,school:course._schoolId,cUser:req.user});
 			});
 		} else {
 			//Error!

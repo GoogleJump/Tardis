@@ -14,9 +14,9 @@ exports.view = function(req, res) {
 	.populate('_professor')
 	.exec(function(err, section) {
 		if(section) {
-			Course.findOne({'_id':section._courseId}, function(err, course){
+			Course.findOne({'_id':section._courseId}).populate('_schoolId').exec(function(err, course){
 				if(section._professor) {
-					res.render('section.ejs',{course:course,section:section,professor:section._professor});
+					res.render('section.ejs',{course:course,section:section,professor:section._professor, school:course._schoolId});
 				} else {
 					res.render('section.ejs',{course:course,section:section,professor:null});
 				}

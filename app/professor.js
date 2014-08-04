@@ -74,7 +74,7 @@ exports.view_all = function(req, res) {
 	console.log("viewing professors for "+schoolId);
 	School.findById(schoolId, function(err, school) {
 		if(school) {
-			Professor.find({'_school':schoolId}, function(err, professors) {
+			Professor.find({'_school':schoolId}).sort('name').exec(function(err, professors) {
 				res.render('professors.ejs', {school:school, professors:professors, message: req.flash('message'), cUser:req.user});
 			});
 		} else {
