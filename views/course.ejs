@@ -39,10 +39,11 @@
                         <input type="text" class="form-control search" placeholder="Search">
                     </li>
                     <!-- user login dropdown start-->
+                    <%if (cUser){%>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="public/img/avatar1_small.jpg">
-                            <span class="username">username</span>
+                            <img alt="" src="/public/img/avatar1_small.jpg">
+                            <span class="username"><%=cUser.username%></span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
@@ -53,6 +54,11 @@
                             <li><a href="/logout"><i class="fa fa-key"></i>  Log Out</a></li>
                         </ul>
                     </li>
+                    <%} else{%>
+                      <li>
+                        <a href="/login" class="btn btn-info">Login or Sign up</a>
+                      </li>
+                    <%}%>
                     <!-- user login dropdown end -->
                 </ul>
                 <!--search & user info end-->
@@ -137,7 +143,11 @@
 
 
 		<!-- LOCAL INFORMATION -->
-		
+		  <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/school/<%=school._id%>"><%=school.name%></a></li>
+        <li class="active"><%=course.number%></li>
+      </ol>
 			<section class="panel-body bio-graph-info" >
 				<header class="panel-heading" style="background: #0099CC;">
                   <b><font color = "white"><i class=" fa fa-folder-open-o"></i> Course Details </font></b>
@@ -190,7 +200,7 @@
                              <% for(var index in sections) {%>
                               <tr>
                                   <td><a ><%=sections[index].number%></a></td>
-                                  <td class="hidden-phone"> <%=sections[index].department%> </td>
+                                  <td class="hidden-phone"> <%=sections[index].term%> </td>
                                   <td><%=sections[index].status%></td>
                                   <td>
                                   <button type="button" class="btn btn-sm btn-success"><i class="fa fa-folder-open"></i> <a href="/section/<%=sections[index]._id%>"><font color = "white"> Availability and Resources </font></a></button>

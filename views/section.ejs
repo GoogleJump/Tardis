@@ -18,7 +18,12 @@
 
 	<div class="row">
 		<!-- LOCAL INFORMATION -->
-		
+			<ol class="breadcrumb">
+			  <li><a href="/">Home</a></li>
+			  <li><a href="/school/<%=school._id%>"><%=school.name%></a></li>
+			  <li><a href="/course/<%=course._id%>"><%=course.number%></a></li>
+			  <li class="active"><%= section.number %></li>
+			</ol>
 			<div class="well">
 				<h3>Section details</h3>
 

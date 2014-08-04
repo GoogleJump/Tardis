@@ -8,7 +8,7 @@ var courseSchema = mongoose.Schema({
     description: String,
     credits: Number,
     level: String,
-    _schoolId: mongoose.Schema.Types.ObjectId
+    _schoolId: {type:mongoose.Schema.Types.ObjectId, ref:'School'}
 });
 
 module.exports = mongoose.model('Course', courseSchema);
