@@ -44,7 +44,7 @@ function displaySearchResults(data) {
 		for(var i=0;i<data.professors.length;i++) {
 			var cp = data.professors[i];
 			var viewButton="<td>view button</td>";
-			$('#professor-results-table tr:last').after('<tr><td>'+cp.name+'</td><td>'+cp.department+'</td>'+viewButton+'</tr>');
+			$('#professor-results-table tr:last').after('<tr><td><a href="/professor/'+cp._id+'">'+cp.name+'</a></td><td>'+cp.department+'</td>'+viewButton+'</tr>');
 		}
 	} else {
 		p.hide();
@@ -55,7 +55,7 @@ function displaySearchResults(data) {
 		for(var i=0;i<data.courses.length;i++) {
 			var cc = data.courses[i];
 			var viewButton="<td>view button</td>";
-			$('#course-results-table tr:last').after('<tr><td>'+cc.number+'</td><td>'+cc.name+'</td>'+viewButton+'</tr>');
+			$('#course-results-table tr:last').after('<tr><td><a href="/course/'+cc._id+'">'+cc.number+'</a></td><td>'+cc.name+'</td>'+viewButton+'</tr>');
 		}
 	} else {
 		c.hide();
