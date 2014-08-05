@@ -4552,7 +4552,7 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
 /*lock screen*/
 
 .lock-screen {
-    background:#02bac6 url("../img/lock-bg.jpg");
+    background:url("background.jpg");
     background-size: cover;
     background-repeat: repeat;
 }
