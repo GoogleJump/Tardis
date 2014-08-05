@@ -41,7 +41,7 @@
                   <!-- user login dropdown start-->
                   <li class="dropdown">
                       <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                          <img alt="" src=<%=user.local.avatar_small%>>
+                          <img alt="" src="/<%=user.local.avatar_small%>">
                           <span class="username"><%=user.username%></span>
                           <b class="caret"></b>
                       </a>
@@ -125,7 +125,7 @@
                       <section class="panel">
                           <div class="user-heading round">
                               <a href="#">
-                                  <img src=<%=user.local.avatar%> alt="">
+                                  <img src="/<%=user.local.avatar%>" alt="">
                               </a>
                               <h1><b><%=user.local.firstname%> <%=user.local.lastname%></b></h1>
                               <p><b><%=user.local.email%> </b></p>
