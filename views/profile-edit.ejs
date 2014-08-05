@@ -208,6 +208,20 @@
                                 </select> 
                               </div>
                               </div>
+                              <div class="form-group">
+                                      <label  class="col-lg-2 control-label">School Major </label>
+                                    <div class="col-lg-6">
+
+                                 <select class="form-control" name="major" id="major-select">
+                                  <option value="<%=major.name%>"><%=major.name%></option>
+                                    <% for(var index in majorArray) { %>
+                                        <% if( majorArray[index].name == major.name ){ continue;} %>
+                                    <option value="<%=majorArray[index].name%>"><%=majorArray[index].name %></option>
+                                  <% } %>
+
+                                </select> 
+                              </div>
+                                  </div>
                               <h5>Not in the list? Add your school</h5>
                               <div class="form-group">
                                 
@@ -283,21 +297,9 @@
                               </div>
                               <span class="help-block" id="school-error-text">Unknown error</span>
                               <button type="submit" class="btn btn-success pull-right" id="add-school-button"><i class="fa fa-plus-square"></i> Add Your School </button><div class="clearfix"></div>
-                                <h5>Not in the list? Add your major</h5>
-                                  <div class="form-group">
-                                      <label  class="col-lg-2 control-label">School Major </label>
-                                    <div class="col-lg-6">
-
-                                 <select class="form-control" name="major" id="major-select">
-                                  <option value="<%=major.name%>"><%=major.name%></option>
-                                    <% for(var index in majorArray) { %>
-                                        <% if( majorArray[index].name == major.name ){ continue;} %>
-                                    <option value="<%=majorArray[index].name%>"><%=majorArray[index].name %></option>
-                                  <% } %>
-
-                                </select> 
-                              </div>
-                                  </div>
+                                
+                                  
+                                  <h5>Not in the list? Add your major</h5>
                                   <div class="form-group" id="major-parent">
                                   <label  class="col-lg-2 control-label">Major Name</label>
                                   <div class="col-lg-6">
@@ -306,6 +308,7 @@
                                   <span class="help-block" id="major-error-text">Unknown error</span>
                                 </div>
                                 <button type="submit" class="btn btn-success pull-right" id="add-major-button"><i class="fa fa-plus-square"></i> Add Your Major </button><div class="clearfix"></div>
+
                                   <div class="form-group">
                                           <div class="col-lg-offset-2 col-lg-10">
                                               <button type="submit" class="btn btn-info" onclick="window.location='/profile-edit'">Save</button>

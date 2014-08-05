@@ -3,11 +3,13 @@ var selectedSchoolId;
 $(function () {
 	$("#major-error-text").hide();
 	$("#school-error-text").hide();
+	selectedSchoolId = $("#school-select").val();
 
 	$("#school-select").change(function(){
 		console.log("school selected");
 
 		selectedSchoolId = $("#school-select").val();
+		console.log(selectedSchoolId);
 		if(selectedSchoolId=='null'){
 			selectedSchoolId=null;
 		} else {
