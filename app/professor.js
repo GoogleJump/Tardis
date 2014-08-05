@@ -26,7 +26,8 @@ exports.view = function(req, res) {
 				res.render('professor.ejs', {
 					professor : professor,
 					cUser: req.user,
-					rateState: rateState
+					rateState: rateState,
+					school: professor._school
 				});						
 			} else {
 				var posterMap = {};
@@ -43,7 +44,8 @@ exports.view = function(req, res) {
 									professor : professor,
 									posterMap: posterMap,
 									cUser: req.user,
-									rateState: rateState
+									rateState: rateState,
+									school: professor._school
 								});						
 							}
 						});
@@ -55,7 +57,8 @@ exports.view = function(req, res) {
 								professor : professor,
 								posterMap: posterMap,
 								cUser: req.user,
-								rateState: rateState
+								rateState: rateState,
+								school: professor._school
 							});						
 						}
 					}
