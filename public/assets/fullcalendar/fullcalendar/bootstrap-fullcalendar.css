@@ -337,7 +337,7 @@ a.fc-event {
 .fc-event-hori .ui-resizable-e {
   top: 0           !important; /* importants override pre jquery ui 1.7 styles */
   right: -3px      !important;
-  width: 7px       !important;
+  width: 20px       !important;
   height: 100%     !important;
   cursor: e-resize;
   }
@@ -345,7 +345,7 @@ a.fc-event {
 .fc-event-hori .ui-resizable-w {
   top: 0           !important;
   left: -3px       !important;
-  width: 7px       !important;
+  width: 20px       !important;
   height: 100%     !important;
   cursor: w-resize;
   }
