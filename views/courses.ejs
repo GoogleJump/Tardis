@@ -1,6 +1,11 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <link rel="shortcut icon" href="img/favicon.png">
+
 	<title>Scheduler - <%=school.name%> courses</title>
 
 	<link rel="stylesheet" href="/public/css/jquery-ui.min.css">
@@ -40,11 +45,12 @@
                     <li>
                         <input type="text" class="form-control search" placeholder="Search">
                     </li>
+
                     <!-- user login dropdown start-->
                      <%if (cUser){%>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="/public/img/avatar1_small.jpg">
+                            <img src= <%=cUser.local.avatar_small%> alt="">
                             <span class="username"><%=cUser.username%></span>
                             <b class="caret"></b>
                         </a>

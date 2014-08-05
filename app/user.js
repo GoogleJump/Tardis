@@ -2,6 +2,9 @@ var School = require('../app/models/school');
 var User = require('../app/models/user');
 var Major = require('../app/models/major');
 
+var fs = require('fs');
+var easyimg = require('easyimage');
+
 //view your own user profile
 exports.unlock_profile = function(req, res) {
 	res.render('lock_screen.ejs', {
@@ -116,6 +119,44 @@ exports.update_school = function(req, res) {
 			res.redirect('/profile-edit');
 		});
 	});
+};
+
+
+exports.update_pic = function(req, res) {
+
+	user = req.user;
+	var file = req.files.picture;
+
+	fs.readFile(file.path, 'utf8', function (err, data) {
+	  if (err) {
+	    console.log('Error: ' + err);
+	  } else if ( file.size == 0 ){
+	  	fs.unlinkSync(file.path);
+	  	return;
+	  } else {
+	  	if (user.local.avatar.substring(0,7) == 'public/'){
+	  		console.log('did not delete ' + user.local.avatar);
+	  	} else {
+	  		fs.unlinkSync(user.local.avatar);
+	  		fs.unlinkSync(user.local.avatar_small);
+			console.log('successfully deleted ' + user.local.avatar);
+		}
+		user.local.avatar = file.path;	
+		user.local.avatar_small = user.local.avatar.replace('.', '_small.');
+		user.save(); 
+		
+		fs.createReadStream(user.local.avatar).pipe(fs.createWriteStream(user.local.avatar_small));
+		easyimg.thumbnail({src:file.path, dst: user.local.avatar, width: 200, height: 200}).then(function(file){
+		}, function(err) {done(err); });
+		
+		easyimg.thumbnail({src:user.local.avatar, dst: user.local.avatar_small, width: 30, height: 30}).then(function(file){
+		}, function(err) {done(err); });
+		
+	  	
+	  }
+	});
+	res.redirect('/profile-edit');
+
 };
 //view your own user profile
 exports.view_profile = function(req, res) {

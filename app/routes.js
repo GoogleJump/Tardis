@@ -68,6 +68,7 @@ module.exports = function(app, passport) {
 	app.post('/profile-edit', user.update);
 	app.post('/password-edit', user.update_password);
 	app.post('/school-edit', user.update_school);
+	app.post('/update-pic', user.update_pic);
 	app.get('/profile-edit', isLoggedIn, user.edit);
 
 	app.get('/select-school', user.view_select_school);
@@ -112,6 +113,7 @@ module.exports = function(app, passport) {
 
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
+	app.use('/uploads', express.static('uploads'));
 
 	app.get('/error', function(req, res) {
 		res.render('static/500.html');

@@ -38,7 +38,7 @@ exports.view = function(req, res) {
 	School.findOne({'_id':id}, function(err, school) {
 		if(school) {
 
-			res.render('school.ejs', {school:school, cUser:req.user});
+			res.render('school.ejs', {school:school, user:req.user});
 		} else {
 			//Error!
 			res.redirect('/error');
