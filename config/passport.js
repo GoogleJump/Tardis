@@ -79,8 +79,8 @@ module.exports = function(passport) {
                 newUser.username = req.body.username;
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
-                newUser.local.avatar = 'public/img/profile-avatar.jpg';
-                newUser.local.avatar_small = 'public/img/avatar1_small.jpg';
+                newUser.local.avatar = 'public/img/defaultavatar.png';
+                newUser.local.avatar_small = 'public/img/defaultavatar_small.png';
 
 				// save the user
                 newUser.save(function(err) {
