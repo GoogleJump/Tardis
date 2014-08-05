@@ -79,8 +79,7 @@ module.exports = function(passport) {
                 newUser.username = req.body.username;
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
-                newUser.local.avatar = 'public/img/profile-avatar.jpg';
-                newUser.local.avatar_small = 'public/img/avatar1_small.jpg';
+                newUser.local.avatar = '/public/img/defaultavatar.png';
 
 				// save the user
                 newUser.save(function(err) {
@@ -162,6 +161,9 @@ module.exports = function(passport) {
                     newUser.google.token = token;
                     newUser.google.name  = profile.displayName;
                     newUser.google.email = profile.emails[0].value; // pull the first email
+                    newUser.local.avatar = profile._json['picture'];
+
+                    console.log("GOOGLE+ pic "+profile._json['picture']);
 
                     var splitName = profile.displayName.split(' ');
                     if(splitName.length>=2){

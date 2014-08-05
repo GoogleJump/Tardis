@@ -42,7 +42,7 @@
                     <%if (user){%>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src= <%=user.local.avatar_small%> >
+                            <img alt="" src="<%=user.local.avatar%>" width="30" height="30" >
                             <span class="username"><%=user.username%></span>
                             <b class="caret"></b>
                         </a>
@@ -155,8 +155,8 @@
           </div>
 			</section>
 
-      <div class="col-sm-6">
-        <table id="course-results-table" class="table" style="display: none;">
+      <div class="col-sm-6" id="course-results-div" style="display: none;">
+        <table id="course-results-table" class="table">
           <tr>
             <th>Course number</th>
             <th>Course name</th>
@@ -164,8 +164,8 @@
           </tr>
         </table>
       </div>
-      <div class="col-sm-6">
-        <table id="professor-results-table" class="table" style="display: none;">
+      <div class="col-sm-6" id="professor-results-div" style="display: none;">
+        <table id="professor-results-table" class="table">
           <tr>
             <th>Professor name</th>
             <th>Department</th>
