@@ -32,14 +32,18 @@ function search() {
 }
 
 function displaySearchResults(data) {
-	var p = $("#professor-results-table");
-	var c = $("#course-results-table");
+	var p = $("#professor-results-div");
+	var c = $("#course-results-div");
+	var pt = $("#professor-results-table");
+	var ct = $("#course-results-table");
 	//remove past results
-	p.find("tr:gt(0)").remove();
-	c.find("tr:gt(0)").remove();
+	pt.find("tr:gt(0)").remove();
+	ct.find("tr:gt(0)").remove();
 	//unhide tables if there are results
 	if(data.professors.length>0){
+		console.log("show");
 		p.show();
+		pt.show();
 		//hide error msg
 		for(var i=0;i<data.professors.length;i++) {
 			var cp = data.professors[i];
@@ -47,11 +51,14 @@ function displaySearchResults(data) {
 			$('#professor-results-table tr:last').after('<tr><td><a href="/professor/'+cp._id+'">'+cp.name+'</a></td><td>'+cp.department+'</td>'+viewButton+'</tr>');
 		}
 	} else {
+		console.log("hide");
 		p.hide();
+		pt.hide();
 		//show error msg
 	}
 	if(data.courses.length>0){
 		c.show();
+		ct.show();
 		for(var i=0;i<data.courses.length;i++) {
 			var cc = data.courses[i];
 			var viewButton="<td>view button</td>";
@@ -59,6 +66,10 @@ function displaySearchResults(data) {
 		}
 	} else {
 		c.hide();
+		ct.hide();
 	}
 	
+	$("#course-results-div").show();
+	$("#professor-results-div").show();
+
 }
