@@ -185,7 +185,8 @@ exports.remove_course = function(req, res) {
 
 exports.get_pending_schedule = function(req, res) {
 	var override = req.query.override;
-	if(req.user.schedule &&!override){
+	console.log("getting pending for "+req.user.username);
+	if(req.user.schedule.length>0 && !override){
 		//if the user has already generated a schedule, show it
 		var sectionIds = req.user.schedule;
 		getTableData(sectionIds, function(tableData){

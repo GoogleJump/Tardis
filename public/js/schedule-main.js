@@ -113,10 +113,9 @@ $(function () {
         $("#loading").hide();
         if(data.error) {
           $("#error-alert").text("There was an error processing your request: "+data.error+". Please change your request or try again later.").show();
-          $("#loading").hide();
-         $("#selected-row").show();
-         $("#search-row").show();
-         $("#row-after-courses").show();
+          $("#selected-row").show();
+          $("#search-row").show();
+          $("#row-after-courses").show();
         } else {
           $("#calendar").fadeIn();
           schedules = data.results;
