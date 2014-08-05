@@ -18,20 +18,23 @@ module.exports = function(app, passport) {
 	app.get('/login', isNotLoggedIn, function(req, res) {
 		res.render('login.ejs', { message: req.flash('loginMessage') }); 
 	});
+
 	app.post('/login', passport.authenticate('local-login', {
 		successRedirect : '/profile',
 		failureRedirect : '/login', // redirect back to the login page if there is an error
 		failureFlash : true
 	}));
 
-	app.get('/lock_screen', isLoggedIn, user.unlock_profile);	
-	
+
+
 	app.post('/lock_screen', passport.authenticate('local-login', {
 		successRedirect : '/profile',
 		failureRedirect : '/lock_screen', 
 		failureFlash : true
 	}));
 
+	app.get('/lock_screen', isLoggedIn, user.unlock_profile);	
+	
 
 	app.get('/signup', isNotLoggedIn, function(req, res) {
 		res.render('signup.ejs', { message: req.flash('signupMessage') });

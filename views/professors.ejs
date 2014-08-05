@@ -51,7 +51,6 @@
                             <div class="log-arrow-up"></div>
                             <li><a href="/profile"><i class=" fa fa-suitcase"></i>  Profile</a></li>
                             <li><a href="/profile-edit"><i class="fa fa-cog"></i>  Settings</a></li>
-                            <li><a href="/lock_screen"><i class="fa fa-lock"></i> Lock </a></li>
                             <li><a href="/logout"><i class="fa fa-key"></i>  Log Out</a></li>
                         </ul>
                     </li>
@@ -74,51 +73,49 @@
                   <li class="sub-menu">
                       <a href="/profile">
                           <i class="fa fa-suitcase"></i>
-                          <span>Profile</span>
+                          <span> My Profile</span>
                       </a>
+                  </li>
+
+                    <li class="sub-menu">
+                      <a href="/school/<%= school._id%>" >
+                          <i class="fa fa-comments-o"></i>
+                          <span> My School Information </span>
+                      </a>
+                     
                   </li>
 
                   <li class="sub-menu">
                       <a href="/degree" >
                           <i class="fa fa-book"></i>
-                          <span>Degree Requirements</span>
+                          <span> My Degree</span>
                       </a>
                   </li>
 
                   <li class="sub-menu">
                       <a href="/school/<%=school._id%>/courses" >
                           <i class="fa fa-tasks"></i>
-                          <span>Class Information</span>
+                          <span> My Courses</span>
                       </a>
                   </li>
 
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-shopping-cart"></i>
-                          <span>Course Resources</span>
-                      </a>
-                  </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a class="active" href="/school/<%=school._id%>/professors" >
                           <i class="fa fa-bar-chart-o"></i>
-                          <span>Professor Rating</span>
+                          <span> My Professors </span>
                       </a>
                       
                   </li>
-                  <li class="sub-menu">
-                      <a class="active" href="/school/<%= school._id%>" >
-                          <i class="fa fa-building-o"></i>
-                          <span> School Information </span>
-                      </a>
-                     
-                  </li>
+                
                   <li class="sub-menu">
                       <a href="/schedule" >
                           <i class=" fa fa-th"></i>
-                          <span> My Schedule </span>
+                          <span>My Schedule</span>
                       </a>
                   </li>
+
+
 
               </ul>
               <!-- sidebar menu end-->

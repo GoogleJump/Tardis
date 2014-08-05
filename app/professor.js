@@ -5,9 +5,12 @@ var User = require('../app/models/user');
 
 var _ = require('underscore');
 
+
+
 exports.view = function(req, res) {
 	var id = req.params.professorId;
 	Professor.findById(id)
+
 	.populate('_ratings _school')
 	.exec(function(err, professor) {
 		if(err) console.log(err);
@@ -26,7 +29,8 @@ exports.view = function(req, res) {
 				res.render('professor.ejs', {
 					professor : professor,
 					cUser: req.user,
-					rateState: rateState
+					rateState: rateState,
+					school: professor._school
 				});						
 			} else {
 				var posterMap = {};
@@ -43,7 +47,8 @@ exports.view = function(req, res) {
 									professor : professor,
 									posterMap: posterMap,
 									cUser: req.user,
-									rateState: rateState
+									rateState: rateState,
+									school: professor._school
 								});						
 							}
 						});
@@ -55,7 +60,8 @@ exports.view = function(req, res) {
 								professor : professor,
 								posterMap: posterMap,
 								cUser: req.user,
-								rateState: rateState
+								rateState: rateState,
+								school: professor._school
 							});						
 						}
 					}

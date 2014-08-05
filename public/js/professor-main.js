@@ -1,6 +1,6 @@
 var helpfulnessLabels= ["very unhelpful", "unhelpful", "average", "helpful", "very helpful"];
 var difficultyLabels= ["very hard", "hard", "moderate", "easy", "very easy"];
-var clarityLabels = ["did not understand anything","not understandable","average","understandable", "very understandable"]
+var clarityLabels = ["did not understand anything","not understandable","average","understandable", "very understandable"];
 
 $(function () {
 	//Rating sliders
