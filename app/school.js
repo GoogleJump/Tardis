@@ -2,6 +2,7 @@ var School = require('../app/models/school');
 var Professor = require('../app/models/professor');
 var Course = require('../app/models/course');
 var Section = require('../app/models/section');
+var Major = require('../app/models/major');
 
 var fs = require('fs');
 
@@ -29,6 +30,8 @@ exports.add = function(req, res) {
 		}
 	});
 }
+
+
 
 //			req.user._schoolId = newSchool._id;
 //			req.user.save();
@@ -70,6 +73,14 @@ exports.view_courses = function(req, res) {
 		
 	});
 }
+
+exports.chamila = function(req, res){
+
+	School.findOne({name:"University of Illinois at Urbana-Champaign"}, function(err, school) {
+		Major.findOne({name:"Computer Science", _school: school}, function(err, major){
+		});
+	});
+};
 
 exports.update_courses = function(req, res) {
 	var id = req.params.schoolId;

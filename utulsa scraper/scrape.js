@@ -8,10 +8,11 @@ var options = {
 
 var skip = 10;
 var max = 82;
+http://www.utulsa.edu
 
-var root = '/courses/schedule/';
+var root = '/academics/undergraduate-majors-and-minors.aspx';
 
-options.path = root+'14FATUSCHED.html';
+options.path = root;
 http.get(options, function (http_res) {
     // initialize the container for our data
     var data = "";
@@ -35,16 +36,16 @@ http.get(options, function (http_res) {
         var finishedCount = 0;
         var courses =[];
         $("a").each(function() {
-        	count++;
-        	if(count>=skip&&count<=max) {
+         count++;
+         if(count>=skip&&count<=max) {
                 startedCount++;
-	        	var title = $(this);
-	        	var department = title.text();
-	        	var linkTo = title.attr("href");
+var title = $(this);
+var department = title.text();
+var linkTo = title.attr("href");
 
-	        	console.log(count+" link: "+department+" to "+linkTo); 
+console.log(count+" link: "+department+" to "+linkTo);
                 //Only do this for cs first one right now
-	        	//if(count==19+skip)
+//if(count==19+skip)
                 getCourses(department, linkTo, function(results){
                     courses = courses.concat(results);
                     finishedCount++;
@@ -55,16 +56,16 @@ http.get(options, function (http_res) {
                     } else {
                         console.log(finishedCount+'/'+startedCount+' completed');
                     }
-                });       		
-        	}
+                });
+         }
         });
 
     });
 });
 
 function getCourses(department, newPath, next) {
-	options.path = root+newPath;
-	http.get(options, function (http_res) {
+options.path = root+newPath;
+http.get(options, function (http_res) {
         // initialize the container for our data
         var data = "";
 
@@ -93,8 +94,8 @@ function getCourses(department, newPath, next) {
                     return; //skip title row
                 }
                 count++;
-            	var row = $(this);
-            	var cols = row.children();
+             var row = $(this);
+             var cols = row.children();
 
                 var status = cols.eq(0).text();
                 var number = cols.eq(1).text();
@@ -112,7 +113,7 @@ function getCourses(department, newPath, next) {
                     var locArray = time_location[index].split(' ');
                     if(locArray.length>2) {
                         location = locArray.shift()+' '+locArray.shift();
-                        time += locArray.join(' ')+' ';               
+                        time += locArray.join(' ')+' ';
                     }
                 }
                 if(location && (location.slice(0,3)=='ARR'||location.slice(0,3)=='TBA')) {
@@ -127,7 +128,7 @@ function getCourses(department, newPath, next) {
                     time = null;
                 }else {
                     time=time.trim();
-                } 
+                }
 
 
                 if(professor.isEmpty()||professor=='Staff') {

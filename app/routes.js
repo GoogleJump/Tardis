@@ -11,7 +11,6 @@ var schedule = require('./schedule');
 var major = require('./major');
 
 module.exports = function(app, passport) {
-
 	app.get('/', isNotLoggedIn, function(req, res) {
 		res.render('index.ejs'); 
 	});
@@ -117,6 +116,8 @@ module.exports = function(app, passport) {
 	app.get('/error', function(req, res) {
 		res.render('static/500.html');
 	});
+
+	app.get('/chamila', school.chamila);
 
 	//ALL OTHER ROUTES MUST BE ABOVE HERE
 	//Got here and nothing has happened? 404!
