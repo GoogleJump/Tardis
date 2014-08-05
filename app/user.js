@@ -137,37 +137,28 @@ exports.update_pic = function(req, res) {
 	fs.rename(oldpath, newpath, function(err) {
         if (err) throw err;
         console.log('File uploaded to: ' + newpath + ' - ' + file.size + ' bytes');
-    	
-    	if (user.local.avatar == 'public/img/defaultavatar.png'){
+    	if (user.local.avatar == '/public/img/defaultavatar.png' || user.local.avatar.substr(0, 6) == 'https:'){
 		console.log('did not delete ' + user.local.avatar);
 		} else {
-			fs.unlinkSync(user.local.avatar);
-			fs.unlinkSync(user.local.avatar_small);
+			fs.unlinkSync(user.local.avatar.substr(1, user.local.avatar.length));
 			console.log('successfully deleted ' + user.local.avatar);
 		}
 
-		user.local.avatar = newpath;	
-		user.local.avatar_small = newpath.replace('.', '_small.');
-		user.save(); 
-
-		fs.createReadStream(user.local.avatar).pipe(fs.createWriteStream(user.local.avatar_small));
-		easyimg.thumbnail({src:newpath, dst: user.local.avatar, width: 200, height: 200}).then(function(file){
-			easyimg.thumbnail({src:newpath, dst: user.local.avatar_small, width: 30, height: 30}).then(function(file){
-				res.redirect('/profile-edit');
-			}, function(err) {
-				if (err) throw err;
-			});
-		}, function(err) {
-			if (err) throw err;
-		});
-
-			
+		user.local.avatar = '/'+newpath;	
+		user.save(); 			
+		res.redirect('/profile-edit');
 		
 	});
 };
 
 //view your own user profile
 exports.view_profile = function(req, res) {
+/*	User.find({}, function(err, users){
+		for (index in users){
+			users[index].local.avatar = '/public/img/defaultavatar.png';
+			users[index].save();
+		}
+	})*/
 	School.findOne({ '_id' :  req.user._schoolId }, function(err, school) {
 		req.user.populate('_major', function(err, user){
 			res.render('profile.ejs', {

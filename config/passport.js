@@ -162,6 +162,7 @@ module.exports = function(passport) {
                     newUser.google.token = token;
                     newUser.google.name  = profile.displayName;
                     newUser.google.email = profile.emails[0].value; // pull the first email
+                    newUser.local.avatar = profile._json['picture'];
 
                     console.log("GOOGLE+ pic "+profile._json['picture']);
 
