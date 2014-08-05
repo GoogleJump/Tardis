@@ -5,9 +5,12 @@ var User = require('../app/models/user');
 
 var _ = require('underscore');
 
+
+
 exports.view = function(req, res) {
 	var id = req.params.professorId;
 	Professor.findById(id)
+
 	.populate('_ratings _school')
 	.exec(function(err, professor) {
 		if(err) console.log(err);
