@@ -588,3 +588,31 @@ a.logo span {
 .site-min-height {
     min-height: 900px;
 }
+
+
+.panel-primary > .panel-heading.navyblue {
+    background-color: #2A3542;
+    border-color: #2A3542;
+    color: #FFFFFF;
+}
+
+
+.profile-info .panel-footer {
+    background-color:#f8f7f5 ;
+    border-top: 1px solid #e7ebee;
+}
+
+.profile-info .panel-footer ul li a {
+    color: #7a7a7a;
+}
+
+
+.m-bot20 {
+    margin-bottom: 20px;
+}
+
+
+
+.schedulepad {
+    padding: 10px;
+}
