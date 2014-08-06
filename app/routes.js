@@ -120,6 +120,7 @@ module.exports = function(app, passport) {
 		res.render('static/500.html');
 	});
 
+	// clears professors and courses
 	app.get('/chamila', school.chamila);
 
 	//ALL OTHER ROUTES MUST BE ABOVE HERE
