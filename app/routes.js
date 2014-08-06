@@ -9,6 +9,7 @@ var course = require('./course');
 var section = require('./section');
 var schedule = require('./schedule');
 var major = require('./major');
+var temp = require('./temp');
 
 module.exports = function(app, passport) {
 	app.get('/', isNotLoggedIn, function(req, res) {
@@ -121,7 +122,7 @@ module.exports = function(app, passport) {
 	});
 
 	// clears professors and courses
-	app.get('/chamila', school.chamila);
+	app.get('/chamila', temp.chamila);
 
 	//ALL OTHER ROUTES MUST BE ABOVE HERE
 	//Got here and nothing has happened? 404!
