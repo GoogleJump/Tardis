@@ -50,7 +50,7 @@
   					<%if (cUser){%>
   					<li class="dropdown">
   						<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-  							<img alt="" src="/public/img/avatar1_small.jpg">
+  							<img alt=""  src="<%=cUser.local.avatar%>" width="30" height="30">
   							<span class="username"><%=cUser.username%></span>
   							<b class="caret"></b>
   						</a>
@@ -176,7 +176,7 @@
   													<p><span><b>Average Rating: </b></span><%= parseFloat(avgRating).toFixed(1)%></p>
   												</div>
   												<div class="bio-row">
-  													<p><span><b>Percent Recommending: </b></span><%= parseFloat(recPercent).toFixed(0)%>%</p>
+  													<p><span><b>Percent Suggested: </b></span><%= parseFloat(recPercent).toFixed(0)%>%</p>
   												</div>
   												<%}%>
 

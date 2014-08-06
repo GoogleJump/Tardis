@@ -43,7 +43,7 @@
                     <%if (cUser){%>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="/public/img/avatar1_small.jpg">
+                            <img alt="" src="<%=cUser.local.avatar%>" width="30" height="30">
                             <span class="username"><%=cUser.username%></span>
                             <b class="caret"></b>
                         </a>
@@ -175,7 +175,6 @@
                               <tr>
                                   <th><i class="fa fa-bullhorn"></i> Professor </th>
                                   <th class="hidden-phone"><i class="fa fa-question-circle"></i> Department </th>
-                                  <th><i class="fa fa-calendar"></i> Rating </th>
                                   <th><i class="fa fa-gift"></i> Records </th>
                               </tr>
                               </thead>
@@ -184,7 +183,6 @@
                               <tr>
                                   <td><a href="/professor/<%=professors[index]._id%>"><%=professors[index].name%></a></td>
                                   <td class="hidden-phone"> <%=professors[index].department%> </td>
-                                  <td><%=professors[index].Rating%></td>
                                   <td>
                                   <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-folder-open"></i> <a href="/professor/<%=professors[index]._id%>"> <font color = "white"> View </font></a></button>
                                   </td>  
