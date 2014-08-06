@@ -16,9 +16,9 @@ exports.view = function(req, res) {
 		if(section) {
 			Course.findOne({'_id':section._courseId}).populate('_schoolId').exec(function(err, course){
 				if(section._professor) {
-					res.render('section.ejs',{course:course,section:section,professor:section._professor, school:course._schoolId});
+					res.render('section.ejs',{course:course,section:section,professor:section._professor, school:course._schoolId, user:req.user});
 				} else {
-					res.render('section.ejs',{course:course,section:section,professor:null});
+					res.render('section.ejs',{course:course,section:section,professor:null, user:req.user});
 				}
 			});
 		} else {
