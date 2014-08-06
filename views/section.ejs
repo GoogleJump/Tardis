@@ -149,7 +149,7 @@
 			  <li class="active"><%= section.number %></li>
 			</ol>
 			 <section class="panel-body bio-graph-info" >
-				<header class="panel-heading" style="background: #0099CC;">
+				<header class="panel-heading" style="background: #1975FF;">
                   <b><font color = "white"><i class=" fa fa-folder-open-o"></i> Section Details </font></b>
                 </header>
 
@@ -186,8 +186,8 @@
 			</section>
 
 			 <section class="panel-body bio-graph-info" >
-				<header class="panel-heading" style="background: #0099CC;">
-                  <b><font color = "white"><i class=" fa fa-folder-open-o"></i> Documents </font></b>
+				<header class="panel-heading" style="background: #1975FF;">
+                  <b><font color = "white"><i class=" fa fa-file-text"></i> Documents </font></b>
                 </header>
 
                               <br>
@@ -203,7 +203,7 @@
                               </tr>
                               </thead>
                               <tbody>
-                             <%var documents = section.documents;%>
+                             <% for(var index = 0; index < documents.length; index++) {%>
                               <tr>
                                   <td><a ><%=documents[index].title%></a></td>
                                   <td class="hidden-phone"> <%=documents[index].description%></td>
@@ -217,9 +217,12 @@
                           </table>
 			</section>
 
-			<div class="well">
-				<h3>Add a document</h3>
 
+			<section class="panel-body bio-graph-info" >
+							<header class="panel-heading" style="background: #1975FF;">
+			                  <b><font color = "white"><i class=" fa fa-files-o"></i> Add Documents For this Section </font></b>
+			                </header>
+			                	<br>
 					<form action="/section/<%=section._id%>/add-document" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<label>Title</label>
@@ -233,9 +236,9 @@
 							<label>Choose your file</label>
 							<input type="file" class="form-control" name="document">
 						</div>
-						<button type="submit" class="btn btn-warning btn-lg">Add</button>
+						<button type="submit" class="btn btn-success btn-lg pull-right"><i class="fa fa-check-circle"></i> Add Document</button>
 					</form>
-			</div>
+			</section>
 
 		
 
