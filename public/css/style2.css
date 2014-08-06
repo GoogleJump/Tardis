@@ -532,3 +532,40 @@ a.logo:hover, a.logo:focus, a.loginlogo, a.logonew {
 a.logo span {
     color: #00CC00;
 }
+
+
+
+.wrapper {
+    display: inline-block;
+    margin-top: 60px;
+    padding: 15px;
+    width: 100%;
+}
+
+
+
+/*footer*/
+
+.site-footer {
+    background: #5b6e84;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.go-top {
+    margin-right: 1%;
+    float: right;
+    background: rgba(255,255,255,.5);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+.go-top i {
+    color: #2A3542;
+}
+
+.site-min-height {
+    min-height: 900px;
+}
