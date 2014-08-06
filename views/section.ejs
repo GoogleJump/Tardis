@@ -185,15 +185,37 @@
 
 			</section>
 
-			<div class="well">
-				<h3>Documents</h3>
-					<p>
-						<%var documents = section.documents;%>
-						<% for(var index=0;index<documents.length;index++) {%>
-							<a href="/public/user_documents/<%=documents[index].file_name%>"><strong><%=documents[index].title%></strong>-<%=documents[index].description%></a><br>
-						<%}%>
-					</p>
-			</div>
+			 <section class="panel-body bio-graph-info" >
+				<header class="panel-heading" style="background: #0099CC;">
+                  <b><font color = "white"><i class=" fa fa-folder-open-o"></i> Documents </font></b>
+                </header>
+
+                              <br>
+                              <%var documents = section.documents;%>
+
+                              <table class="table table-striped table-advance table-hover">
+                              <thead>
+                              <tr>
+                                  <th><i class="fa fa-bullhorn"></i> Document Title </th>
+                                  <th class="hidden-phone"><i class="fa fa-question-circle"></i> Description </th>
+                                  <th><i class="fa fa-info-circle"></i> File Name </th>
+                                  <th><i class="fa fa-file-text-o"></i> Open </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                             <%var documents = section.documents;%>
+                              <tr>
+                                  <td><a ><%=documents[index].title%></a></td>
+                                  <td class="hidden-phone"> <%=documents[index].description%></td>
+                                  <td><%=documents[index].file_name%></td>
+                                  <td>
+                                  <button type="button" class="btn btn-sm btn-success"><i class="fa fa-folder-open"></i> <a href="/public/user_documents/<%=documents[index].file_name%>"><font color = "white"> Open File </font></a></button>
+                                  </td>  
+                              </tr>
+                              <%}%>                  
+                              </tbody>
+                          </table>
+			</section>
 
 			<div class="well">
 				<h3>Add a document</h3>
