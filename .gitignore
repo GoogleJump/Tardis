@@ -20,7 +20,7 @@ coverage
 build/Release
 
 #uploaded files
-uploads
+uploads/*
 public/user_documents
 
 # Dependency directory
