@@ -404,7 +404,7 @@ function displaySections(courseId) {
         } else if(rp<=25){
           color = 'label-danger';
         }
-        professorLabel+="<span class=\"label "+color+"\">"+rp+"% recommend</span>";
+        professorLabel+="<span class=\"label "+color+"\">"+parseFloat(rp).toFixed(1)+"% recommend</span>";
       } else{
         //no ratings
         professorLabel+="<span class=\"label label-default\">No ratings</span>";

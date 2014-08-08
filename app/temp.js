@@ -1,7 +1,10 @@
+var School = require('../app/models/school'); 
+var Major = require('../app/models/major');
+
 exports.chamila = function(req, res){
 
 	School.findOne({name:"University of Tulsa"}, function(err, school) {
-		Major.findOne({name:"Computer Science", _school: school}, function(err, major){
+		Major.findOne({name:"Computer science", _school: school}, function(err, major){
 			major.college = "Engineering";
 			major.coreClasses.push('CS 1001');
 			major.coreClasses.push('CS 1043');
