@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <link rel="shortcut icon" href="public/img/favicon.png">
 
-    <title>Student Course Scheduler</title>
+    <title>Student Scheduler - My schedule</title>
 
       <link rel="stylesheet" href="public/css/jquery-ui.min.css">
       <link href="public/css/fullcalendar.css" rel="stylesheet" />
@@ -57,8 +57,7 @@
               </div>
             <!--logo start-->
           
-            <a href="/profile" class="logo">Student <span>Scheduler</span></a>
-            <a class="logonew">Welcome To Your Class Scheduler!</a>
+            <a href="/" class="logo">Student <span>Scheduler  </span><small><font color="gray">beta</font></small></a>
             <!--logo end-->
 
             <div class="top-nav ">
@@ -91,7 +90,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
                   <li class="sub-menu">
-                      <a href="/profile">
+                      <a  href="/profile">
                           <i class="fa fa-suitcase"></i>
                           <span> My Profile</span>
                       </a>
@@ -100,32 +99,9 @@
                     <li class="sub-menu">
                       <a href="/school/<%= school._id%>" >
                           <i class="fa fa-comments-o"></i>
-                          <span> My School Information </span>
+                          <span> My School </span>
                       </a>
                      
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/degree" >
-                          <i class="fa fa-book"></i>
-                          <span> My Degree</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/school/<%=school._id%>/courses" >
-                          <i class="fa fa-tasks"></i>
-                          <span> My Courses</span>
-                      </a>
-                  </li>
-
-
-                  <li class="sub-menu">
-                      <a  href="/school/<%=school._id%>/professors" >
-                          <i class="fa fa-bar-chart-o"></i>
-                          <span> My Professors </span>
-                      </a>
-                      
                   </li>
                 
                   <li class="sub-menu">
@@ -299,7 +275,7 @@
       <!--footer start-->
        <footer class="site-footer">
           <div class="text-center" style="padding-left:5cm">
-              2014 &copy; Student Scheduler by Tardis, GoogleJump.
+              &copy;2014 by Team Tardis, GoogleJump 2014. <a href="/about"><font color="white"><u>About</u></font></a>
               <a href="#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>

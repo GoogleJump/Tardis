@@ -28,16 +28,12 @@
               </div>
             <!--logo start-->
           
-            <a href="/profile" class="logo">Student <span>Scheduler</span></a>
-            <a class="logonew">Welcome To Your Class Scheduler!</a>
+            <a href="/" class="logo">Student <span>Scheduler  </span><small><font color="gray">beta</font></small></a>
             <!--logo end-->
 
             <div class="top-nav ">
                 <!--search & user info start-->
                 <ul class="nav pull-right top-menu">
-                    <li>
-                        <input type="text" class="form-control search" placeholder="Search">
-                    </li>
                     <!-- user login dropdown start-->
                     <%if (user){%>
                     <li class="dropdown">
@@ -80,32 +76,9 @@
                     <li class="sub-menu">
                       <a class="active" href="/school/<%= school._id%>" >
                           <i class="fa fa-comments-o"></i>
-                          <span> My School Information </span>
+                          <span> My School </span>
                       </a>
                      
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/degree" >
-                          <i class="fa fa-book"></i>
-                          <span> My Degree</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/school/<%=school._id%>/courses" >
-                          <i class="fa fa-tasks"></i>
-                          <span> My Courses</span>
-                      </a>
-                  </li>
-
-
-                  <li class="sub-menu">
-                      <a href="/school/<%=school._id%>/professors" >
-                          <i class="fa fa-bar-chart-o"></i>
-                          <span> My Professors </span>
-                      </a>
-                      
                   </li>
                 
                   <li class="sub-menu">
@@ -143,8 +116,8 @@
 			<section class="panel-body bio-graph-info" >
           <h1><strong><font color="#19D119"><%= school.name %></font></strong><small> <%= school.city %>, <%= school.state %></small></h1>
           <hr>
-          <a href="/school/<%=school._id%>/courses" class='btn btn-primary'>View courses</a><br><br>
-          <a href="/school/<%=school._id%>/professors" class='btn btn-primary'>View professors</a><br><br>
+          <a href="/school/<%=school._id%>/courses" class='btn btn-primary'>View all courses</a><br><br>
+          <a href="/school/<%=school._id%>/professors" class='btn btn-primary'>View all professors</a><br><br>
           <div class="input-group input-group-lg">
             <input id="omnibox" placeholder="Professor name or course name/number" class="form-control">
             <span class="input-group-btn">
@@ -191,7 +164,7 @@
       <!--footer start-->
        <footer class="site-footer">
           <div class="text-center">
-              2014 &copy; Student Scheduler by Tardis, GoogleJump.
+              &copy;2014 by Team Tardis, GoogleJump 2014. <a href="/about"><font color="white"><u>About</u></font></a>
               <a href="#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>

@@ -11,6 +11,7 @@ function addToSchedule() {
     type: "POST",
     data: {courseId:courseId}, 
     success: function (data, status) {
+      window.location.href = "/schedule";
       if(data.error) {
         console.log(data.error);
         //todo: show error message

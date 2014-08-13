@@ -1,5 +1,7 @@
 var fs = require('fs'), express = require('express');
 
+var School = require('../app/models/school');
+
 //SUB ROUTES
 var user = require('./user'); 
 var school = require('./school'); 
@@ -114,15 +116,18 @@ module.exports = function(app, passport) {
 	app.get('/major/get', major.get);
 	app.post('/major/add', major.add);
 
+	app.get('/about', function(req,res){
+		School.findById(req.user._schoolId, function(err, school){
+			res.render('about.ejs', {user:req.user, school:school});
+		});
+	});
+
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
 
 	app.get('/error', function(req, res) {
 		res.render('static/500.html');
 	});
-
-	// clears professors and courses
-	app.get('/chamila', temp.chamila);
 
 	//ALL OTHER ROUTES MUST BE ABOVE HERE
 	//Got here and nothing has happened? 404!
