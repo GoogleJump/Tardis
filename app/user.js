@@ -82,7 +82,7 @@ exports.update = function(req, res) {
 //update user password
 exports.update_password = function(req, res) {
 	user = req.user;
-	if (!user.validPassword(req.body.currpassword)){
+	if (user.local.password&&!user.validPassword(req.body.currpassword)){
 		req.flash('signupMessage', 'Current password is incorrect');
 		console.log("Current password is incorrect")
 		res.redirect('/profile-edit');

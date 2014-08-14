@@ -129,7 +129,6 @@ module.exports = function(passport) {
             user.lastLoginDate = Date.now();
             user.save(function(err, result){ return;});
 
-            console.log("all is well");
             // all is well, return successful user
             return done(null, user);
         });
@@ -137,51 +136,47 @@ module.exports = function(passport) {
     }));
 
     passport.use(new GoogleStrategy(configAuth.googleAuth,
-    function(token, refreshToken, profile, done) {
-
+    function(req, token, refreshToken, profile, done) {
+        console.log("google req: "+JSON.stringify(req));
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
 
-            // try to find the user based on their google id
-            User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                console.log("1");
-                if (err)
-                    return done(err);
+            // // try to find the user based on their google id
+            // User.findOne({ 'google.id' : profile.id }, function(err, user) {
+            //     if (err)
+            //         return done(err);
 
-                if (user) {
+            //     if (user) {
+            //         // if a user is found, log them in
+            //         return done(null, user);
+            //     } else {
+            //         // if the user isnt in our database, create a new user
+            //         var newUser = new User();
 
-                    // if a user is found, log them in
-                    return done(null, user);
-                } else {
-                    // if the user isnt in our database, create a new user
-                    var newUser = new User();
+            //         // set all of the relevant information
+            //         newUser.google.id    = profile.id;
+            //         newUser.google.token = token;
+            //         newUser.google.name  = profile.displayName;
+            //         newUser.google.email = profile.emails[0].value; // pull the first email
+            //         newUser.local.avatar = profile._json['picture'];
 
-                    // set all of the relevant information
-                    newUser.google.id    = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name  = profile.displayName;
-                    newUser.google.email = profile.emails[0].value; // pull the first email
-                    newUser.local.avatar = profile._json['picture'];
-
-                    console.log("GOOGLE+ pic "+profile._json['picture']);
-
-                    var splitName = profile.displayName.split(' ');
-                    if(splitName.length>=2){
-                        newUser.local.firstname = splitName[0];
-                        newUser.local.lastname = splitName[splitName.length-1];
-                    }
-                    newUser.local.email = profile.emails[0].value;
+            //         var splitName = profile.displayName.split(' ');
+            //         if(splitName.length>=2){
+            //             newUser.local.firstname = splitName[0];
+            //             newUser.local.lastname = splitName[splitName.length-1];
+            //         }
+            //         newUser.local.email = profile.emails[0].value;
 
 
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    });
-                }
-            });
+            //         // save the user
+            //         newUser.save(function(err) {
+            //             if (err)
+            //                 throw err;
+            //             return done(null, newUser);
+            //         });
+            //     }
+            // });
         });
 
     }));

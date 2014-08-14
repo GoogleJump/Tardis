@@ -133,7 +133,10 @@
                                   <div class="bio-row">
                                       <p><span>Major: </span><%=user._major.name%></p>
                                   </div>
-                               
+                                  <div class="bio-row">
+                                    <%var connectedText = "Not connected" %>
+                                    <%if(user.google!=undefined && user.google.token){ connectedText="Connected!" }%>
+                                    <p><span>Google account: </span><a href="/profile-edit"><%= connectedText%></a></p>
                               </div>
                           </div>
                       </section>
