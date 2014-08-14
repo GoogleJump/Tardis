@@ -258,7 +258,11 @@
 
   <div class="row" id="gcal-row">
     <div class="col-sm-12">
+      <%if(user.google&&user.google.id){%>
       <a href="/auth/google/gcal" class="btn btn-danger btn-lg" id="gcal-button"><span class="fa fa-google-plus"></span> Add to Google Calendar</a>
+      <%}else{%>
+      <a href="/profile-edit" class="btn btn-default btn-lg" id="gcal-button"><span class="fa fa-google-plus"></span> Connect a Google account to add to your calendar</a>
+      <%}%>
     </div>
   </div>
 
