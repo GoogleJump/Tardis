@@ -137,7 +137,6 @@ module.exports = function(passport) {
 
     passport.use(new GoogleStrategy(configAuth.googleAuth,
     function(req, token, refreshToken, profile, done) {
-        console.log("google req: "+JSON.stringify(req));
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
