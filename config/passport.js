@@ -141,42 +141,60 @@ module.exports = function(passport) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
+            // try to find the user based on their google id
+            User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                if (err)
+                    return done(err);
 
-            // // try to find the user based on their google id
-            // User.findOne({ 'google.id' : profile.id }, function(err, user) {
-            //     if (err)
-            //         return done(err);
+                if (user) {
+                    // if a user is found, log them in
+                    if(req.user) {
+                        //trying to connect google to multiple accounts
+                        console.log("can't connect to multiple accounts");
+                        return done("can't connect to multiple accounts");
+                    }
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    if(req.user) {
+                        //add google to existing account
+                        console.log("adding google to "+req.user.username);
+                        req.user.google.id    = profile.id;
+                        req.user.google.token = token;
+                        req.user.google.name  = profile.displayName;
+                        req.user.google.email = profile.emails[0].value; // pull the first email
+                        req.user.local.avatar = profile._json['picture'];                
+                        req.user.save(function(err){
+                            return done(null, req.user);
+                        })
+                    } else {
+                        var newUser = new User();
 
-            //     if (user) {
-            //         // if a user is found, log them in
-            //         return done(null, user);
-            //     } else {
-            //         // if the user isnt in our database, create a new user
-            //         var newUser = new User();
+                        // set all of the relevant information
+                        newUser.google.id    = profile.id;
+                        newUser.google.token = token;
+                        newUser.google.name  = profile.displayName;
+                        newUser.google.email = profile.emails[0].value; // pull the first email
+                        newUser.local.avatar = profile._json['picture'];
 
-            //         // set all of the relevant information
-            //         newUser.google.id    = profile.id;
-            //         newUser.google.token = token;
-            //         newUser.google.name  = profile.displayName;
-            //         newUser.google.email = profile.emails[0].value; // pull the first email
-            //         newUser.local.avatar = profile._json['picture'];
-
-            //         var splitName = profile.displayName.split(' ');
-            //         if(splitName.length>=2){
-            //             newUser.local.firstname = splitName[0];
-            //             newUser.local.lastname = splitName[splitName.length-1];
-            //         }
-            //         newUser.local.email = profile.emails[0].value;
+                        var splitName = profile.displayName.split(' ');
+                        if(splitName.length>=2){
+                            newUser.local.firstname = splitName[0];
+                            newUser.local.lastname = splitName[splitName.length-1];
+                        }
+                        newUser.local.email = profile.emails[0].value;
 
 
-            //         // save the user
-            //         newUser.save(function(err) {
-            //             if (err)
-            //                 throw err;
-            //             return done(null, newUser);
-            //         });
-            //     }
-            // });
+                        // save the user
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });
+                    }
+
+                }
+            });
         });
 
     }));
