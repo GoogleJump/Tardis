@@ -101,6 +101,19 @@ exports.update_password = function(req, res) {
 	}
 };
 
+exports.removeGoogle = function(req, res) {
+	if(req.user.local.password) {
+		req.user.google = {};
+		req.user.save(function (err){
+			console.log(err+" saved");
+			res.redirect('/profile');
+		})
+	} else {
+		console.log("user must have local password");
+		res.send(500);
+	}
+}
+
 //update user school info
 exports.update_school = function(req, res) {
 	user = req.user;

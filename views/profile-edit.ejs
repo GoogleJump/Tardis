@@ -111,9 +111,13 @@
                               <h1>Google account</h1>
                               <%var connectedText = "Not connected" %>
                               <%var buttonText= "Connect now" %>
-                              <%if(user.google!=undefined && user.google.token){ connectedText="Connected"; buttonText="Disconnect" }%>
+                              <%var path = "/auth/google" %>
+                              <%if(user.google!=undefined && user.google.token){ connectedText="Connected"; buttonText="Disconnect"; path="/auth/google/remove" }%>
                               <p><%=connectedText%></p>
-                              <a href='/auth/google' class='btn btn-default'><%=buttonText%></a>
+                              <%if(user.local.password){%><a href='<%=path%>' class='btn btn-default'><%=buttonText%></a>
+                              <%}else{%>
+                              <p>Must create password below before Google can be disconnected</p>
+                              <%}%>
                           </div>
                           
 

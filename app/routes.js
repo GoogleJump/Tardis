@@ -76,6 +76,8 @@ module.exports = function(app, passport) {
 	app.post('/update-pic', user.update_pic);
 	app.get('/profile-edit', isLoggedIn, user.edit);
 
+	app.get('/auth/google/remove', user.remove_google);
+
 	app.get('/select-school', user.view_select_school);
 	app.post('/select-school', user.select_school);
 
