@@ -103,7 +103,7 @@ exports.update_password = function(req, res) {
 
 exports.remove_google = function(req, res) {
 	if(req.user.local.password) {
-		req.user.google = {};
+		req.user.google.token = "";
 		req.user.save(function (err){
 			console.log(err+" saved");
 			res.redirect('/profile');
