@@ -101,7 +101,7 @@ exports.update_password = function(req, res) {
 	}
 };
 
-exports.removeGoogle = function(req, res) {
+exports.remove_google = function(req, res) {
 	if(req.user.local.password) {
 		req.user.google = {};
 		req.user.save(function (err){
