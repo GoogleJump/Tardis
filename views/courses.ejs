@@ -115,12 +115,15 @@
 <div class="row" style="padding: 20px;">
 
 		<!-- LOCAL INFORMATION -->
+
 			<section class="panel-body bio-graph-info" >
+
 				<header class="panel-heading" style="background: #0099CC;">
                   <b><font color = "white"><i class=" fa fa-plus-square-o"></i> Update Courses and Sections (json) </font></b>
                 </header>
-                <br>
 
+                <br>
+            <%if(cUser&&cUser.admin){%>
 					<form action="/school/<%=school._id%>/courses/update" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<label>Term</label>
@@ -132,6 +135,9 @@
 						</div>
 						<button type="submit" class="btn btn-danger btn-lg pull-right"><i class=" fa fa-cloud-upload"></i> Update </button>
 					</form>
+          <%} else {%>
+            <p>Course data is currently managed by administrators only</p>
+            <%}%>
 			</section>
 
 			<section class="panel-body bio-graph-info" >

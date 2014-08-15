@@ -12,19 +12,18 @@ var flash 	 = require('connect-flash');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(process.env.DB_PATH); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-
-
 app.configure(function() {
-
 	// set up our express application
 	app.use(express.logger('dev')); // log every request to the console
 	app.use(express.cookieParser()); // read cookies (needed for auth)
-	app.use(express.bodyParser({uploadDir:'./uploads'}));// get information from html forms
-
+	//app.use(express.bodyParser({uploadDir:'./uploads'}));// get information from html forms
+	app.use(express.json());
+	app.use(express.urlencoded());
+	//app.use(express.multipart());
 	app.use(express.favicon(__dirname + '/public/img/favicon.ico')); 
 
 	app.set('view engine', 'ejs'); // set up ejs for templating
