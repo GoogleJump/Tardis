@@ -11,7 +11,7 @@ var course = require('./course');
 var section = require('./section');
 var schedule = require('./schedule');
 var major = require('./major');
-var temp = require('./temp');
+var admin = require('./admin');
 
 module.exports = function(app, passport) {
 	app.get('/', isNotLoggedIn, function(req, res) {
@@ -124,6 +124,8 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	app.get('/admin/users', isAdmin, admin.view_users);
+
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
 
@@ -172,4 +174,12 @@ function accountFullyCreated(req, res, next) {
 	}
 
 	res.redirect('/select-school');
+}
+
+function isAdmin(req, res, next) {
+	if(req.user&&req.user.admin) {
+		return next();
+	}
+
+	res.send(403);//forbidden
 }

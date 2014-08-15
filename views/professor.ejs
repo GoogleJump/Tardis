@@ -191,7 +191,12 @@
   													<footer>
   														posted by 
   														<%if(r._poster){%>
-  														<%=posterMap[r._poster].username%> <span class="badge"><%=posterMap[r._poster].reputation%></span>
+                              <%var poster = posterMap[r._poster];%>
+  														<%=poster.username%> 
+                              <%if(poster.admin){%>
+                                <span class="label label-danger" title="Administrator">A</span>
+                              <%}%>
+                              <span class="badge" title="Reputation"><%=poster.reputation%></span>
   														<%}else{%>
   														anonymous
   														<%}%>
@@ -299,7 +304,8 @@
   		<!--common script for all pages-->
   		<script src="/public/js/common-scripts.js"></script>
 
-
+  <!-- Google analytics-->
+  <script src="/public/js/analytics.js"></script>
 
 
   	</body>

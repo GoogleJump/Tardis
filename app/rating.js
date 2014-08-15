@@ -78,7 +78,7 @@ exports.upvote = function(req, res) {
 	Rating.findById(ratingId, function(err, rating) {
 		var upvoteIndex = rating.upvoters.indexOf(req.user._id);
 		var delta = 0;
-		if(upvoteIndex>=0) {
+		if(upvoteIndex>=0&&!req.user.admin) {
 			//has already upvoted
 			delta = -1;
 			rating.upvoters.splice(upvoteIndex, 1);
@@ -128,7 +128,7 @@ exports.downvote = function(req, res) {
 			rating.downvoters.push(req.user._id);
 		} else {
 			var downvoteIndex = rating.downvoters.indexOf(req.user._id);
-			if(downvoteIndex>=0) {
+			if(downvoteIndex>=0&&!req.user.admin) {
 				//has already downvoted
 				delta = 1;
 				rating.downvoters.splice(downvoteIndex, 1);

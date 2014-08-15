@@ -67,7 +67,7 @@ $(function () {
          },
          select: function (event, ui) {
             this.value = "";
-            
+            ga('send', 'event', 'text', 'entered', 'add course');
             addSelectedCourse(ui.item);
             // Prevent other event from not being execute            
             event.preventDefault();
@@ -80,6 +80,9 @@ $(function () {
   };
 
   $("#create-schedule").click(function(){
+
+    ga('send', 'event', 'button', 'click', 'schedule generate', courseCount);
+
     $("#calendar").empty();
     $("#loading").show();
     $("#calendar-holder").hide();
@@ -138,6 +141,7 @@ $(function () {
   });
 
   $("#schedule-prev").click(function(){
+    ga('send', 'event', 'button', 'click', 'schedule previous', currentScheduleIndex);
     currentScheduleIndex--;
     if(currentScheduleIndex==0) {
       $("#schedule-prev").hide();
@@ -148,6 +152,7 @@ $(function () {
   });
 
   $("#schedule-next").click(function(){
+    ga('send', 'event', 'button', 'click', 'schedule next', currentScheduleIndex);
     currentScheduleIndex++;
     if(currentScheduleIndex>=(schedulesCount-1)) {
       $("#schedule-next").hide();
@@ -158,17 +163,20 @@ $(function () {
   });
 
   $("#expand-all").click(function(){
+    ga('send', 'event', 'button', 'click', 'expand all');
     for(var id in selectedCourses) {
       $("#"+id).collapse('show');
     }
   });
   $("#collapse-all").click(function(){
+    ga('send', 'event', 'button', 'click', 'collapse all');
     for(var id in selectedCourses) {
       $("#"+id).collapse('hide');
     }
   });
 
   $("#back-button").click(function(){
+    ga('send', 'event', 'button', 'click', 'schedule back');
     $("#back-button").hide();
     $("#row-after-courses").show();
     $("#calendar-holder").hide();
@@ -217,14 +225,14 @@ $(function () {
       max: 24,
       values: [8, 17],
       slide: function( event, ui ) {
+        ga('send', 'event', 'slider', 'slide', 'schedule time range', ui.values[0]);
         $("#time0").text(formatTime(ui.values[0]));
         $("#time1").text(formatTime(ui.values[1]));
       }
     });
-    // $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-    //   " - $" + $( "#slider-range" ).slider( "values", 1 ) );
 
   $("#select-schedule-button").click(function(){
+    ga('send', 'event', 'button', 'click', 'select schedule');
     $("#calendar-control").slideUp();
     $("#select-schedule-button").fadeOut();
     $("#calendar").fadeOut();
@@ -246,6 +254,10 @@ $(function () {
          $("loading").hide();
       }
     });
+  });
+
+  $("#gcal-button").click(function(){
+    ga('send', 'event', 'button', 'click', 'add to gcal');
   });
 
   //check for pending schedule on load
