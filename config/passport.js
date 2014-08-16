@@ -152,6 +152,8 @@ module.exports = function(passport) {
                         console.log("can't connect to multiple accounts");
                         return done("can't connect to multiple accounts");
                     }
+                    user.lastLoginDate = Date.now();
+                    user.save();
                     return done(null, user);
                 } else {
                     // if the user isnt in our database, create a new user
@@ -183,7 +185,6 @@ module.exports = function(passport) {
                         }
                         newUser.local.email = profile.emails[0].value;
 
-
                         // save the user
                         newUser.save(function(err) {
                             if (err)
@@ -212,11 +213,6 @@ module.exports = function(passport) {
 
                 if (user) {
                     var calendar = new gcal.GoogleCalendar(token);
-
-                    //make a calendar
-
-                    //calendar.calendars.insert({summary:'Course schedule'}, function(err, response){
-                        //var newCalendarId = response.id;
 
                     var sectionIds= user.schedule;
                     Section.find({_id:{$in:sectionIds}}).populate('_professor _courseId').exec(function(err, sections){
