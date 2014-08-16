@@ -31,3 +31,6 @@ public/user_documents
 
 #environment variables containing secret data
 .env
+
+#Test DB data
+data
