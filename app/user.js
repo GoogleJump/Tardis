@@ -204,13 +204,13 @@ exports.view = function(req, res) {
 	});
 };
 
-exports.view_select_school = function(req, res) {
+exports.view_select_school = function(req, res, emsg) {
 	//get all schools from the database
 	School.find({}, function (err, schools) {
 		res.render('select_school.ejs', {
 			schoolArray : 	schools,
 			user: req.user,
-			message: 		req.flash('message')
+			message: emsg
 		});
 	});
 };
@@ -220,11 +220,18 @@ exports.select_school =  function(req, res) {
 	var major = req.body.major;
 	var username = req.body.username;
 
+	if(username!=undefined){
+		if(username.length<3){
+			view_select_school(req, res,"Username must be at least 3 characters");
+			return;
+		} else {
+			req.user.username = username;
+		}
+	}
+
 	req.user._schoolId = school;
 	req.user._major = major;
-	if(username){
-		req.user.username = username;
-	}
+	
 	req.user.save(function(err){
 		res.redirect('/profile');
 	});

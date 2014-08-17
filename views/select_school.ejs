@@ -41,7 +41,7 @@
                       </section>  
 
 	<div class="page-header text-center">
-		<font color = "white" size="12"><center><i class=" fa fa-th-list"></i>Finish creating your account</center></font>
+		<font color = "white" size="12"><center><i class=" fa fa-th-list"></i> Finish creating your account</center></font>
 	</div>
 
 	<div class="row">
@@ -52,15 +52,18 @@
 
 		<!-- LOCAL INFORMATION -->
 		<div class="col-sm-12">
-			<div class="well" >
-				<h3><b>Select your school<b></h3>
-				<form action="/select-school" method="post">
-					<%if(!user.username){%>
-					<div class="form-group">
-						<input type="text" placeholder="Username" name="username" class="form-control">
-					</div>
-					<%}%>
+			<form action="/select-school" method="post">
+			<%if(!user.username){%>
+			<div class="well">
+				<h3><b>Choose a username<b></h3>
+				<div class="form-group">
+					<input type="text" placeholder="Username" name="username" class="form-control">
+				</div>
+			</div>
+			<%}%>
 
+			<div class="well" >
+				<h3><b>Select your school &amp; major<b></h3>
 					<select class="form-control" name="school" id="school-select">
 						<option value="null">Choose school...</option>
 						<% for(var index in schoolArray) { %>
@@ -72,14 +75,15 @@
 						<option value="null">Select school first</option>
 					</select>
 					</br>
-					<button type="submit" class="btn btn-primary btn-lg pull-right" > Finish Creating Account <i class="fa fa-sign-in"></i></button><div class="clearfix"></div>
-				</form>
+					<button type="submit" class="btn btn-primary btn-lg pull-right" > Finish <i class="fa fa-sign-in"></i></button><div class="clearfix"></div>	
 			</div>
-
+			</form>
+		</div>
+		<div class="col-md-6">
 			<div class="well" id="school-parent">
 				<h3><b>Not in the list? Add your school</b></h3>
 					<div class="form-group">
-						<label>School name</label>
+						<label>School name <small>(no abbreviations)</small></label>
 						<input type="text" class="form-control" name="schoolName" id="school-name-input">
 					</div>
 					<div class="form-group">
@@ -145,7 +149,8 @@
 					<span class="help-block" id="school-error-text">Unknown error</span>
 					<button type="submit" class="btn btn-success pull-right" id="add-school-button"><i class="fa fa-plus-square"></i> Add Your School </button><div class="clearfix"></div>
 			</div>
-
+		</div>
+		<div class="col-md-6">
 			<div class="well">
 				<h3><b>Not in the list? Add your major</b></h3>
 					<div class="form-group" id="major-parent">

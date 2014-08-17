@@ -58,6 +58,14 @@ module.exports = function(passport) {
             return done(null, false, req.flash('signupMessage', 'Password must be 8 or more characters'));
         }
 
+        if(!req.body.username||req.body.username.length<3) {
+            return done(null, false, req.flash('signupMessage', 'Username must be 3 or more characters'));
+        }
+
+        if(!req.body.firstname||!req.body.lastname) {
+            return done(null, false, req.flash('signupMessage', 'First and last name are required'));
+        }
+
 		// find a user whose email is the same as the forms email
 		// we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
