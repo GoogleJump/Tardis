@@ -58,6 +58,14 @@ module.exports = function(passport) {
             return done(null, false, req.flash('signupMessage', 'Password must be 8 or more characters'));
         }
 
+        if(!req.body.username||req.body.username.length<3) {
+            return done(null, false, req.flash('signupMessage', 'Username must be 3 or more characters'));
+        }
+
+        if(!req.body.firstname||!req.body.lastname) {
+            return done(null, false, req.flash('signupMessage', 'First and last name are required'));
+        }
+
 		// find a user whose email is the same as the forms email
 		// we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -129,7 +137,6 @@ module.exports = function(passport) {
             user.lastLoginDate = Date.now();
             user.save(function(err, result){ return;});
 
-            console.log("all is well");
             // all is well, return successful user
             return done(null, user);
         });
@@ -137,49 +144,63 @@ module.exports = function(passport) {
     }));
 
     passport.use(new GoogleStrategy(configAuth.googleAuth,
-    function(token, refreshToken, profile, done) {
-
+    function(req, token, refreshToken, profile, done) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                console.log("1");
                 if (err)
                     return done(err);
 
                 if (user) {
-
                     // if a user is found, log them in
+                    if(req.user) {
+                        //trying to connect google to multiple accounts
+                        console.log("can't connect to multiple accounts");
+                        return done("can't connect to multiple accounts");
+                    }
+                    user.lastLoginDate = Date.now();
+                    user.save();
                     return done(null, user);
                 } else {
                     // if the user isnt in our database, create a new user
-                    var newUser = new User();
+                    if(req.user) {
+                        //add google to existing account
+                        console.log("adding google to "+req.user.username);
+                        req.user.google.id    = profile.id;
+                        req.user.google.token = token;
+                        req.user.google.name  = profile.displayName;
+                        req.user.google.email = profile.emails[0].value; // pull the first email
+                        req.user.local.avatar = profile._json['picture'];                
+                        req.user.save(function(err){
+                            return done(null, req.user);
+                        })
+                    } else {
+                        var newUser = new User();
 
-                    // set all of the relevant information
-                    newUser.google.id    = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name  = profile.displayName;
-                    newUser.google.email = profile.emails[0].value; // pull the first email
-                    newUser.local.avatar = profile._json['picture'];
+                        // set all of the relevant information
+                        newUser.google.id    = profile.id;
+                        newUser.google.token = token;
+                        newUser.google.name  = profile.displayName;
+                        newUser.google.email = profile.emails[0].value; // pull the first email
+                        newUser.local.avatar = profile._json['picture'];
 
-                    console.log("GOOGLE+ pic "+profile._json['picture']);
+                        var splitName = profile.displayName.split(' ');
+                        if(splitName.length>=2){
+                            newUser.local.firstname = splitName[0];
+                            newUser.local.lastname = splitName[splitName.length-1];
+                        }
+                        newUser.local.email = profile.emails[0].value;
 
-                    var splitName = profile.displayName.split(' ');
-                    if(splitName.length>=2){
-                        newUser.local.firstname = splitName[0];
-                        newUser.local.lastname = splitName[splitName.length-1];
+                        // save the user
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });
                     }
-                    newUser.local.email = profile.emails[0].value;
 
-
-                    // save the user
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    });
                 }
             });
         });
@@ -200,11 +221,6 @@ module.exports = function(passport) {
 
                 if (user) {
                     var calendar = new gcal.GoogleCalendar(token);
-
-                    //make a calendar
-
-                    //calendar.calendars.insert({summary:'Course schedule'}, function(err, response){
-                        //var newCalendarId = response.id;
 
                     var sectionIds= user.schedule;
                     Section.find({_id:{$in:sectionIds}}).populate('_professor _courseId').exec(function(err, sections){

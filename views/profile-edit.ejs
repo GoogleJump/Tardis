@@ -29,15 +29,12 @@
               <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
           </div>
           <!--logo start-->
-          <a href="/" class="logo">Student <span>Scheduler</span></a>
-            <a class="logonew">Welcome To Your Class Scheduler!</a>
+          <a href="/" class="logo">Student <span>Scheduler  </span><small><font color="gray">beta</font></small></a>
+            
           <!--logo end-->
         
           <div class="top-nav ">
               <ul class="nav pull-right top-menu">
-                  <li>
-                      <input type="text" class="form-control search" placeholder="Search">
-                  </li>
                   <!-- user login dropdown start-->
                   <li class="dropdown">
                       <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -61,55 +58,30 @@
       <aside>
           <div id="sidebar"  class="nav-collapse ">
                           <!-- sidebar menu start-->
-              <ul class="sidebar-menu" id="nav-accordion">
+          <ul class="sidebar-menu" id="nav-accordion">
                   <li class="sub-menu">
-                      <a class="active" href="/profile">
+                      <a  href="/profile">
                           <i class="fa fa-suitcase"></i>
-                          <span>Profile</span>
+                          <span> My Profile</span>
                       </a>
                   </li>
 
-                  <li class="sub-menu">
-                      <a href="/degree" >
-                          <i class="fa fa-book"></i>
-                          <span>Degree Requirements</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/school/<%=school._id%>/courses" >
-                          <i class="fa fa-tasks"></i>
-                          <span>Class Information</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="course_resource.html" >
-                          <i class="fa fa-shopping-cart"></i>
-                          <span>Course Resources</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="prof_rating.html" >
-                          <i class="fa fa-bar-chart-o"></i>
-                          <span>Professor Rating</span>
-                      </a>
-                      
-                  </li>
-                  <li class="sub-menu">
+                    <li class="sub-menu">
                       <a href="/school/<%= school._id%>" >
                           <i class="fa fa-comments-o"></i>
-                          <span> School Information </span>
+                          <span> My School </span>
                       </a>
                      
                   </li>
+                
                   <li class="sub-menu">
                       <a href="/schedule" >
                           <i class=" fa fa-th"></i>
                           <span>My Schedule</span>
                       </a>
                   </li>
+
+
 
               </ul>
               <!-- sidebar menu end-->
@@ -134,6 +106,23 @@
                           
 
                       </section>
+                      <section class="panel">
+                          <div class="user-heading" style="background:#FF6C60;">
+                              <h1>Google account</h1>
+                              <%var connectedText = "Not connected" %>
+                              <%var buttonText= "Connect now" %>
+                              <%var path = "/auth/google" %>
+                              <%if(user.google!=undefined && user.google.token){ connectedText="Connected: "+user.google.email; buttonText="Disconnect"; path="/auth/google/remove" }%>
+                              <p><%=connectedText%></p>
+                              <%if(user.local.password){%><a href='<%=path%>' class='btn btn-default'><%=buttonText%></a>
+                              <%}else{%>
+                              <p>Must create password below before Google can be disconnected</p>
+                              <%}%>
+                          </div>
+                          
+
+                      </section>
+
 
                   </aside>
 
@@ -156,26 +145,26 @@
                                   <form class="form-horizontal" role="form" action="/profile-edit" method="post">
                                                               
                                   <div class="form-group">
-                                      <label  class="col-lg-2 control-label">First Name</label>
+                                      <label  class="col-lg-2 control-label">First name</label>
                                       <div class="col-lg-6">
                                           <input type="text" class="form-control" name="firstname" id="f-name" value="<%=user.local.firstname%>">
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label  class="col-lg-2 control-label">Last Name</label>
+                                      <label  class="col-lg-2 control-label">Last name</label>
                                       <div class="col-lg-6">
                                           <input type="text" class="form-control" name="lastname" id="l-name" value="<%=user.local.lastname%>">
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <label  class="col-lg-2 control-label">Email Id</label>
+                                      <label  class="col-lg-2 control-label">Email</label>
                                       <div class="col-lg-6">
                                           <input type="text" class="form-control" name="email" id="c-name" value="<%=user.local.email%>">
                                       </div>
                                   </div>
 
                                   <div class="form-group">
-                                      <label  class="col-lg-2 control-label">User Name</label>
+                                      <label  class="col-lg-2 control-label">Username</label>
                                       <div class="col-lg-6">
                                           <input type="text" class="form-control" name="username" id="email" value="<%=user.username%>">
                                       </div>
@@ -192,7 +181,7 @@
                       </section>
                       <section>
                         <div class="panel panel-primary">
-                              <div class="panel-heading"> Change School Info </div>
+                              <div class="panel-heading"> Change School or Major </div>
                               <div class="panel-body">
                                   <form class="form-horizontal" role="form" action="/school-edit" method="post">
                                 <div class="form-group">
@@ -325,12 +314,14 @@
                               <div class="panel-heading"> Change Password </div>
                               <div class="panel-body">
                                   <form class="form-horizontal" role="form" action="/password-edit" method="post">
+                                    <%if(user.local.password){%>
                                       <div class="form-group">
                                           <label  class="col-lg-2 control-label">Current Password</label>
                                           <div class="col-lg-6">
                                               <input type="password" class="form-control" id="c-pwd" placeholder=" " name="currpassword">
                                           </div>
                                       </div>
+                                      <%}%>
                                       <div class="form-group">
                                           <label  class="col-lg-2 control-label">New Password</label>
                                           <div class="col-lg-6">
@@ -353,7 +344,7 @@
                               </div>
                           </div>
                       </section>
-                      <section>
+                      <!--<section>
                           <div class="panel panel-primary">
                               <div class="panel-heading"> Change Avatar</div>
                               <div class="panel-body">
@@ -375,7 +366,7 @@
                                   </form>
                               </div>
                           </div>
-                      </section>
+                      </section>-->
                   </aside>
               </div>
 
@@ -387,7 +378,7 @@
       <!--footer start-->
       <footer class="site-footer">
           <div class="text-center">
-              2013 &copy; FlatLab by VectorLab.
+              &copy;2014 by Team Tardis, GoogleJump 2014. <a href="/about"><font color="white"><u>About</u></font></a>
               <a href="#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
@@ -415,6 +406,8 @@
 
   </script>
 
+  <!-- Google analytics-->
+  <script src="public/js/analytics.js"></script>
 
   </body>
 </html>

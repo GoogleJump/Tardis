@@ -18,10 +18,13 @@
     <link href="public/css/style.css" rel="stylesheet" >
     <link href="public/css/style-responsive.css" rel="stylesheet" />
 
+      <!-- Google analytics-->
+  <script src="public/js/analytics.js"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <script src="js/respond.min.js"></script>
+      <script src="public/js/html5shiv.js"></script>
+      <script src="public/js/respond.min.js"></script>
     <![endif]-->
 </head>
 
@@ -31,9 +34,9 @@
 
                       <section>
                           <div class="loginheading">
-                              Finally! The Student Class Scheduler You've Been Looking For...
+                              Finally! The student course scheduler you've been looking for...
                           </div>
-                          <a href="/login" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
+                          <a href="/" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
                       </section>    
 
 
@@ -43,7 +46,7 @@
     <% } %>  
 
       <form class="form-signin" action="/signup" method="post">
-        <h2 class="form-signin-heading"><i class="fa fa-pencil-square-o"></i><b> Register Now </b></h2>
+        <h2 class="form-signin-heading"><i class="fa fa-pencil-square-o"></i><b> Sign up Now </b></h2>
         <div class="login-wrap">
            
             <p> Enter your account details below </p>
@@ -56,11 +59,10 @@
 
             <div class="registration">
                 <center>
-                Already Registered?
+                Already registered?
                 <a class="" href="/login">
                     Login
                 </a>
-                <span>Or go <a href="/">home</a>.</span>
             </center>
             </div>
 

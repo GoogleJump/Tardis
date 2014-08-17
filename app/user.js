@@ -82,7 +82,7 @@ exports.update = function(req, res) {
 //update user password
 exports.update_password = function(req, res) {
 	user = req.user;
-	if (!user.validPassword(req.body.currpassword)){
+	if (user.local.password&&!user.validPassword(req.body.currpassword)){
 		req.flash('signupMessage', 'Current password is incorrect');
 		console.log("Current password is incorrect")
 		res.redirect('/profile-edit');
@@ -100,6 +100,20 @@ exports.update_password = function(req, res) {
 		});
 	}
 };
+
+exports.remove_google = function(req, res) {
+	if(req.user.local.password) {
+		req.user.google.token = "";
+		req.user.google.id = "";
+		req.user.save(function (err){
+			console.log(err+" saved");
+			res.redirect('/profile');
+		})
+	} else {
+		console.log("user must have local password");
+		res.send(500);
+	}
+}
 
 //update user school info
 exports.update_school = function(req, res) {
@@ -190,13 +204,17 @@ exports.view = function(req, res) {
 	});
 };
 
-exports.view_select_school = function(req, res) {
+exports.view_select_school = function(req, res, emsg) {
 	//get all schools from the database
+	var message="";
+	if(typeof emsg == 'string') {
+		message= emsg;
+	}
 	School.find({}, function (err, schools) {
 		res.render('select_school.ejs', {
 			schoolArray : 	schools,
 			user: req.user,
-			message: 		req.flash('message')
+			message: message
 		});
 	});
 };
@@ -206,11 +224,23 @@ exports.select_school =  function(req, res) {
 	var major = req.body.major;
 	var username = req.body.username;
 
+	if(username!=undefined){
+		if(username.length<3){
+			exports.view_select_school(req, res,"Username must be at least 3 characters");
+			return;
+		} else {
+			req.user.username = username;
+		}
+	}
+
+	if(school=='null'||major=='null') {
+		exports.view_select_school(req, res,"Must select school and major");
+		return;
+	}
+
 	req.user._schoolId = school;
 	req.user._major = major;
-	if(username){
-		req.user.username = username;
-	}
+
 	req.user.save(function(err){
 		res.redirect('/profile');
 	});

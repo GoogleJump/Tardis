@@ -1,5 +1,7 @@
 var fs = require('fs'), express = require('express');
 
+var School = require('../app/models/school');
+
 //SUB ROUTES
 var user = require('./user'); 
 var school = require('./school'); 
@@ -9,7 +11,7 @@ var course = require('./course');
 var section = require('./section');
 var schedule = require('./schedule');
 var major = require('./major');
-var temp = require('./temp');
+var admin = require('./admin');
 
 module.exports = function(app, passport) {
 	app.get('/', isNotLoggedIn, function(req, res) {
@@ -74,7 +76,9 @@ module.exports = function(app, passport) {
 	app.post('/update-pic', user.update_pic);
 	app.get('/profile-edit', isLoggedIn, user.edit);
 
-	app.get('/select-school', user.view_select_school);
+	app.get('/auth/google/remove', user.remove_google);
+
+	app.get('/select-school', isLoggedIn, user.view_select_school);
 	app.post('/select-school', user.select_school);
 
 
@@ -114,15 +118,20 @@ module.exports = function(app, passport) {
 	app.get('/major/get', major.get);
 	app.post('/major/add', major.add);
 
+	app.get('/about', function(req,res){
+		School.findById(req.user._schoolId, function(err, school){
+			res.render('about.ejs', {user:req.user, school:school});
+		});
+	});
+
+	app.get('/admin/users', isAdmin, admin.view_users);
+
 	//set the public/ directory as static
 	app.use('/public', express.static('public'));
 
 	app.get('/error', function(req, res) {
 		res.render('static/500.html');
 	});
-
-	// clears professors and courses
-	app.get('/chamila', temp.chamila);
 
 	//ALL OTHER ROUTES MUST BE ABOVE HERE
 	//Got here and nothing has happened? 404!
@@ -165,4 +174,12 @@ function accountFullyCreated(req, res, next) {
 	}
 
 	res.redirect('/select-school');
+}
+
+function isAdmin(req, res, next) {
+	if(req.user&&req.user.admin) {
+		return next();
+	}
+
+	res.send(403);//forbidden
 }

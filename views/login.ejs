@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Login Page</title>
+    <title>Student Scheduler - Login</title>
  <!-- Bootstrap core CSS -->
     <link href="public/css/bootstrap.min.css" rel="stylesheet">
     <link href="public/css/bootstrap-reset.css" rel="stylesheet">
@@ -31,10 +31,10 @@
      
                       <section>
                           <div class="loginheading">
-                              Finally! The Student Class Scheduler You've Been Looking For...
+                              Finally! The student course scheduler you've been looking for...
                           </div>
                           <br>
-                          <a href="/login" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
+                          <a href="/" class="loginlogo"><center> Student <span>Scheduler</center></span></a>
                       </section>                    
 
   <!-- show any messages that come back with authentication -->
@@ -43,7 +43,7 @@
   <% } %>
 
       <form class="form-signin" action="/login" method="post">
-        <h2 class="form-signin-heading"><b><i class="fa fa-key"></i> sign into scheduler </b></h2>
+        <h2 class="form-signin-heading"><b><i class="fa fa-key"></i> Login to scheduler </b></h2>
         <div class="login-wrap">
             <input type="text" class="form-control" name="email" placeholder="Enter your e-mail" autofocus >
             <input type="password" class="form-control" name="password" placeholder="Enter your Password">
@@ -69,6 +69,8 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
+  <!-- Google analytics-->
+  <script src="public/js/analytics.js"></script>
 
   </body>
 </html>

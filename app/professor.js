@@ -38,7 +38,7 @@ exports.view = function(req, res) {
 				professor._ratings = _.sortBy(professor._ratings, function(rating){return -rating.score;});
 				for(var i=0;i<professor._ratings.length;i++){
 					if(professor._ratings[i]._poster) {
-						User.findById(professor._ratings[i]._poster).select('username reputation').exec(function(err,poster){
+						User.findById(professor._ratings[i]._poster).select('username reputation admin').exec(function(err,poster){
 							posterMap[poster._id] = poster;
 							count++;
 							if(count==professor._ratings.length) {

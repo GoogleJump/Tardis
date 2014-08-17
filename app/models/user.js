@@ -36,7 +36,8 @@ var userSchema = mongoose.Schema({
         courses: [{type:ObjectId, ref:'Course'}],
         _schedules: {type:ObjectId, ref:"Schedule"}
     },
-    schedule:[{type:ObjectId, ref:"Section"}]
+    schedule:[{type:ObjectId, ref:"Section"}],
+    admin: {type: Boolean, default: false}
 });
 
 // methods ======================
@@ -47,6 +48,7 @@ userSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 userSchema.methods.validPassword = function(password) {
+    if(!this.local.password) return false;
     return bcrypt.compareSync(password, this.local.password);
 };
 

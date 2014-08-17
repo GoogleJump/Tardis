@@ -36,16 +36,12 @@
   			</div>
   			<!--logo start-->
 
-  			<a href="/profile" class="logo">Student <span>Scheduler</span></a>
-  			<a class="logonew">Welcome To Your Class Scheduler!</a>
+  			<a href="/" class="logo">Student <span>Scheduler  </span><small><font color="gray">beta</font></small></a>
   			<!--logo end-->
 
   			<div class="top-nav ">
   				<!--search & user info start-->
   				<ul class="nav pull-right top-menu">
-  					<li>
-  						<input type="text" class="form-control search" placeholder="Search">
-  					</li>
   					<!-- user login dropdown start-->
   					<%if (cUser){%>
   					<li class="dropdown">
@@ -77,7 +73,7 @@
   			<div id="sidebar"  class="nav-collapse ">
   				<!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
-                  <li class="sub-menu">
+                   <li class="sub-menu">
                       <a href="/profile">
                           <i class="fa fa-suitcase"></i>
                           <span> My Profile</span>
@@ -87,42 +83,17 @@
                     <li class="sub-menu">
                       <a href="/school/<%= school._id%>" >
                           <i class="fa fa-comments-o"></i>
-                          <span> My School Information </span>
+                          <span> My School </span>
                       </a>
                      
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/degree" >
-                          <i class="fa fa-book"></i>
-                          <span> My Degree</span>
-                      </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="/school/<%=school._id%>/courses" >
-                          <i class="fa fa-tasks"></i>
-                          <span> My Courses</span>
-                      </a>
-                  </li>
-
-
-                  <li class="sub-menu">
-                      <a class="active" href="/school/<%=school._id%>/professors" >
-                          <i class="fa fa-bar-chart-o"></i>
-                          <span> My Professors </span>
-                      </a>
-                      
                   </li>
                 
                   <li class="sub-menu">
                       <a href="/schedule" >
                           <i class=" fa fa-th"></i>
-                          <span>My Schedule</span>
+                          <span> My Schedule</span>
                       </a>
                   </li>
-
-
 
               </ul>
   				<!-- sidebar menu end-->
@@ -154,8 +125,8 @@
   										<li><a href="/school/<%=professor._school._id%>/professors">Professors</a></li>
   										<li class="active"><%= professor.name %></li>
   									</ol>
-  									<header class="panel-heading" style="background: #853385;">
-  										<b><font color = "white"><i class=" fa fa-bars"></i> Professor Details </font></b>
+  									<header class="panel-heading" style="background: #0099CC;">
+  										<b><font color = "white"><i class=" fa fa-bars"></i> Professor details </font></b>
   									</header>
 
   									<section class="panel-body bio-graph-info" >
@@ -186,9 +157,9 @@
 
   								</section>
 
-  								<section class="panel" style="padding: 20px;">
-  									<header class="panel-heading" style="background: #853385;">
-  										<b><font color = "white"><i class=" fa fa-users"></i> Professors Ratings </font></b>
+  								<section class="panel col-sm-6">
+  									<header class="panel-heading" style="background: #0099CC;">
+  										<b><font color = "white"><i class=" fa fa-users"></i> Professor ratings </font></b>
   									</header>
   									<br>
   									<%if(professor._ratings.length>0){%>
@@ -220,7 +191,12 @@
   													<footer>
   														posted by 
   														<%if(r._poster){%>
-  														<%=posterMap[r._poster].username%> <span class="badge"><%=posterMap[r._poster].reputation%></span>
+                              <%var poster = posterMap[r._poster];%>
+  														<%=poster.username%> 
+                              <%if(poster.admin){%>
+                                <span class="label label-danger" title="Administrator">A</span>
+                              <%}%>
+                              <span class="badge" title="Reputation"><%=poster.reputation%></span>
   														<%}else{%>
   														anonymous
   														<%}%>
@@ -241,9 +217,9 @@
 
 
 
-                  <div class="col-lg-12">
-                      <section class="panel">
-                              <header class="panel-heading" style="background: #853385;"> <font color="white"><b><i class="fa fa-plus-circle"></i> Add your own Rating! </b></font></header>
+                  <div>
+                      <section class="panel col-sm-6">
+                              <header class="panel-heading" style="background: #0099CC;"> <font color="white"><b><i class="fa fa-plus-circle"></i> Rate this professor </b></font></header>
                          
                           				<div class="panel-body">
 					<%if(rateState==2){%>
@@ -307,7 +283,7 @@
   			<!--footer start-->
   			<footer class="site-footer">
   				<div class="text-center">
-  					2014 &copy; Student Scheduler by Tardis, GoogleJump.
+  					&copy;2014 by Team Tardis, GoogleJump 2014. <a href="/about"><font color="white"><u>About</u></font></a>
   					<a href="#" class="go-top">
   						<i class="fa fa-angle-up"></i>
   					</a>
@@ -328,7 +304,8 @@
   		<!--common script for all pages-->
   		<script src="/public/js/common-scripts.js"></script>
 
-
+  <!-- Google analytics-->
+  <script src="/public/js/analytics.js"></script>
 
 
   	</body>
