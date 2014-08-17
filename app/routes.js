@@ -78,7 +78,7 @@ module.exports = function(app, passport) {
 
 	app.get('/auth/google/remove', user.remove_google);
 
-	app.get('/select-school', user.view_select_school);
+	app.get('/select-school', isLoggedIn, user.view_select_school);
 	app.post('/select-school', user.select_school);
 
 

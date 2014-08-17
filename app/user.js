@@ -233,6 +233,11 @@ exports.select_school =  function(req, res) {
 		}
 	}
 
+	if(school=='null'||major=='null') {
+		exports.view_select_school(req, res,"Must select school and major");
+		return;
+	}
+
 	req.user._schoolId = school;
 	req.user._major = major;
 

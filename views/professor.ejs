@@ -126,7 +126,7 @@
   										<li class="active"><%= professor.name %></li>
   									</ol>
   									<header class="panel-heading" style="background: #0099CC;">
-  										<b><font color = "white"><i class=" fa fa-bars"></i> Professor Details </font></b>
+  										<b><font color = "white"><i class=" fa fa-bars"></i> Professor details </font></b>
   									</header>
 
   									<section class="panel-body bio-graph-info" >
@@ -157,9 +157,9 @@
 
   								</section>
 
-  								<section class="panel" style="padding: 20px;">
+  								<section class="panel col-sm-6">
   									<header class="panel-heading" style="background: #0099CC;">
-  										<b><font color = "white"><i class=" fa fa-users"></i> Professors Ratings </font></b>
+  										<b><font color = "white"><i class=" fa fa-users"></i> Professor ratings </font></b>
   									</header>
   									<br>
   									<%if(professor._ratings.length>0){%>
@@ -217,9 +217,9 @@
 
 
 
-                  <div class="col-lg-12">
-                      <section class="panel">
-                              <header class="panel-heading" style="background: #0099CC;"> <font color="white"><b><i class="fa fa-plus-circle"></i> Add your own Rating! </b></font></header>
+                  <div>
+                      <section class="panel col-sm-6">
+                              <header class="panel-heading" style="background: #0099CC;"> <font color="white"><b><i class="fa fa-plus-circle"></i> Rate this professor </b></font></header>
                          
                           				<div class="panel-body">
 					<%if(rateState==2){%>
