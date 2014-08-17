@@ -2,7 +2,7 @@ Team Tardis GoogleJump 2014
 ============
 Course scheduler project
 ------------
-**Live at [scheduler.evanforbes.net](scheduler.evanforbes.net)**
+**Live at [scheduler.evanforbes.net](http://scheduler.evanforbes.net)**
 
 The team:
 * [Chamila Amithirigala](https://github.com/amithir2) (chamilaharindi@gmail.com)
