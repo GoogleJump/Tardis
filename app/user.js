@@ -206,11 +206,15 @@ exports.view = function(req, res) {
 
 exports.view_select_school = function(req, res, emsg) {
 	//get all schools from the database
+	var message="";
+	if(typeof emsg == 'string') {
+		message= emsg;
+	}
 	School.find({}, function (err, schools) {
 		res.render('select_school.ejs', {
 			schoolArray : 	schools,
 			user: req.user,
-			message: emsg
+			message: message
 		});
 	});
 };
@@ -222,7 +226,7 @@ exports.select_school =  function(req, res) {
 
 	if(username!=undefined){
 		if(username.length<3){
-			view_select_school(req, res,"Username must be at least 3 characters");
+			exports.view_select_school(req, res,"Username must be at least 3 characters");
 			return;
 		} else {
 			req.user.username = username;
@@ -231,7 +235,7 @@ exports.select_school =  function(req, res) {
 
 	req.user._schoolId = school;
 	req.user._major = major;
-	
+
 	req.user.save(function(err){
 		res.redirect('/profile');
 	});
