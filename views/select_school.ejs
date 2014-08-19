@@ -67,7 +67,7 @@
 					<select class="form-control" name="school" id="school-select">
 						<option value="null">Choose school...</option>
 						<% for(var index in schoolArray) { %>
-							<option value="<%=schoolArray[index]._id %>"><%=schoolArray[index].name %></option>
+							<option value="<%=schoolArray[index]._id %>"><%=schoolArray[index].name %> (<%=schoolArray[index].city %>, <%=schoolArray[index].state %>)</option>
 						<% } %>
 					</select>
 					</br>
