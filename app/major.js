@@ -23,6 +23,11 @@ exports.add = function(req, res){
 	var name = req.body.name;
 	console.log("adding major "+name+" to school "+schoolId);
 
+	if(!name) {
+		res.send(500);
+		return;
+	}
+
 	//TODO: case insensitive
 	var regex = new RegExp(["^",name,"$"].join(""),"i");
 	Major.findOne({name:regex,_school:schoolId}, function(err, major){
