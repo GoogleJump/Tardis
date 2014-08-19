@@ -210,7 +210,7 @@ exports.view_select_school = function(req, res, emsg) {
 	if(typeof emsg == 'string') {
 		message= emsg;
 	}
-	School.find({}, function (err, schools) {
+	School.find({}).sort('name').function (err, schools) {
 		res.render('select_school.ejs', {
 			schoolArray : 	schools,
 			user: req.user,

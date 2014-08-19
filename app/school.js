@@ -31,11 +31,6 @@ exports.add = function(req, res) {
 	});
 }
 
-
-
-//			req.user._schoolId = newSchool._id;
-//			req.user.save();
-
 exports.view = function(req, res) {
 	var id = req.params.schoolId;
 	School.findOne({'_id':id}, function(err, school) {
@@ -73,30 +68,6 @@ exports.view_courses = function(req, res) {
 		
 	});
 }
-
-exports.chamila = function(req, res){
-	Course.remove({}, function(err, profs){
-		Professor.remove({}, function(err, courses){
-			Section.remove({}, function(err, sections){
-			});
-		});
-	});
-	/*School.findOne({name:"University of Illinois at Urbana-Champaign"}, function(err, school1){
-		Major.findOne({name:"Computer Science", _school: school1}, function(err, major1){
-			School.findOne({name:"University of Tulsa"}, function(err, school2){
-				Major.findOne({name:"Computer Science", _school: school2}, function(err, major2){
-					major2.college = major1.college;
-					major2.coreClasses = major1.coreClasses;
-					major2.electives = major1.electives;
-					major2.langReqs = major1.langReqs;
-					major2.genEds = major1.genEds;
-					major2.save();
-				});
-			});
-		});
-	});*/
-};
-
 
 exports.update_courses = function(req, res) {
 	var id = req.params.schoolId;
