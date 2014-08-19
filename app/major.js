@@ -28,7 +28,6 @@ exports.add = function(req, res){
 		return;
 	}
 
-	//TODO: case insensitive
 	var regex = new RegExp(["^",name,"$"].join(""),"i");
 	Major.findOne({name:regex,_school:schoolId}, function(err, major){
 		console.log(major);
