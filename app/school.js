@@ -13,6 +13,11 @@ exports.add = function(req, res) {
 
 	console.log("adding school: "+name);
 
+	if(!name||!city){
+		res.send(500);
+		return;
+	}
+
 	//regex to match school name case insensitively mit==MIT
 	var regex = new RegExp(["^",name,"$"].join(""),"i");
 
