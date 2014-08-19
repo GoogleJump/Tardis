@@ -6,7 +6,7 @@ exports.get = function(req, res){
 	var schoolId = req.query.schoolId;
 	console.log("getting majors for "+schoolId);
 
-	School.findById(schoolId).select('majors').populate('majors').exec(function(err, school){
+	School.findById(schoolId).select('majors').populate('majors').sort('name').exec(function(err, school){
 		if(err||!school){
 			res.send(500);
 		}
