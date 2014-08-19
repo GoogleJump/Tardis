@@ -24,7 +24,8 @@ exports.add = function(req, res){
 	console.log("adding major "+name+" to school "+schoolId);
 
 	//TODO: case insensitive
-	Major.findOne({name:name,_school:schoolId}, function(err, major){
+	var regex = new RegExp(["^",name,"$"].join(""),"i");
+	Major.findOne({name:regex,_school:schoolId}, function(err, major){
 		console.log(major);
 		if(major){
 			res.send({error:"There is already a major with that name"});
