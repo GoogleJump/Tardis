@@ -6,7 +6,7 @@ exports.get = function(req, res){
 	var schoolId = req.query.schoolId;
 	console.log("getting majors for "+schoolId);
 
-	School.findById(schoolId).select('majors').populate('majors').exec(function(err, school){
+	School.findById(schoolId).select('majors').populate('majors').sort('name').exec(function(err, school){
 		if(err||!school){
 			res.send(500);
 		}
@@ -23,8 +23,13 @@ exports.add = function(req, res){
 	var name = req.body.name;
 	console.log("adding major "+name+" to school "+schoolId);
 
-	//TODO: case insensitive
-	Major.findOne({name:name,_school:schoolId}, function(err, major){
+	if(!name) {
+		res.send(500);
+		return;
+	}
+
+	var regex = new RegExp(["^",name,"$"].join(""),"i");
+	Major.findOne({name:regex,_school:schoolId}, function(err, major){
 		console.log(major);
 		if(major){
 			res.send({error:"There is already a major with that name"});
